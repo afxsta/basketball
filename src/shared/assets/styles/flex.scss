@@ -1,0 +1,20 @@
+:root {
+  .f {
+    display: flex;
+  }
+  .fd-col {
+    flex-direction: column;
+  }
+  .ai-c {
+    align-items: center;
+  }
+  .ai-e {
+    align-items: flex-end;
+  }
+  .jc-c {
+    justify-content: center;
+  }
+  .jc-e {
+    justify-content: flex-end;
+  }
+}
