@@ -17,4 +17,12 @@ export interface IInputProps extends /* @vue-ignore */ InputHTMLAttributes {
    * * Заблокировать ввод
    */
   disabled?: boolean
+  /**
+   * * Режим поиска
+   */
+  isSearch?: boolean
+  /**
+   * * Минимальный таймаут ввода
+   */
+  timeInterval?: number
 }

@@ -2,15 +2,19 @@
 import { ref } from 'vue'
 import { Input, Link } from '@/shared'
 const value = ref('Текст')
+
+const debounceTest = (value: string) => {
+  console.log(value)
+}
 </script>
 
 <template>
   <div id="app">
     <Input
       v-model="value"
+      is-search
       label="Login"
-      error="АШЫБКА"
-      disabled
+      @update:model-value="debounceTest"
     />
     <Link :href="'qqq'"> Link </Link>
   </div>
