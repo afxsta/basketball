@@ -1,26 +1,40 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { Input, Link } from '@/shared'
-const value = ref('')
+const value = ref('Текст')
 </script>
 
 <template>
   <div id="app">
-    <div class="icon-delete_rounded"></div>
     <Input
       v-model="value"
       label="Login"
+      error="АШЫБКА"
+      disabled
     />
-    <Link :href="'vk.com'">
-      qeqweqwewq
-    </Link>
+    <Link :href="'qqq'"> Link </Link>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+html,
+body,
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
 html {
-  background-color: var(--red);
   font-size: 14px;
   font-family: Avenir;
+}
+body {
+  height: 100vh;
+  width: 100vw;
 }
 </style>
