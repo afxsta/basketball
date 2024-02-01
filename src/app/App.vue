@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { SelectOptionModel, Button } from '@/shared'
-</script>
+import { Checkbox } from '@/shared'
+import { ref } from 'vue'
 
+const check = ref(false)
+</script>
 <template>
   <div id="app">
     <div :style="{ padding: '20px' }">
-      <Button>Button</Button>
+      <Checkbox v-model="check"> Text </Checkbox>
     </div>
   </div>
 </template>
