@@ -18,6 +18,7 @@
     top: calc(100% + 2px);
     left: 0;
     color: var(--lightest-red);
+    pointer-events: none;
   }
 }
 </style>
