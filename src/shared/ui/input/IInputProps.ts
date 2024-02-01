@@ -13,4 +13,8 @@ export interface IInputProps extends /* @vue-ignore */ InputHTMLAttributes {
    * * Текст ошибки
    */
   error?: string
+  /**
+   * * Заблокировать ввод
+   */
+  disabled?: boolean
 }

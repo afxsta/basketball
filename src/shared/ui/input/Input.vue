@@ -5,8 +5,7 @@ import { ErrorMessage } from '../error-message'
 
 const props = withDefaults(defineProps<IInputProps>(), {
   label: '',
-  error: 'АШЫБКА',
-  disabled: true,
+  error: '',
 })
 const emit = defineEmits<{
   /**
