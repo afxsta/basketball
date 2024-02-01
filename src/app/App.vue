@@ -1,22 +1,29 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Input, Link } from '@/shared'
-const value = ref('Текст')
+import { Select, SelectOptionModel } from '@/shared'
 
-const debounceTest = (value: string) => {
-  console.log(value)
-}
+const selectedOptions = ref<number[]>()
+const options = ref([
+  new SelectOptionModel({ Id: 1, Text: 'Игрок 1' }),
+  new SelectOptionModel({ Id: 2, Text: 'Игрок 2' }),
+  new SelectOptionModel({ Id: 3, Text: 'Игрок 3' }),
+  new SelectOptionModel({ Id: 4, Text: 'Игрок 4' }),
+  new SelectOptionModel({ Id: 5, Text: 'Игрок 5' }),
+  new SelectOptionModel({ Id: 6, Text: 'Игрок 6' }),
+])
+const selectValues = (e: number[]) => console.log(e)
 </script>
 
 <template>
   <div id="app">
-    <Input
-      v-model="value"
-      is-search
-      label="Login"
-      @update:model-value="debounceTest"
-    />
-    <Link :href="'qqq'"> Link </Link>
+    <div :style="{ padding: '20px' }">
+      <Select
+        is-multi
+        v-model="selectedOptions"
+        :options="options"
+        @update:model-value="selectValues"
+      />
+    </div>
   </div>
 </template>
 
