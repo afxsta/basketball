@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ISelectedItemProps, SelectOptionModel } from '@/shared/ui/select'
-import IconClose from '@/shared/assets/images/icon-close.svg'
+import IconClose from '@/shared/assets/images/icons/icon-close.svg'
 
 const props = defineProps<ISelectedItemProps>()
 const emit = defineEmits<{

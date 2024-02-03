@@ -1,0 +1,103 @@
+<script lang="ts" setup>
+import { GeneralModel } from '@/entities'
+import { computed, ref } from 'vue'
+import IconPerson from '@/shared/assets/images/icons/group_person_rounded.svg'
+import IconPersonGroup from '@/shared/assets/images/icons/person_rounded.svg'
+
+/**
+ * * Элементы сайдбара
+ */
+const items = computed(() => [
+  new GeneralModel({ Id: 1, Name: 'Teams', Image: IconPersonGroup }),
+  new GeneralModel({ Id: 2, Name: 'Players', Image: IconPerson }),
+])
+
+/**
+ * * Id текущего hover элемента
+ */
+const currentHover = ref()
+
+/**
+ * * Получение svg рисунка
+ */
+const getSvgDraw = (_id: number) => {
+  switch (_id) {
+    case 1:
+      return 'M7.32675 5.33325C7.32675 6.43992 6.44008 7.33325 5.33341 7.33325C4.22675 7.33325 3.33341 6.43992 3.33341 5.33325C3.33341 4.22659 4.22675 3.33325 5.33341 3.33325C6.44008 3.33325 7.32675 4.22659 7.32675 5.33325ZM12.6601 5.33325C12.6601 6.43992 11.7734 7.33325 10.6667 7.33325C9.56008 7.33325 8.66675 6.43992 8.66675 5.33325C8.66675 4.22659 9.56008 3.33325 10.6667 3.33325C11.7734 3.33325 12.6601 4.22659 12.6601 5.33325ZM5.33341 8.66659C3.78008 8.66659 0.666748 9.44659 0.666748 10.9999V11.9999C0.666748 12.3666 0.966748 12.6666 1.33341 12.6666H9.33341C9.70008 12.6666 10.0001 12.3666 10.0001 11.9999V10.9999C10.0001 9.44659 6.88675 8.66659 5.33341 8.66659ZM10.0201 8.69992C10.2534 8.67992 10.4734 8.66659 10.6667 8.66659C12.2201 8.66659 15.3334 9.44659 15.3334 10.9999V11.9999C15.3334 12.3666 15.0334 12.6666 14.6667 12.6666H11.2134C11.2867 12.4599 11.3334 12.2333 11.3334 11.9999V10.9999C11.3334 10.0199 10.8067 9.27992 10.0467 8.72659C10.0447 8.72457 10.0427 8.72194 10.0405 8.71907C10.0354 8.71246 10.0294 8.70457 10.0201 8.69992Z'
+    case 2:
+      return 'M10.6667 5.33341C10.6667 6.80675 9.47342 8.00008 8.00008 8.00008C6.52675 8.00008 5.33341 6.80675 5.33341 5.33341C5.33341 3.86008 6.52675 2.66675 8.00008 2.66675C9.47342 2.66675 10.6667 3.86008 10.6667 5.33341ZM2.66675 12.0001C2.66675 10.2267 6.22008 9.33341 8.00008 9.33341C9.78008 9.33341 13.3334 10.2267 13.3334 12.0001V12.6667C13.3334 13.0334 13.0334 13.3334 12.6667 13.3334H3.33341C2.96675 13.3334 2.66675 13.0334 2.66675 12.6667V12.0001Z'
+  }
+}
+/**
+ * * Получение цвета картинки
+ */
+const getItemColor = (_id: number) => {
+  if (_id == currentHover.value) return '#e4163a'
+  return '#9C9C9C'
+}
+/**
+ * * Установка текущего hover значения
+ */
+const setCurrentHover = (_id: number) => (currentHover.value = _id)
+</script>
+<template>
+  <div class="sidebar">
+    <div
+      v-for="item in items"
+      :key="item?.Id"
+      class="sidebar_item"
+      @mouseenter="setCurrentHover(item?.Id)"
+      @mouseleave="setCurrentHover(undefined)"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 16 16"
+      >
+        <path
+          :d="getSvgDraw(item?.Id)"
+          :fill="getItemColor(item?.Id)"
+        />
+      </svg>
+      <span
+        v-text="item?.Name"
+        class="sidebar_item_name"
+        :style="{ color: getItemColor(item?.Id) }"
+      />
+    </div>
+  </div>
+</template>
+<style lang="scss" scoped>
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 32px 0;
+  width: 140px;
+  height: 100%;
+  background-color: var(--white);
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+
+    path {
+      transition: var(--transition-1);
+    }
+
+    &_name {
+      font-size: 12px;
+      line-height: 18px;
+      transition: var(--transition-1);
+    }
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ErrorMessage, ICheckboxProps } from '@/shared/ui'
-import IconDone from '@/shared/assets/images/icon-done.svg'
+import IconDone from '@/shared/assets/images/icons/icon-done.svg'
 import { computed } from 'vue'
 
 const props = defineProps<ICheckboxProps>()

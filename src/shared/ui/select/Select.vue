@@ -5,8 +5,8 @@ import {
   SelectedItem,
 } from '@/shared/ui/select'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import IconExpand from '@/shared/assets/images/icon-expand.svg'
-import IconCloseSelect from '@/shared/assets/images/icon-close-select.svg'
+import IconExpand from '@/shared/assets/images/icons/icon-expand.svg'
+import IconCloseSelect from '@/shared/assets/images/icons/icon-close-select.svg'
 
 const props = withDefaults(defineProps<ISelectProps>(), {})
 const emit = defineEmits<{

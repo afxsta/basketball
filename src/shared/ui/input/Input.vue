@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { IInputProps } from '@/shared/ui/input'
 import { ErrorMessage } from '../error-message'
-import SearchIcon from '@/shared/assets/images/search_rounded.svg'
+import SearchIcon from '@/shared/assets/images/icons/search_rounded.svg'
 import debounce from 'lodash/debounce'
 
 const props = withDefaults(defineProps<IInputProps>(), {
