@@ -60,7 +60,7 @@ export const useTeamStore = defineStore('team-store', () => {
                 new TeamModel({
                   Id: x.id,
                   Name: x.name,
-                  Image: apiUrl.value + x.imageUrl,
+                  Image: x.imageUrl ? apiUrl.value + x.imageUrl : '',
                   Conference: x.conference,
                   Division: x.division,
                   FoundationYear: x.foundationYear,
@@ -80,11 +80,13 @@ export const useTeamStore = defineStore('team-store', () => {
    * @returns Новая команда
    */
   const addTeam = async (team: TeamModel) =>
-    new Promise<ResponseModel<TeamModel>>(async (resolve) => {
+    new Promise<ResponseModel<TeamModel>>(async (resolve, reject) => {
       if (team.Image instanceof File) {
         const mediaResponse = await saveImage(team.Image)
         if (mediaResponse.IsSuccess) {
           team.Image = mediaResponse.Value
+        } else {
+          return resolve(null)
         }
       }
 

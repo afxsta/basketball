@@ -2,7 +2,8 @@
 import { FilterModel, PaginationModel, useTeamStore } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { ItemCard, Input, Select, Button } from '@/shared'
+import { Input, Select, Button } from '@/shared'
+import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 import { useRouter } from 'vue-router'
 
@@ -65,18 +66,13 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
         />
       </Button>
     </div>
-    <ItemCard v-for="team in teams">
-      <template #image>
-        <img
-          :src="team.Image?.toString()"
-          alt="team-image"
-        />
-      </template>
-      <template #title> {{ team.Name }} </template>
-      <template #subtitle>
-        Year of foundation: {{ team.FoundationYear }}
-      </template>
-    </ItemCard>
+    <div class="teams-page_list">
+      <CardsList :items="teams">
+        <template #subtitle="slotProps">
+          Year of foundation: {{ slotProps.item?.FoundationYear }}
+        </template>
+      </CardsList>
+    </div>
   </div>
 </template>
 <style lang="scss">
@@ -90,6 +86,11 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
     &_add {
       margin-left: auto;
     }
+  }
+  &_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
   }
 }
 </style>

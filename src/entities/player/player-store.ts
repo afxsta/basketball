@@ -82,7 +82,7 @@ export const usePlayerStore = defineStore('player-store', () => {
                   Birthday: x.birthday,
                   Height: x.height,
                   Weight: x.weight,
-                  Image: apiUrl.value + x.avatarUrl,
+                  Image: x.avatarUrl ? apiUrl.value + x.avatarUrl : '',
                 })
             ) || []
           resolve(new ResponseModel({ Value: [] }))

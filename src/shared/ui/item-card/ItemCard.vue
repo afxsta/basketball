@@ -24,6 +24,8 @@
   height: 100%;
   max-width: 364px;
   max-height: 380px;
+  min-width: 170px;
+  min-height: 200px;
   border-radius: 4px;
   overflow: hidden;
 
@@ -31,13 +33,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 280px;
+    max-height: 280px;
+    height: 100%;
     width: 100%;
     background: linear-gradient(
       121.57deg,
       var(--grey) 1.62%,
       var(--dark-grey1) 81.02%
     );
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
   &_info {
     display: flex;
