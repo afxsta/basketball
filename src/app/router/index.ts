@@ -1,23 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { AuthPage, SignInPage, SignUpPage } from '@/pages'
+import { AuthPage } from '@/pages'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'auth',
+    path: '/sign-in',
+    name: 'sign-in',
     component: AuthPage,
-    children: [
-      {
-        path: 'sign-in',
-        name: 'sign-in',
-        component: SignInPage,
-      },
-      {
-        path: 'sign-up',
-        name: 'sign-up',
-        component: SignUpPage,
-      },
-    ],
+  },
+  {
+    path: '/sign-up',
+    name: 'sign-up',
+    component: AuthPage,
   },
 ]
 

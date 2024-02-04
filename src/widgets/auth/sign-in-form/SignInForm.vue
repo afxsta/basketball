@@ -46,5 +46,7 @@ const trySignIn = async () => {
   justify-content: center;
   align-items: center;
   gap: 24px;
+  width: 100%;
+  max-width: 366px;
 }
 </style>

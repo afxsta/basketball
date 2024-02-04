@@ -66,7 +66,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="ui-input-wrapper f fd-col jc-c fs_1">
+  <div class="ui-input-wrapper">
     <label
       v-if="label"
       :for="inputId"
@@ -101,6 +101,10 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .ui-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
   cursor: default;
 
   &:hover {
