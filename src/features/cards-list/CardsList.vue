@@ -1,12 +1,20 @@
 <script lang="ts" setup>
 import { ItemCard } from '@/shared'
-import { ICardsListProps } from '@/features'
+import { ICardsListProps, Paginator } from '@/features'
 import { GeneralModel } from '@/entities'
+import { ref } from 'vue'
 
 /**
  * * Параметры компонента
  */
 const props = defineProps<ICardsListProps<GeneralModel>>()
+
+const current = ref(15)
+
+/**
+ * * Смена страницы
+ */
+const setPage = (_page: number) => (current.value = _page)
 </script>
 <template>
   <div class="cards-list">
@@ -30,6 +38,11 @@ const props = defineProps<ICardsListProps<GeneralModel>>()
         />
       </template>
     </ItemCard>
+    <Paginator
+      :current="current"
+      :total="27"
+      @change="setPage"
+    />
   </div>
 </template>
 <style lang="scss" scoped>
