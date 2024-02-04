@@ -5,7 +5,12 @@ import IconPerson from '@/shared/assets/images/icons/group_person_rounded.svg'
 import IconPersonGroup from '@/shared/assets/images/icons/person_rounded.svg'
 import IconExit from '@/shared/assets/images/icons/icon-exit.svg'
 import { useAuthStore } from '@/entities'
+import { useRouter } from 'vue-router'
 
+/**
+ * * Маршруты
+ */
+const router = useRouter()
 /**
  * * Стор для управления текущим аккаунтом
  */
@@ -39,13 +44,34 @@ const getSvgDraw = (_id: number) => {
  * * Получение цвета картинки
  */
 const getItemColor = (_id: number) => {
-  if (_id == currentHover.value) return '#e4163a'
+  const routeName = _id == 1 ? 'team' : 'player'
+  const active = router.currentRoute.value?.name
+    ?.toString()
+    ?.includes(routeName)
+
+  if (active) return '#e4163a'
+  if (_id == currentHover.value) return '#ff5761'
   return '#9C9C9C'
 }
 /**
  * * Установка текущего hover значения
  */
 const setCurrentHover = (_id: number) => (currentHover.value = _id)
+/**
+ * * Сменить роут
+ */
+const goToRoute = (_id: number) => {
+  let name = ''
+  switch (_id) {
+    case 1:
+      name = 'teams'
+      break
+    case 2:
+      name = 'players'
+      break
+  }
+  router.push({ name })
+}
 </script>
 <template>
   <div class="sidebar">
@@ -55,6 +81,7 @@ const setCurrentHover = (_id: number) => (currentHover.value = _id)
       class="sidebar_item"
       @mouseenter="setCurrentHover(item?.Id)"
       @mouseleave="setCurrentHover(undefined)"
+      @click="goToRoute(item?.Id)"
     >
       <svg
         width="24"
