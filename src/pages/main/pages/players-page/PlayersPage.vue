@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { PaginationModel, FilterModel, usePlayerStore } from '@/entities'
+import {
+  PaginationModel,
+  FilterModel,
+  usePlayerStore,
+  PlayerModel,
+} from '@/entities'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { ItemCard, Input, Select, Button } from '@/shared'
@@ -61,16 +66,14 @@ const openPlayerCreate = () => router.push({ name: 'player-create' })
         />
       </Button>
     </div>
-    <ItemCard v-for="player in players">
-      <template #image>
-        <img
-          :src="player.Image?.toString()"
-          alt="player-image"
-        />
-      </template>
-      <template #title> {{ player.Name }} </template>
-      <template #subtitle> {{ player.Team }} </template>
-    </ItemCard>
+    <div class="f">
+      <CardsList :items="players">
+        <template #subtitle="slotProps">
+          {{ (slotProps.item as PlayerModel)?.Name }}
+          {{ (slotProps.item as PlayerModel)?.Number }}
+        </template>
+      </CardsList>
+    </div>
   </div>
 </template>
 <style lang="scss">

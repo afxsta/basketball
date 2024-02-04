@@ -19,20 +19,34 @@ const emit = defineEmits<{
 /**
  * * Видно многоточие в начале
  */
-const isDotsBefore = computed(() => 3 - props.current < 0)
+const isDotsBefore = computed(() => 4 - props.current < 0)
 /**
  * * Видно многоточие в конце
  */
-const isDotsAfter = computed(() => props.total - props.current > 2)
+const isDotsAfter = computed(() => props.total - props.current > 3)
 /**
  * * Отображаемые страницы
  */
-const visiblePages = computed(() =>
-  Array.from(
-    { length: 3 },
-    (_, i) => i + (props.current < 3 ? 2 : props.current - 1)
+const visiblePages = computed(() => {
+  const isFinish = props.current + 3 >= props.total
+  const isEdge = props.current <= 4
+
+  let _length = isEdge ? 4 : 3
+  if (isFinish) {
+    _length = 4
+  }
+
+  return Array.from({ length: _length }, (_, i) =>
+    Math.min(
+      i +
+        (isFinish
+          ? props.total - 4
+          : props.current <= 4
+          ? 2
+          : props.current - 1)
+    )
   )
-)
+})
 
 /**
  * * Отправка запроса на смену страницы
@@ -110,6 +124,11 @@ const getPageItemClass = (_page: number) => [
     }
   }
   &_dots {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     pointer-events: none;
   }
 }

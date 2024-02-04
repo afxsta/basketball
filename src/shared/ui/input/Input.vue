@@ -132,12 +132,16 @@ const inputClasses = computed(() => ({
       line-height: 14px;
       color: $dark-grey;
       background-color: $lightest-grey1;
-      border: 1px solid transparent;
+      border: 0.5px solid transparent;
       border-radius: 4px;
       padding: 0 $indent-2;
       transition: $transition-1;
       cursor: text;
 
+      &.search {
+        background-color: $white;
+        border-color: $lightest-grey;
+      }
       &.error {
         border-color: $lightest-red;
       }

@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { FilterModel, PaginationModel, useTeamStore } from '@/entities'
+import {
+  FilterModel,
+  PaginationModel,
+  TeamModel,
+  useTeamStore,
+} from '@/entities'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { Input, Select, Button } from '@/shared'
@@ -53,7 +58,6 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
         width="364px"
         @update:model-value="updateTeams"
       />
-      <Select @update:model-value="updateTeams" />
       <Button
         class="teams-page_filter_add"
         width="104px"
@@ -66,10 +70,11 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
         />
       </Button>
     </div>
-    <div class="teams-page_list">
+    <div class="f">
       <CardsList :items="teams">
         <template #subtitle="slotProps">
-          Year of foundation: {{ slotProps.item?.FoundationYear }}
+          Year of foundation:
+          {{ (slotProps.item as TeamModel)?.FoundationYear }}
         </template>
       </CardsList>
     </div>
@@ -79,6 +84,7 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
 .teams-page {
   display: flex;
   flex-direction: column;
+
   &_filter {
     display: flex;
     gap: 24px;
@@ -86,11 +92,6 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
     &_add {
       margin-left: auto;
     }
-  }
-  &_list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
   }
 }
 </style>
