@@ -2,16 +2,28 @@
 import { PaginationModel, PlayerFilterModel, usePlayerStore } from '@/entities'
 import { ItemCard } from '@/shared'
 import { storeToRefs } from 'pinia'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { Input, Select, Button } from '@/shared'
+import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 
 const playerStore = usePlayerStore()
 const { players } = storeToRefs(playerStore)
 const { getPlayers } = playerStore
 
 /**
+ * * Поисковой запрос
+ */
+const search = ref('')
+
+/**
  * * После рендера компонента
  */
-onMounted(() => {
+onMounted(() => updatePlayers())
+
+/**
+ * * Обновить список игроков
+ */
+const updatePlayers = () => {
   getPlayers(
     new PlayerFilterModel({
       Pagination: new PaginationModel({
@@ -20,19 +32,53 @@ onMounted(() => {
       }),
     })
   )
-})
+}
 </script>
 <template>
-  {{ players }}
-  <ItemCard v-for="player in players">
-    <template #image>
-      <img
-        :src="player.Image"
-        alt="player-image"
+  <div class="players-page">
+    <div class="players-page_filter">
+      <Input
+        v-model="search"
+        placeholder="Search ..."
+        is-search
+        width="364px"
+        @update:model-value="updatePlayers"
       />
-    </template>
-    <template #title> {{ player.Name }} </template>
-    <template #subtitle> 123 </template>
-  </ItemCard>
+      <Select @update:model-value="updatePlayers" />
+      <Button
+        class="players-page_filter_add"
+        width="104px"
+      >
+        Add
+        <img
+          :src="IconAdd"
+          alt="add"
+        />
+      </Button>
+    </div>
+    <ItemCard v-for="player in players">
+      <template #image>
+        <img
+          :src="player.Image"
+          alt="player-image"
+        />
+      </template>
+      <template #title> {{ player.Name }} </template>
+      <template #subtitle> {{ player.Team }} </template>
+    </ItemCard>
+  </div>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+.players-page {
+  display: flex;
+  flex-direction: column;
+  &_filter {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    &_add {
+      margin-left: auto;
+    }
+  }
+}
+</style>

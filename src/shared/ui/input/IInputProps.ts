@@ -29,4 +29,12 @@ export interface IInputProps extends /* @vue-ignore */ InputHTMLAttributes {
    * * Тип ввода
    */
   type?: string
+  /**
+   * * Текст в пустом поле
+   */
+  placeholder?: string
+  /**
+   * * Ширина поля ввода
+   */
+  width?: string
 }

@@ -4,8 +4,6 @@ import { IInputProps } from '@/shared/ui/input'
 import { ErrorMessage } from '../error-message'
 import SearchIcon from '@/shared/assets/images/icons/search_rounded.svg'
 import debounce from 'lodash/debounce'
-import { onMounted } from 'vue'
-import { nextTick } from 'vue'
 import { getCurrentInstance } from 'vue'
 
 const props = withDefaults(defineProps<IInputProps>(), {
@@ -13,6 +11,8 @@ const props = withDefaults(defineProps<IInputProps>(), {
   error: '',
   timeInterval: 1000,
   type: 'text',
+  placeholder: '',
+  width: '100%',
 })
 const emit = defineEmits<{
   /**
@@ -60,7 +60,10 @@ const inputClasses = computed(() => ({
 }))
 </script>
 <template>
-  <div class="ui-input-wrapper">
+  <div
+    class="ui-input-wrapper"
+    :style="{ width }"
+  >
     <label
       v-if="label"
       :for="inputId"
@@ -74,6 +77,7 @@ const inputClasses = computed(() => ({
             :id="inputId"
             :class="inputClasses"
             :type="type"
+            :placeholder="placeholder"
             v-model="value"
           />
           <div class="ui-input-wrapper_block_icon">
@@ -120,9 +124,9 @@ const inputClasses = computed(() => ({
       outline: none;
       font-weight: 500;
       font-size: 14px;
-      line-height: 24px;
+      line-height: 14px;
       color: var(--dark-grey);
-      background-color: var(--lightest-grey1);
+      background-color: var(--white);
       border: 1px solid transparent;
       border-radius: 4px;
       padding: 0 var(--indent-2);

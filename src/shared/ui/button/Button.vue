@@ -39,6 +39,10 @@ const onClick = () => emit('click')
 .ui-button {
   height: 40px;
   transition: var(--transition-1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
   outline: none;
   border: none;
   border-radius: 4px;

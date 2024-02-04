@@ -125,7 +125,7 @@ const removeAll = () => (value.value = [] as number[])
       </div>
       <span
         v-else
-        v-text="selectedOptions[0]?.Text"
+        v-text="selectedOptions?.[0]?.Text"
       />
       <div class="select-wrapper_current_toggler">
         <div
