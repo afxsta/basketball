@@ -1,19 +1,20 @@
 <script lang="ts" setup>
 import Logo from '@/shared/assets/images/logo.svg'
 import { UserInfo } from '@/widgets/layout'
+import { Link } from '@/shared'
 </script>
 <template>
   <div class="header">
-    <a
+    <Link
       class="header_logo"
-      href="/"
+      href="players"
     >
       <img
         :src="Logo"
         alt="logo"
         draggable="false"
       />
-    </a>
+    </Link>
     <UserInfo />
   </div>
 </template>

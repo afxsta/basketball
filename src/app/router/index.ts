@@ -7,6 +7,7 @@ import {
   PlayerPage,
   PlayersPage,
   PlayerEditPage,
+  TeamEditPage,
 } from '@/pages'
 import { useAuthStore } from '@/entities'
 import { storeToRefs } from 'pinia'
@@ -55,6 +56,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'player-create',
             name: 'player-create',
             component: PlayerEditPage,
+          },
+          {
+            path: 'team-create',
+            name: 'team-create',
+            component: TeamEditPage,
           },
         ],
       },

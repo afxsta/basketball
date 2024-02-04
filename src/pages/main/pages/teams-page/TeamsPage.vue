@@ -4,7 +4,12 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { ItemCard, Input, Select, Button } from '@/shared'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
+import { useRouter } from 'vue-router'
 
+/**
+ * * Маршруты
+ */
+const router = useRouter()
 /**
  * * Стор для управления командами
  */
@@ -32,6 +37,10 @@ const updateTeams = () => {
     })
   )
 }
+/**
+ * * Открытие страницы с созданием команды
+ */
+const openTeamCreate = () => router.push({ name: 'team-create' })
 </script>
 <template>
   <div class="teams-page">
@@ -47,6 +56,7 @@ const updateTeams = () => {
       <Button
         class="teams-page_filter_add"
         width="104px"
+        @click="openTeamCreate"
       >
         Add
         <img

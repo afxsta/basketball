@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { ItemCard, Input, Select, Button } from '@/shared'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
+import router from '@/app/router'
 
 const playerStore = usePlayerStore()
 const { players } = storeToRefs(playerStore)
@@ -32,6 +33,10 @@ const updatePlayers = () => {
     })
   )
 }
+/**
+ * * Открытие страницы с созданием пользователя
+ */
+const openPlayerCreate = () => router.push({ name: 'player-create' })
 </script>
 <template>
   <div class="players-page">
@@ -47,6 +52,7 @@ const updatePlayers = () => {
       <Button
         class="players-page_filter_add"
         width="104px"
+        @click="openPlayerCreate"
       >
         Add
         <img
