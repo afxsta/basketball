@@ -2,7 +2,7 @@
 import { Layout } from '@/widgets'
 </script>
 <template>
-  <Layout />
+  <RouterView />
 </template>
 <style lang="scss">
 html,

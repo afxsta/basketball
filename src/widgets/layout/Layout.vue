@@ -5,7 +5,9 @@ import { Header, Sidebar } from '@/widgets/layout'
   <div class="layout">
     <Header />
     <Sidebar />
-    <slot />
+    <div class="layout_content">
+      <slot />
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -14,5 +16,9 @@ import { Header, Sidebar } from '@/widgets/layout'
   min-width: 100vw;
   min-height: 100vh;
   background-color: var(--lightest-grey1);
+
+  &_content {
+    padding: 112px 80px 20px 220px;
+  }
 }
 </style>

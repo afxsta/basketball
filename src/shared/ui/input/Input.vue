@@ -4,11 +4,14 @@ import { IInputProps } from '@/shared/ui/input'
 import { ErrorMessage } from '../error-message'
 import SearchIcon from '@/shared/assets/images/icons/search_rounded.svg'
 import debounce from 'lodash/debounce'
+import { onMounted } from 'vue'
+import { nextTick } from 'vue'
 
 const props = withDefaults(defineProps<IInputProps>(), {
   label: '',
   error: '',
   timeInterval: 1000,
+  type: 'text',
 })
 const emit = defineEmits<{
   /**
@@ -17,7 +20,14 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
+/**
+ * * Поле для работы с debounce
+ */
 const debouncedSetter = ref()
+/**
+ * * Id поля ввода
+ */
+const inputId = ref('')
 
 /**
  * * Получение и отправка текста
@@ -39,7 +49,6 @@ const value = computed({
     }
   },
 })
-
 /**
  * * Классы поля ввода
  */
@@ -48,12 +57,19 @@ const inputClasses = computed(() => ({
   disabled: props.disabled,
   search: props.isSearch,
 }))
+
+/**
+ * * После рендера компонента
+ */
+onMounted(() => {
+  setTimeout(() => (inputId.value = new Date().getTime().toString()))
+})
 </script>
 <template>
   <div class="ui-input-wrapper f fd-col jc-c fs_1">
     <label
       v-if="label"
-      for="input"
+      :for="inputId"
       class="ui-input-wrapper_label"
       v-text="label"
     />
@@ -61,17 +77,20 @@ const inputClasses = computed(() => ({
       <template #default>
         <div class="ui-input-wrapper_block">
           <input
-            id="input"
+            :id="inputId"
             :class="inputClasses"
-            v-bind="props"
+            :type="type"
             v-model="value"
           />
-          <img
-            v-if="isSearch"
-            class="ui-input-wrapper_block_icon"
-            alt="icon-search"
-            :src="SearchIcon"
-          />
+          <div class="ui-input-wrapper_block_icon">
+            <slot name="icon">
+              <img
+                v-if="isSearch"
+                alt="icon-search"
+                :src="SearchIcon"
+              />
+            </slot>
+          </div>
         </div>
       </template>
       <template #error>
@@ -132,7 +151,6 @@ const inputClasses = computed(() => ({
       right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      pointer-events: none;
     }
   }
 }

@@ -25,4 +25,8 @@ export interface IInputProps extends /* @vue-ignore */ InputHTMLAttributes {
    * * Минимальный таймаут ввода
    */
   timeInterval?: number
+  /**
+   * * Тип ввода
+   */
+  type?: string
 }
