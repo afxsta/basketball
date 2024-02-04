@@ -3,7 +3,7 @@ import { PaginationModel } from '@/entities'
 /**
  * * Модель для составления API запросов
  */
-export class PlayerFilterModel {
+export class FilterModel {
   /**
    * * Имя игрока
    */
@@ -17,7 +17,7 @@ export class PlayerFilterModel {
    */
   Pagination: PaginationModel
 
-  constructor(obj?: Partial<PlayerFilterModel>) {
+  constructor(obj?: Partial<FilterModel>) {
     if (obj) Object.assign(this, obj)
   }
 }

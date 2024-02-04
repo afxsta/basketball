@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
 import {
   PlayerModel,
-  PlayerFilterModel,
+  FilterModel,
   ResponseModel,
   useApiStore,
 } from '@/entities'
@@ -31,7 +31,7 @@ export const usePlayerStore = defineStore('player-store', () => {
    * @param filter Данные для запроса
    * @returns Список игроков
    */
-  const getPlayers = async (filter: PlayerFilterModel) =>
+  const getPlayers = async (filter: FilterModel) =>
     new Promise<ResponseModel<PlayerModel[]>>(async (resolve) => {
       const request = {
         params: {

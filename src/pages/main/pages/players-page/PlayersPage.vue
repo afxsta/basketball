@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { PaginationModel, PlayerFilterModel, usePlayerStore } from '@/entities'
-import { ItemCard } from '@/shared'
+import { PaginationModel, FilterModel, usePlayerStore } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { Input, Select, Button } from '@/shared'
+import { ItemCard, Input, Select, Button } from '@/shared'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 
 const playerStore = usePlayerStore()
@@ -25,7 +24,7 @@ onMounted(() => updatePlayers())
  */
 const updatePlayers = () => {
   getPlayers(
-    new PlayerFilterModel({
+    new FilterModel({
       Pagination: new PaginationModel({
         Page: 1,
         PageSize: 6,
