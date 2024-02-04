@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { PlayerModel } from '@/entities'
-import { Input, Select, Button, DatePicker } from '@/shared'
-import { computed, ref } from 'vue'
-import IconAddImage from '@/shared/assets/images/icons/icon-add-image.svg'
+import { PlayerModel, usePlayerStore } from '@/entities'
+import { Input, Select, Button, DatePicker, ImageLoader } from '@/shared'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 /**
  * * Маршруты
@@ -13,20 +13,17 @@ const router = useRouter()
  * * Данные об игроке
  */
 const user = ref(new PlayerModel())
+/**
+ * * Стор для управления игроками
+ */
+const playerStore = usePlayerStore()
+const { optionsPosition } = storeToRefs(playerStore)
 
 /**
- * * Вычисляемая установка высоты игрока
+ * * После рендера компонента
  */
-const userHeight = computed({
-  get: () => user.value?.Height?.toString(),
-  set: (value) => (user.value.Height = Math.max(0, Number(value))),
-})
-/**
- * * Вычисляемая установка веса игрока
- */
-const userWeight = computed({
-  get: () => user.value?.Weight?.toString(),
-  set: (value) => (user.value.Weight = Math.max(0, Number(value))),
+onMounted(() => {
+  playerStore.getPositions()
 })
 
 /**
@@ -37,30 +34,44 @@ const cancelEdit = () => router.push({ name: 'players' })
  * * Отправка запроса на сохранение игрока
  */
 const savePlayer = () => {}
+/**
+ * * Выбор позиции игрока
+ */
+const userPosition = computed({
+  get: () => {
+    const _id = optionsPosition.value.find(
+      (p) => p.Text == user.value.Position
+    )?.Id
+    return typeof _id == 'number' ? [_id] : []
+  },
+  set: (_indexes) => {
+    user.value.Position = optionsPosition.value?.[_indexes[0]]?.Text || ''
+    console.log(user.value.Position)
+  },
+})
 </script>
 <template>
   <div class="player-edit-page">
-    <div
-      class="player-edit-page_image"
-      :class="{ empty: !user?.Image }"
-    >
-      <img :src="user?.Image || IconAddImage" />
-    </div>
+    <ImageLoader v-model="user.Image" />
     <div class="player-edit-page_form">
       <Input
         v-model="user.Name"
         label="Name"
       />
-      <Select label="Position" />
+      <Select
+        :options="optionsPosition"
+        label="Position"
+        v-model="userPosition"
+      />
       <Select label="Team" />
       <div class="player-edit-page_form_row">
         <Input
-          v-model="userHeight"
+          v-model="user.Height"
           type="number"
           label="Height (cm)"
         />
         <Input
-          v-model="userWeight"
+          v-model="user.Weight"
           type="number"
           label="Weight (kg)"
         />
@@ -95,19 +106,6 @@ const savePlayer = () => {}
   background-color: var(--white);
   border-radius: 10px;
   padding: 48px 74px;
-  &_image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 336px;
-    max-height: 260px;
-    background-color: var(--light-grey);
-    border-radius: 10px;
-    &.empty {
-      opacity: 0.5;
-    }
-  }
   &_form {
     display: flex;
     flex-direction: column;

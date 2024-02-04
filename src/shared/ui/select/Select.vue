@@ -96,6 +96,7 @@ const toggleItem = (_id: number) => {
     } else {
       value.value = [_id]
     }
+    toggleSelect(false)
   }
 }
 /**
@@ -248,7 +249,9 @@ const removeAll = () => (value.value = [] as number[])
     flex-direction: column;
     border-radius: 4px;
     border: 0.5px solid var(--lightest-grey);
+    background-color: var(--white);
     overflow: hidden;
+    z-index: 10;
 
     &_item {
       display: flex;

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { IInputProps } from '@/shared/ui/input'
 import { ErrorMessage } from '../error-message'
 import SearchIcon from '@/shared/assets/images/icons/search_rounded.svg'
@@ -18,7 +18,7 @@ const emit = defineEmits<{
   /**
    * * Отправка введенного текста
    */
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: string | number): void
 }>()
 
 /**
@@ -36,17 +36,22 @@ const inputId = computed(() => getCurrentInstance()?.uid?.toString())
 const value = computed({
   get: () => props.modelValue,
   set: (_value) => {
+    const emitValue =
+      props.type == 'number'
+        ? Math.max(0, Number(_value))
+        : _value?.toString() || ''
+
     if (props.isSearch) {
       if (debouncedSetter.value) debouncedSetter.value?.cancel()
 
       debouncedSetter.value = debounce(
-        () => emit('update:modelValue', _value?.toString() || ''),
+        () => emit('update:modelValue', emitValue),
         props.timeInterval
       )
 
       debouncedSetter.value()
     } else {
-      emit('update:modelValue', _value?.toString() || '')
+      emit('update:modelValue', emitValue)
     }
   },
 })

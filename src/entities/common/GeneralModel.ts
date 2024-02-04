@@ -13,7 +13,7 @@ export class GeneralModel {
   /**
    * * Изображение для аватара
    */
-  Image?: string
+  Image?: string | File
 
   constructor(obj?: Partial<GeneralModel>) {
     if (obj) Object.assign(this, obj)
