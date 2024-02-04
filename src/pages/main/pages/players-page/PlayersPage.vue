@@ -64,7 +64,7 @@ const openPlayerCreate = () => router.push({ name: 'player-create' })
     <ItemCard v-for="player in players">
       <template #image>
         <img
-          :src="player.Image"
+          :src="player.Image?.toString()"
           alt="player-image"
         />
       </template>

@@ -17,7 +17,7 @@ const team = ref(new TeamModel())
  * * Стор для управления игроками
  */
 const teamStore = useTeamStore()
-// const { optionsPosition } = storeToRefs(playerStore)
+const { addTeam } = teamStore
 
 /**
  * * После рендера компонента
@@ -31,7 +31,10 @@ const cancelEdit = () => router.push({ name: 'players' })
 /**
  * * Отправка запроса на сохранение игрока
  */
-const saveTeam = () => {}
+const saveTeam = async () => {
+  const response = await addTeam(team.value)
+  console.log(response)
+}
 </script>
 <template>
   <div class="team-edit-page">

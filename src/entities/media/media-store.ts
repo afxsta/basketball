@@ -21,8 +21,13 @@ export const useMediaStore = defineStore('media-store', () => {
    */
   const saveImage = (file: File) =>
     new Promise<ResponseModel<string>>(async (resolve) => {
+      const formData = new FormData()
+      formData.append('file', file)
+
       await api.value
-        .post(`${mediaApiPath}SaveImage`, { params: { file } })
+        .post(`${mediaApiPath}SaveImage`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
         .then((response) => {
           console.log(response)
           resolve(new ResponseModel({ Value: response.data }))

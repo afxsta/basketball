@@ -68,7 +68,7 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
     <ItemCard v-for="team in teams">
       <template #image>
         <img
-          :src="team.Image"
+          :src="team.Image?.toString()"
           alt="team-image"
         />
       </template>

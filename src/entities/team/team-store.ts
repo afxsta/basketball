@@ -1,5 +1,11 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { TeamModel, FilterModel, ResponseModel, useApiStore } from '@/entities'
+import {
+  TeamModel,
+  FilterModel,
+  ResponseModel,
+  useApiStore,
+  useMediaStore,
+} from '@/entities'
 import { ref } from 'vue'
 
 /**
@@ -10,6 +16,10 @@ export const useTeamStore = defineStore('team-store', () => {
    * * Стор для использования API
    */
   const { api, apiUrl } = storeToRefs(useApiStore())
+  /**
+   * * Стор для управления медиа файлами
+   */
+  const { saveImage } = useMediaStore()
 
   /**
    * * Список команд
@@ -64,6 +74,40 @@ export const useTeamStore = defineStore('team-store', () => {
         })
     })
 
+  /**
+   * * Запрос на создание команды
+   * @param team Данные о команде
+   * @returns Новая команда
+   */
+  const addTeam = async (team: TeamModel) =>
+    new Promise<ResponseModel<TeamModel>>(async (resolve) => {
+      if (team.Image instanceof File) {
+        const mediaResponse = await saveImage(team.Image)
+        if (mediaResponse.IsSuccess) {
+          team.Image = mediaResponse.Value
+        }
+      }
+
+      const request = {
+        name: team?.Name,
+        foundationYear: Number(team?.FoundationYear),
+        division: team?.Division,
+        conference: team?.Conference,
+        imageUrl: team?.Image,
+      }
+
+      await api.value
+        .post(`${teamApiPath}Add`, request)
+        .then((response) => {
+          console.log(response?.data?.data)
+          resolve(new ResponseModel({ Value: team }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
   return {
     /**
      * * Отправка запроса для получения списка команд
@@ -71,6 +115,11 @@ export const useTeamStore = defineStore('team-store', () => {
      * @returns Список команд
      */
     getTeams,
+    /**
+     * * Запрос на создание команды
+     * @param team Данные о команде
+     * @returns Новая команда
+     */ addTeam,
     /**
      * * Список команд
      */
