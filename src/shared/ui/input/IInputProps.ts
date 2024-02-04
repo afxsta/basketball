@@ -4,7 +4,7 @@ export interface IInputProps extends /* @vue-ignore */ InputHTMLAttributes {
   /**
    * * Введенный текст
    */
-  modelValue?: string
+  modelValue?: string | number
   /**
    * * Заголовок
    */

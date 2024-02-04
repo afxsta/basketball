@@ -13,4 +13,8 @@ export interface ISelectProps /* @vue-ignore */ {
    * * Мульти выбор
    */
   isMulti?: boolean
+  /**
+   * * Заголовок
+   */
+  label?: string
 }

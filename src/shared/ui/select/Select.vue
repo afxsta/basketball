@@ -109,6 +109,11 @@ const removeAll = () => (value.value = [] as number[])
     class="select-wrapper"
   >
     <div
+      v-if="label"
+      v-text="label"
+      class="select-wrapper_label"
+    />
+    <div
       class="select-wrapper_current"
       @click="toggleSelect(null)"
     >
@@ -163,7 +168,12 @@ const removeAll = () => (value.value = [] as number[])
 </template>
 <style lang="scss">
 .select-wrapper {
+  width: 100%;
   position: relative;
+  &_label {
+    color: var(--grey);
+    padding-bottom: var(--indent-1);
+  }
   &_current {
     display: flex;
     align-items: center;

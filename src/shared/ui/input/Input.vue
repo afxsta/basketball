@@ -40,13 +40,13 @@ const value = computed({
       if (debouncedSetter.value) debouncedSetter.value?.cancel()
 
       debouncedSetter.value = debounce(
-        () => emit('update:modelValue', _value || ''),
+        () => emit('update:modelValue', _value?.toString() || ''),
         props.timeInterval
       )
 
       debouncedSetter.value()
     } else {
-      emit('update:modelValue', _value || '')
+      emit('update:modelValue', _value?.toString() || '')
     }
   },
 })
@@ -126,7 +126,7 @@ const inputClasses = computed(() => ({
       font-size: 14px;
       line-height: 14px;
       color: var(--dark-grey);
-      background-color: var(--white);
+      background-color: var(--lightest-grey1);
       border: 1px solid transparent;
       border-radius: 4px;
       padding: 0 var(--indent-2);
