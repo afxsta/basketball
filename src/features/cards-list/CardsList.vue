@@ -8,6 +8,15 @@ import { ref } from 'vue'
  * * Параметры компонента
  */
 const props = defineProps<ICardsListProps<GeneralModel>>()
+/**
+ * * События компонента
+ */
+const emit = defineEmits<{
+  /**
+   * * Событие для предпросмотра сущности
+   */
+  (e: 'open', id: number): void
+}>()
 
 const current = ref(15)
 
@@ -15,6 +24,10 @@ const current = ref(15)
  * * Смена страницы
  */
 const setPage = (_page: number) => (current.value = _page)
+/**
+ * * При клике по карточке
+ */
+const itemOnClick = (_id: number) => emit('open', _id)
 </script>
 <template>
   <div class="cards-list">
@@ -22,6 +35,7 @@ const setPage = (_page: number) => (current.value = _page)
       v-for="item in items"
       class="cards-list_item"
       :key="item?.Id"
+      @click="itemOnClick(item?.Id)"
     >
       <template #image>
         <img
@@ -55,6 +69,7 @@ const setPage = (_page: number) => (current.value = _page)
 
   &_item {
     width: calc(100% / 3 - 16px);
+    cursor: pointer;
   }
 }
 </style>

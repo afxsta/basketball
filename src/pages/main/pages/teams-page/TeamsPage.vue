@@ -47,6 +47,15 @@ const updateTeams = () => {
  * * Открытие страницы с созданием команды
  */
 const openTeamCreate = () => router.push({ name: 'team-create' })
+/**
+ * * Открыть предпросмотр команды
+ */
+const openTeam = (_id: number) => {
+  router.push({
+    name: 'team',
+    params: { id: _id },
+  })
+}
 </script>
 <template>
   <div class="teams-page">
@@ -71,7 +80,10 @@ const openTeamCreate = () => router.push({ name: 'team-create' })
       </Button>
     </div>
     <div class="f">
-      <CardsList :items="teams">
+      <CardsList
+        :items="teams"
+        @open="openTeam"
+      >
         <template #subtitle="slotProps">
           Year of foundation:
           {{ (slotProps.item as TeamModel)?.FoundationYear }}

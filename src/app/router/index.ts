@@ -48,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
             component: TeamsPage,
           },
           {
-            path: 'team',
+            path: 'team/:id',
             name: 'team',
             component: TeamPage,
           },

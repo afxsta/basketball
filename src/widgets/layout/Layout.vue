@@ -14,8 +14,10 @@ import { Header, Sidebar } from '@/widgets/layout'
 .layout {
   position: relative;
   background-color: $lightest-grey1;
+  min-height: 100vh;
 
   &_content {
+    max-width: 1440px;
     padding: 112px 80px 20px 220px;
   }
 }

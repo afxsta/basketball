@@ -2,6 +2,13 @@
 import Logo from '@/shared/assets/images/logo.svg'
 import { UserInfo } from '@/widgets/layout'
 import { Link } from '@/shared'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/entities'
+
+/**
+ * * Стор текущего пользователя
+ */
+const { user } = storeToRefs(useAuthStore())
 </script>
 <template>
   <div class="header">
@@ -15,7 +22,7 @@ import { Link } from '@/shared'
         draggable="false"
       />
     </Link>
-    <UserInfo />
+    <UserInfo :info="user" />
   </div>
 </template>
 <style lang="scss" scoped>

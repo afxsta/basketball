@@ -54,18 +54,7 @@ export const useTeamStore = defineStore('team-store', () => {
         .get(`${teamApiPath}GetTeams`, request)
         .then((response) => {
           console.log(response?.data?.data)
-          teams.value =
-            response?.data?.data?.map(
-              (x: any) =>
-                new TeamModel({
-                  Id: x.id,
-                  Name: x.name,
-                  Image: x.imageUrl ? apiUrl.value + x.imageUrl : '',
-                  Conference: x.conference,
-                  Division: x.division,
-                  FoundationYear: x.foundationYear,
-                })
-            ) || []
+          teams.value = response?.data?.data?.map((x: any) => mapTeam(x)) || []
           resolve(new ResponseModel({ Value: [] }))
         })
         .catch((error) => {
@@ -110,6 +99,38 @@ export const useTeamStore = defineStore('team-store', () => {
         })
     })
 
+  /**
+   * * Запрос для получения команды
+   * @param id Id команды
+   * @returns Данные о команде
+   */
+  const getTeam = async (id: number) =>
+    new Promise<ResponseModel<TeamModel>>(async (resolve, reject) => {
+      await api.value
+        .get(`${teamApiPath}Get`, { params: { id } })
+        .then((response) => {
+          resolve(new ResponseModel({ Value: mapTeam(response.data) }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
+  /**
+   * * Получение модели команды из ответа
+   */
+  const mapTeam = (response: any) => {
+    return new TeamModel({
+      Id: response.id,
+      Name: response.name,
+      Image: response.imageUrl ? apiUrl.value + response.imageUrl : '',
+      Conference: response.conference,
+      Division: response.division,
+      FoundationYear: response.foundationYear,
+    })
+  }
+
   return {
     /**
      * * Отправка запроса для получения списка команд
@@ -121,7 +142,14 @@ export const useTeamStore = defineStore('team-store', () => {
      * * Запрос на создание команды
      * @param team Данные о команде
      * @returns Новая команда
-     */ addTeam,
+     */
+    addTeam,
+    /**
+     * * Запрос для получения команды
+     * @param id Id команды
+     * @returns Данные о команде
+     */
+    getTeam,
     /**
      * * Список команд
      */

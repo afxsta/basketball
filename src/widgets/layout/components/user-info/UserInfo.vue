@@ -19,7 +19,7 @@ const avatarImage = computed(() => props.info?.Image || IconProfile)
 <template>
   <div class="user-info">
     <span
-      v-text="info?.Name || 'John Smith'"
+      v-text="info?.Name"
       class="user-info_name"
     />
     <img

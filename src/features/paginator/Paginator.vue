@@ -31,10 +31,7 @@ const visiblePages = computed(() => {
   const isFinish = props.current + 3 >= props.total
   const isEdge = props.current <= 4
 
-  let _length = isEdge ? 4 : 3
-  if (isFinish) {
-    _length = 4
-  }
+  let _length = isEdge || isFinish ? 4 : 3
 
   return Array.from({ length: _length }, (_, i) =>
     Math.min(
