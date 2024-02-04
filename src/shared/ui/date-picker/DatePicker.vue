@@ -17,7 +17,15 @@ const emit = defineEmits(['update:modelValue'])
  */
 const dateValue = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (value) => {
+    const selectedDateTime = value?.getTime()
+    const currentDateTime = new Date().getTime()
+
+    emit(
+      'update:modelValue',
+      new Date(Math.min(currentDateTime, selectedDateTime))
+    )
+  },
 })
 </script>
 <template>
