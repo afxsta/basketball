@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { AuthModel, ResponseModel, useApiStore, UserModel } from '@/entities'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 /**
  * * Стор для управления аутентификацией
@@ -75,6 +75,18 @@ export const useAuthStore = defineStore('auth-store', {
             resolve(new ResponseModel({ IsSuccess: false }))
           })
       })
+
+    /**
+     * * Получение user из localStorage
+     */
+    onBeforeMount(() => {
+      try {
+        const _user = localStorage['auth-store']?.user
+        if (_user) user.value = new UserModel(JSON.parse(_user))
+      } catch (e) {
+        console.error(e)
+      }
+    })
 
     return {
       /**
