@@ -6,6 +6,7 @@ import SearchIcon from '@/shared/assets/images/icons/search_rounded.svg'
 import debounce from 'lodash/debounce'
 import { onMounted } from 'vue'
 import { nextTick } from 'vue'
+import { getCurrentInstance } from 'vue'
 
 const props = withDefaults(defineProps<IInputProps>(), {
   label: '',
@@ -27,7 +28,7 @@ const debouncedSetter = ref()
 /**
  * * Id поля ввода
  */
-const inputId = ref('')
+const inputId = computed(() => getCurrentInstance()?.uid?.toString())
 
 /**
  * * Получение и отправка текста
@@ -57,13 +58,6 @@ const inputClasses = computed(() => ({
   disabled: props.disabled,
   search: props.isSearch,
 }))
-
-/**
- * * После рендера компонента
- */
-onMounted(() => {
-  setTimeout(() => (inputId.value = new Date().getTime().toString()))
-})
 </script>
 <template>
   <div class="ui-input-wrapper">

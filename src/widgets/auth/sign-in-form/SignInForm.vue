@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Input, Button } from '@/shared'
 import { ref } from 'vue'
-import { useAuthStore } from '@/entities'
+import { useAuthStore, AuthModel } from '@/entities'
 
 /**
  * * Стор для использования API авторизации
@@ -21,7 +21,12 @@ const password = ref('')
  * * Отправка запроса на вход в аккаунт
  */
 const trySignIn = async () => {
-  const response = await signIn(login.value, password.value)
+  const response = await signIn(
+    new AuthModel({
+      Login: login.value,
+      Password: password.value,
+    })
+  )
   console.log(response)
 }
 </script>

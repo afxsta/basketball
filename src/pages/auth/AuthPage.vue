@@ -25,6 +25,9 @@ const currentAuthentification = computed(() =>
  * * Заголовок формы
  */
 const formTitle = computed(() => (isSignIn.value ? 'Sign In' : 'Sign Up'))
+/**
+ * * Изображение на фоне
+ */
 const backgroundImage = computed(() =>
   isSignIn.value ? SignInImage : SignUpImage
 )
