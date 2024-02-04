@@ -3,6 +3,13 @@ import { GeneralModel } from '@/entities'
 import { computed, ref } from 'vue'
 import IconPerson from '@/shared/assets/images/icons/group_person_rounded.svg'
 import IconPersonGroup from '@/shared/assets/images/icons/person_rounded.svg'
+import IconExit from '@/shared/assets/images/icons/icon-exit.svg'
+import { useAuthStore } from '@/entities'
+
+/**
+ * * Стор для управления текущим аккаунтом
+ */
+const { leaveAccount } = useAuthStore()
 
 /**
  * * Элементы сайдбара
@@ -65,6 +72,16 @@ const setCurrentHover = (_id: number) => (currentHover.value = _id)
         :style="{ color: getItemColor(item?.Id) }"
       />
     </div>
+    <div
+      class="sidebar_sign-out"
+      @click="leaveAccount"
+    >
+      <img
+        :src="IconExit"
+        alt="exit"
+      />
+      <span>Sign out</span>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -78,7 +95,7 @@ const setCurrentHover = (_id: number) => (currentHover.value = _id)
   gap: 32px;
   padding: 32px 0;
   width: 140px;
-  height: 100%;
+  height: calc(100% - 80px);
   background-color: var(--white);
 
   &_item {
@@ -98,6 +115,19 @@ const setCurrentHover = (_id: number) => (currentHover.value = _id)
       line-height: 18px;
       transition: var(--transition-1);
     }
+  }
+  &_sign-out {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    gap: 4px;
+    color: var(--lightest-red);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    cursor: pointer;
   }
 }
 </style>

@@ -7,13 +7,13 @@ const props = defineProps({
 })
 </script>
 <template>
-  <a
-    class="ui-link"
-    :href="href"
+  <RouterLink
     :class="{ disabled: isDisabled }"
+    class="ui-link"
+    :to="href"
   >
     <slot />
-  </a>
+  </RouterLink>
 </template>
 <style lang="scss" scoped>
 .ui-link {

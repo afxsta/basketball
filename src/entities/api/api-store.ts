@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
-import { computed } from 'vue'
-import { ErrorEnum } from './enums'
+import { computed, ref } from 'vue'
+import { ErrorEnum, UserModel } from '@/entities'
 
 /**
  * * Стор для отправки API запросов
@@ -10,7 +10,7 @@ export const useApiStore = defineStore('api-store', () => {
   /**
    * * Ссылка на API
    */
-  const apiUrl = 'http://dev.trainee.dex-it.ru'
+  const apiUrl = ref('http://dev.trainee.dex-it.ru')
 
   /**
    * * Настроенное поле для отправки API запросов
@@ -19,7 +19,7 @@ export const useApiStore = defineStore('api-store', () => {
     const origin = { 'Access-Control-Allow-Origin': '*' }
 
     const apiInstance = axios.create({
-      baseURL: apiUrl,
+      baseURL: apiUrl.value,
       headers: {
         ...origin,
         options: origin,
@@ -28,11 +28,14 @@ export const useApiStore = defineStore('api-store', () => {
 
     apiInstance.interceptors.request.use(
       async (config) => {
-        const user = localStorage.getItem('user')
+        let user
+        const storage = localStorage.getItem('auth-store')
+        if (storage) {
+          user = new UserModel(JSON.parse(storage)?.user)
+        }
+
         if (user) {
-          config.headers.Authorization = `Bearer ${
-            (JSON.parse(user) as any).Token
-          }`
+          config.headers.Authorization = `Bearer ${user.Token}`
         }
         return config
       },
@@ -44,11 +47,11 @@ export const useApiStore = defineStore('api-store', () => {
     apiInstance.interceptors.response.use(
       (response) => response,
       (e) => {
-        if (!e.response?.status) {
-          localStorage.removeItem('user')
-          location.href = '/'
-          return
-        }
+        // if (!e.response?.status) {
+        //   localStorage.removeItem('user')
+        //   location.href = '/'
+        //   return
+        // }
 
         let errorMessage =
           ErrorEnum[e.response?.status] ??
@@ -64,6 +67,13 @@ export const useApiStore = defineStore('api-store', () => {
   })
 
   return {
+    /**
+     * * Ссылка на API
+     */
+    apiUrl,
+    /**
+     * * Настроенное поле для отправки API запросов
+     */
     api,
   }
 })

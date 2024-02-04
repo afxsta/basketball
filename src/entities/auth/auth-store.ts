@@ -1,12 +1,17 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { AuthModel, ResponseModel, useApiStore, UserModel } from '@/entities'
-import { onBeforeMount, ref } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 /**
  * * Стор для управления аутентификацией
  */
 export const useAuthStore = defineStore('auth-store', {
   state: () => {
+    /**
+     * * Маршруты
+     */
+    const router = useRouter()
     /**
      * * Стор для использования API
      */
@@ -34,11 +39,13 @@ export const useAuthStore = defineStore('auth-store', {
         await api.value
           .post(`${authPath}SignIn`, request)
           .then((response) => {
-            user.value = new UserModel({
-              Name: response?.data?.name,
-              Image: response?.data?.avatarUrl,
-              Token: response?.data?.token,
-            })
+            setUser(
+              new UserModel({
+                Name: response?.data?.name,
+                Image: response?.data?.avatarUrl,
+                Token: response?.data?.token,
+              })
+            )
             resolve(new ResponseModel({ Value: user.value }))
           })
           .catch((error) => {
@@ -63,11 +70,13 @@ export const useAuthStore = defineStore('auth-store', {
         await api.value
           .post(`${authPath}SignUp`, request)
           .then((response) => {
-            user.value = new UserModel({
-              Name: response?.data?.name,
-              Image: response?.data?.avatarUrl,
-              Token: response?.data?.token,
-            })
+            setUser(
+              new UserModel({
+                Name: response?.data?.name,
+                Image: response?.data?.avatarUrl,
+                Token: response?.data?.token,
+              })
+            )
             resolve(new ResponseModel({ Value: user.value }))
           })
           .catch((error) => {
@@ -76,17 +85,51 @@ export const useAuthStore = defineStore('auth-store', {
           })
       })
 
+    try {
+      const state = localStorage['auth-store']
+      if (!state) return
+
+      const _user = JSON.parse(state)?.user
+      if (_user) user.value = new UserModel(_user)
+    } catch (e) {
+      console.error(e)
+    }
+
     /**
-     * * Получение user из localStorage
+     * * Выйти из аккаунта
      */
-    onBeforeMount(() => {
-      try {
-        const _user = localStorage['auth-store']?.user
-        if (_user) user.value = new UserModel(JSON.parse(_user))
-      } catch (e) {
-        console.error(e)
+    const leaveAccount = () => setUser(undefined)
+
+    /**
+     * * Установка текущего пользователя
+     */
+    const setUser = (_user: UserModel) => {
+      user.value = _user
+
+      if (_user?.Token) {
+        setTokenCookie(_user.Token, 3)
+        router.push({ name: 'main' })
+      } else {
+        deleteTokenCookie()
+        router.push({ name: 'sign-in' })
       }
-    })
+    }
+
+    /**
+     * * Подставить Token куку
+     */
+    const setTokenCookie = (token: string, expirationDays: number) => {
+      const date = new Date()
+      date.setTime(date.getTime() + expirationDays * 24 * 60 * 60 * 1000)
+      const expires = 'expires=' + date.toUTCString()
+      document.cookie = `Token=${token}; ${expires}; path=/`
+    }
+    /**
+     * * Удалить токен куку
+     */
+    const deleteTokenCookie = () => {
+      document.cookie = 'Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    }
 
     return {
       /**
@@ -101,6 +144,10 @@ export const useAuthStore = defineStore('auth-store', {
        * @returns Данные о пользователе
        */
       signUp,
+      /**
+       * * Выйти из аккаунта
+       */
+      leaveAccount,
       /**
        * * Данные о текущем пользователе
        */

@@ -81,7 +81,7 @@ const backgroundImage = computed(() =>
     }
   }
   &_background {
-    width: 58%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

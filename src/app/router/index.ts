@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { AuthPage } from '@/pages'
+import {
+  AuthPage,
+  MainPage,
+  TeamsPage,
+  TeamPage,
+  PlayerPage,
+  PlayersPage,
+} from '@/pages'
 import { useAuthStore } from '@/entities'
+import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: 'sign-in',
     children: [
       {
         path: 'sign-in',
@@ -17,6 +24,34 @@ const routes: Array<RouteRecordRaw> = [
         name: 'sign-up',
         component: AuthPage,
       },
+      {
+        path: 'main',
+        name: 'main',
+        redirect: '/main/players',
+        component: MainPage,
+        children: [
+          {
+            path: 'players',
+            name: 'players',
+            component: PlayersPage,
+          },
+          {
+            path: 'player',
+            name: 'player',
+            component: PlayerPage,
+          },
+          {
+            path: 'teams',
+            name: 'teams',
+            component: TeamsPage,
+          },
+          {
+            path: 'team',
+            name: 'team',
+            component: TeamPage,
+          },
+        ],
+      },
     ],
   },
 ]
@@ -27,9 +62,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userData = localStorage['auth-store']?.user
-  if (!userData && !to.name?.toString()?.includes('sign')) {
-    next({ name: 'sign-in' })
+  const { user } = storeToRefs(useAuthStore())
+  const isSignPage = to.name?.toString()?.includes('sign')
+  if (!user.value) {
+    if (!isSignPage) next({ name: 'sign-in' })
+  } else {
+    if (isSignPage || !to.name) next({ name: 'main' })
   }
 
   next()
