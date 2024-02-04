@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { PlayerModel } from '@/entities'
-import { Input, Select, Button } from '@/shared'
+import { Input, Select, Button, DatePicker } from '@/shared'
 import { computed, ref } from 'vue'
 import IconAddImage from '@/shared/assets/images/icons/icon-add-image.svg'
 import { useRouter } from 'vue-router'
@@ -66,7 +66,10 @@ const savePlayer = () => {}
         />
       </div>
       <div class="player-edit-page_form_row">
-        <Select />
+        <DatePicker
+          v-model="user.Birthday"
+          label="Birthday"
+        />
         <Input
           v-model="user.Number"
           type="number"

@@ -27,7 +27,7 @@ export class PlayerModel extends GeneralModel {
   /**
    * * Дата рождения
    */
-  Birthday?: string
+  Birthday?: Date
 
   /**
    * * Возраст
