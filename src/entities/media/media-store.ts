@@ -22,7 +22,26 @@ export const useMediaStore = defineStore('media-store', () => {
   const saveImage = (file: File) =>
     new Promise<ResponseModel<string>>(async (resolve) => {
       await api.value
-        .get(`${mediaApiPath}GetPositions`, { params: { file } })
+        .post(`${mediaApiPath}SaveImage`, { params: { file } })
+        .then((response) => {
+          console.log(response)
+          resolve(new ResponseModel({ Value: response.data }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
+  /**
+   * * Запрос на удаление изображения
+   * @param fileName Имя файла изображения
+   * @returns Результат удаления
+   */
+  const deleteImage = (fileName: string) =>
+    new Promise<ResponseModel<boolean>>(async (resolve) => {
+      await api.value
+        .delete(`${mediaApiPath}DeleteImage`, { params: { fileName } })
         .then((response) => {
           console.log(response)
           resolve(new ResponseModel({ Value: response.data }))
@@ -40,5 +59,11 @@ export const useMediaStore = defineStore('media-store', () => {
      * @returns Ссылка на изображение
      */
     saveImage,
+    /**
+     * * Запрос на удаление изображения
+     * @param fileName Имя файла изображения
+     * @returns Результат удаления
+     */
+    deleteImage,
   }
 })
