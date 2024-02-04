@@ -47,32 +47,32 @@ const dateValue = computed({
   width: 100%;
 
   &_label {
-    color: var(--grey);
-    padding-bottom: var(--indent-1);
+    color: $grey;
+    padding-bottom: $indent-1;
   }
   &_component {
     height: 40px;
     outline: none;
-    background-color: var(--lightest-grey1);
-    color: var(--dark-grey);
+    background-color: $lightest-grey1;
+    color: $dark-grey;
     border: none;
     border-radius: 4px;
-    transition: var(--transition-1);
+    transition: $transition-1;
     padding: 0 12px;
     width: 100%;
 
     &:hover {
-      background-color: var(--lightest-grey);
+      background-color: $lightest-grey;
     }
     &:focus,
     &:active {
-      background-color: var(--lightest-grey1);
-      box-shadow: 0px 0px 5px 0px var(--shadow-grey);
+      background-color: $lightest-grey1;
+      box-shadow: 0px 0px 5px 0px $shadow-grey;
     }
   }
   .v3dp__datepicker {
-    --elem-hover-bg-color: var(--red);
-    transition: var(--transition-1);
+    --elem-hover-bg-color: $red;
+    transition: $transition-1;
   }
 }
 </style>

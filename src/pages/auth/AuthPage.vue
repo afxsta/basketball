@@ -72,12 +72,12 @@ const backgroundImage = computed(() =>
     padding: 24px;
     &_title {
       font-size: 36px;
-      color: var(--blue);
+      color: $blue;
       margin-bottom: 32px;
     }
     &_question {
       margin-top: 24px;
-      color: var(--grey);
+      color: $grey;
     }
   }
   &_background {
@@ -85,7 +85,7 @@ const backgroundImage = computed(() =>
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--light-blue);
+    background-color: $light-blue;
     padding: 86px;
     img {
       max-width: 100%;

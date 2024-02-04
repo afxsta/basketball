@@ -38,7 +38,7 @@ const onClick = () => emit('click')
 <style lang="scss" scoped>
 .ui-button {
   height: 40px;
-  transition: var(--transition-1);
+  transition: $transition-1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,40 +55,40 @@ const onClick = () => emit('click')
   }
 
   &.red {
-    background-color: var(--red);
-    color: var(--white);
+    background-color: $red;
+    color: $white;
 
     &:hover {
-      background-color: var(--light-red);
+      background-color: $light-red;
     }
 
     &:active {
-      background-color: var(--dark-red);
+      background-color: $dark-red;
     }
 
     &.disabled {
-      background-color: var(--lightest-grey1);
-      color: var(--lightest-grey);
+      background-color: $lightest-grey1;
+      color: $lightest-grey;
     }
   }
 
   &.white {
-    background-color: var(--white);
-    color: var(--light-grey);
-    border: 1px solid var(--light-grey);
+    background-color: $white;
+    color: $light-grey;
+    border: 1px solid $light-grey;
 
     &:hover {
-      background-color: var(--lightest-grey);
+      background-color: $lightest-grey;
     }
 
     &:active {
-      color: var(--grey);
-      background-color: var(--light-grey);
+      color: $grey;
+      background-color: $light-grey;
     }
 
     &.disabled {
-      background-color: var(--lightest-grey1);
-      color: var(--lightest-grey);
+      background-color: $lightest-grey1;
+      color: $lightest-grey;
     }
   }
 }

@@ -172,8 +172,8 @@ const removeAll = () => (value.value = [] as number[])
   width: 100%;
   position: relative;
   &_label {
-    color: var(--grey);
-    padding-bottom: var(--indent-1);
+    color: $grey;
+    padding-bottom: $indent-1;
   }
   &_current {
     display: flex;
@@ -185,12 +185,12 @@ const removeAll = () => (value.value = [] as number[])
     font-weight: 500;
     font-size: 14px;
     line-height: 24px;
-    color: var(--dark-grey);
-    background-color: var(--white);
-    border: 0.5px solid var(--lightest-grey);
+    color: $dark-grey;
+    background-color: $white;
+    border: 0.5px solid $lightest-grey;
     border-radius: 4px;
-    padding: 0 40px 0 var(--indent-2);
-    transition: var(--transition-1);
+    padding: 0 40px 0 $indent-2;
+    transition: $transition-1;
     overflow: hidden;
     cursor: pointer;
 
@@ -204,12 +204,12 @@ const removeAll = () => (value.value = [] as number[])
       transform: translateY(-50%);
       height: 24px;
       width: 40px;
-      background-color: var(--white);
-      border-left: 0.5px solid var(--lightest-grey);
+      background-color: $white;
+      border-left: 0.5px solid $lightest-grey;
       z-index: 1;
 
       img {
-        transition: var(--transition-1);
+        transition: $transition-1;
         user-select: none;
         &.rotate {
           transform: rotate(180deg);
@@ -226,7 +226,7 @@ const removeAll = () => (value.value = [] as number[])
         height: 100%;
         right: calc(100% + 1px);
         top: 0;
-        background-color: var(--white);
+        background-color: $white;
 
         img {
           cursor: pointer;
@@ -248,30 +248,30 @@ const removeAll = () => (value.value = [] as number[])
     display: flex;
     flex-direction: column;
     border-radius: 4px;
-    border: 0.5px solid var(--lightest-grey);
-    background-color: var(--white);
+    border: 0.5px solid $lightest-grey;
+    background-color: $white;
     overflow: hidden;
     z-index: 10;
 
     &_item {
       display: flex;
       align-items: center;
-      padding: 0 var(--indent-2);
-      color: var(--light-grey);
+      padding: 0 $indent-2;
+      color: $light-grey;
       height: 40px;
-      border-bottom: 0.5px solid var(--lightest-grey);
-      transition: var(--transition-1);
+      border-bottom: 0.5px solid $lightest-grey;
+      transition: $transition-1;
       user-select: none;
       cursor: pointer;
 
       &:hover {
-        color: var(--white);
-        background-color: var(--lightest-red);
+        color: $white;
+        background-color: $lightest-red;
       }
       &:active,
       &.selected {
-        color: var(--white);
-        background-color: var(--dark-red);
+        color: $white;
+        background-color: $dark-red;
       }
 
       &:last-child {

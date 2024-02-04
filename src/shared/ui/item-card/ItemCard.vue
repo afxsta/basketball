@@ -36,11 +36,8 @@
     max-height: 280px;
     height: 100%;
     width: 100%;
-    background: linear-gradient(
-      121.57deg,
-      var(--grey) 1.62%,
-      var(--dark-grey1) 81.02%
-    );
+    background: linear-gradient(121.57deg, $grey 1.62%, $dark-grey1 81.02%);
+
     img {
       width: 100%;
       height: auto;
@@ -54,12 +51,12 @@
     width: 100%;
     gap: 8px;
     min-height: 100px;
-    background-color: var(--dark-grey);
+    background-color: $dark-grey;
     &_title {
-      color: var(--white);
+      color: $white;
     }
     &_subtitle {
-      color: var(--light-grey);
+      color: $light-grey;
     }
   }
 }

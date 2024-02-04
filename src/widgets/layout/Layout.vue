@@ -13,7 +13,7 @@ import { Header, Sidebar } from '@/widgets/layout'
 <style lang="scss" scoped>
 .layout {
   position: relative;
-  background-color: var(--lightest-grey1);
+  background-color: $lightest-grey1;
 
   &_content {
     padding: 112px 80px 20px 220px;

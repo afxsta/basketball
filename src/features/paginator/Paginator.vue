@@ -94,19 +94,19 @@ const getPageItemClass = (_page: number) => [
     align-items: center;
     width: 40px;
     height: 40px;
-    color: var(--grey);
+    color: $grey;
     border-radius: 4px;
-    transition: var(--transition-1);
+    transition: $transition-1;
     user-select: none;
     cursor: pointer;
 
     &:hover {
-      color: var(--dark-grey);
+      color: $dark-grey;
     }
 
     &.active {
-      color: var(--white);
-      background-color: var(--red);
+      color: $white;
+      background-color: $red;
     }
   }
   &_dots {

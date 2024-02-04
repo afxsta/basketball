@@ -112,13 +112,13 @@ const inputClasses = computed(() => ({
 
   &:hover {
     input:not(.disabled, :focus, :active) {
-      background-color: var(--lightest-grey);
+      background-color: $lightest-grey;
     }
   }
 
   &_label {
-    color: var(--grey);
-    padding-bottom: var(--indent-1);
+    color: $grey;
+    padding-bottom: $indent-1;
   }
 
   &_block {
@@ -130,26 +130,26 @@ const inputClasses = computed(() => ({
       font-weight: 500;
       font-size: 14px;
       line-height: 14px;
-      color: var(--dark-grey);
-      background-color: var(--lightest-grey1);
+      color: $dark-grey;
+      background-color: $lightest-grey1;
       border: 1px solid transparent;
       border-radius: 4px;
-      padding: 0 var(--indent-2);
-      transition: var(--transition-1);
+      padding: 0 $indent-2;
+      transition: $transition-1;
       cursor: text;
 
       &.error {
-        border-color: var(--lightest-red);
+        border-color: $lightest-red;
       }
       &.disabled {
         pointer-events: none;
-        color: var(--lightest-grey);
+        color: $lightest-grey;
       }
 
       &:focus,
       &:active {
-        background-color: var(--lightest-grey1);
-        box-shadow: 0px 0px 5px 0px var(--shadow-grey);
+        background-color: $lightest-grey1;
+        box-shadow: 0px 0px 5px 0px $shadow-grey;
       }
     }
 

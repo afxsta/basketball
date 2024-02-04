@@ -7,6 +7,13 @@ module.exports = defineConfig({
       entry: './src/index.ts',
     },
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: '@import "@/shared/assets/styles/index.scss";',
+      },
+    },
+  },
   publicPath: '/',
   configureWebpack: {
     optimization: {

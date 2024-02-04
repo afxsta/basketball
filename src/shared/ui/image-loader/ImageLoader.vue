@@ -82,7 +82,7 @@ const setImageUrl = (_image: File | string) => {
   width: 100%;
   max-width: 336px;
   max-height: 260px;
-  background-color: var(--light-grey);
+  background-color: $light-grey;
   border-radius: 10px;
   cursor: pointer;
   img {

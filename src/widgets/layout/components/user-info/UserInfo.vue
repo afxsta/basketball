@@ -38,8 +38,8 @@ const avatarImage = computed(() => props.info?.Image || IconProfile)
   cursor: pointer;
 
   &_name {
-    color: var(--dark-grey);
-    transition: var(--transition-1);
+    color: $dark-grey;
+    transition: $transition-1;
   }
 
   &_image {
@@ -52,7 +52,7 @@ const avatarImage = computed(() => props.info?.Image || IconProfile)
 
   &:hover {
     .user-info_name {
-      color: var(--red);
+      color: $red;
     }
   }
 }

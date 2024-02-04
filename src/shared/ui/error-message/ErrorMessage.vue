@@ -17,7 +17,7 @@
     position: absolute;
     top: calc(100% + 2px);
     left: 0;
-    color: var(--lightest-red);
+    color: $lightest-red;
     pointer-events: none;
   }
 }

@@ -103,7 +103,7 @@ const userPosition = computed({
 .player-edit-page {
   display: flex;
   gap: 136px;
-  background-color: var(--white);
+  background-color: $white;
   border-radius: 10px;
   padding: 48px 74px;
   &_form {

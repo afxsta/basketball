@@ -7,9 +7,6 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import '@/shared/assets/styles/normalize.css'
 import '@/shared/assets/fonts/avenir/stylesheet.css'
 
-import { initStyles } from '@/shared'
-initStyles()
-
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 

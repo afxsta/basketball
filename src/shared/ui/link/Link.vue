@@ -19,11 +19,11 @@ const props = defineProps({
 .ui-link {
   font-size: 14px;
   line-height: 20px;
-  color: var(--red);
-  transition: var(--transition-1);
+  color: $red;
+  transition: $transition-1;
   font-weight: 500;
   &.disabled {
-    color: var(--lightest-grey);
+    color: $lightest-grey;
   }
 }
 </style>

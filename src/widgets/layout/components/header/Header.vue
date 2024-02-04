@@ -30,7 +30,7 @@ import { Link } from '@/shared'
   height: 80px;
   padding: 0 50px;
   box-shadow: 0px 1px 10px 0px #d1d1d180;
-  background-color: var(--white);
+  background-color: $white;
   z-index: 100;
 
   &_logo {

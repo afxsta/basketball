@@ -123,7 +123,7 @@ const goToRoute = (_id: number) => {
   padding: 32px 0;
   width: 140px;
   height: calc(100% - 80px);
-  background-color: var(--white);
+  background-color: $white;
 
   &_item {
     display: flex;
@@ -134,13 +134,13 @@ const goToRoute = (_id: number) => {
     cursor: pointer;
 
     path {
-      transition: var(--transition-1);
+      transition: $transition-1;
     }
 
     &_name {
       font-size: 12px;
       line-height: 18px;
-      transition: var(--transition-1);
+      transition: $transition-1;
     }
   }
   &_sign-out {
@@ -150,7 +150,7 @@ const goToRoute = (_id: number) => {
     align-items: center;
     margin-top: auto;
     gap: 4px;
-    color: var(--lightest-red);
+    color: $lightest-red;
     font-size: 12px;
     font-weight: 500;
     line-height: 18px;

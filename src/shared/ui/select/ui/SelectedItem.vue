@@ -35,8 +35,8 @@ const deleteItem = () => emit('delete', props.option?.Id)
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--red);
-  color: var(--white);
+  background-color: $red;
+  color: $white;
   padding: 0 24px 0 4px;
   border-radius: 4px;
   user-select: none;

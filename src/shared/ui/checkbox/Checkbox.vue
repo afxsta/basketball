@@ -71,38 +71,38 @@ const toggleCheckbox = () => {
   height: 24px;
   max-width: fit-content;
   cursor: pointer;
-  color: var(--grey);
+  color: $grey;
   font-size: 14px;
   user-select: none;
 
   &.disabled {
-    color: var(--lightest-grey);
+    color: $lightest-grey;
     cursor: default;
     pointer-events: none;
     .ui-checkbox {
-      border-color: var(--lightest-grey);
-      background-color: var(--lightest-grey1);
+      border-color: $lightest-grey;
+      background-color: $lightest-grey1;
     }
   }
 
   &:hover:not(.disabled) .ui-checkbox {
-    border-color: var(--red);
+    border-color: $red;
   }
 
   &.error {
-    color: var(--lightest-red);
+    color: $lightest-red;
     .ui-checkbox {
-      border-color: var(--lightest-red);
+      border-color: $lightest-red;
     }
   }
 
   &.active .ui-checkbox {
-    background-color: var(--red);
-    border: var(--red);
+    background-color: $red;
+    border: $red;
 
     &.disabled .ui-checkbox {
-      background-color: var(--lightest-grey);
-      border: var(--lightest-grey);
+      background-color: $lightest-grey;
+      border: $lightest-grey;
     }
   }
 
@@ -110,9 +110,9 @@ const toggleCheckbox = () => {
     position: relative;
     width: 12px;
     height: 12px;
-    border: 1px solid var(--light-grey);
+    border: 1px solid $light-grey;
     border-radius: 2px;
-    transition: var(--transition-1);
+    transition: $transition-1;
     cursor: pointer;
     user-select: none;
 
