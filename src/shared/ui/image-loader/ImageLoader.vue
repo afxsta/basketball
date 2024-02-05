@@ -74,7 +74,13 @@ const setImageUrl = (_image: File | string) => {
     :class="{ empty: !imageUrl }"
     @click="onClick"
   >
-    <img :src="imageUrl || IconAddImage" />
+    <img
+      v-if="imageUrl"
+      :src="imageUrl"
+    />
+    <div class="image-loader_curtain">
+      <img :src="IconAddImage" />
+    </div>
     <input
       v-show="false"
       ref="$fileInput"
@@ -86,20 +92,31 @@ const setImageUrl = (_image: File | string) => {
 </template>
 <style lang="scss" scoped>
 .image-loader {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 336px;
   max-height: 260px;
-  background-color: $light-grey;
   border-radius: 10px;
   cursor: pointer;
+  overflow: hidden;
+
   img {
     max-width: 100%;
     max-height: 100%;
   }
-  &.empty {
+  &_curtain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $light-grey;
     opacity: 0.5;
   }
 }
