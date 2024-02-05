@@ -7,7 +7,7 @@ import {
 } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
-import { Input, Button, Loader } from '@/shared'
+import { Input, Button, Loader, Stopper } from '@/shared'
 import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
@@ -122,7 +122,7 @@ const changePage = (_page: number) => {
         </Button>
       </div>
       <div class="teams-page_block f">
-        <Stopper v-if="!teams?.length">
+        <Stopper v-if="!teams?.length && !isLoading">
           <template #image>
             <img
               :src="TeamEmpty"
@@ -132,6 +132,7 @@ const changePage = (_page: number) => {
           <template #text> Add new teams to continue </template>
         </Stopper>
         <CardsList
+          v-else
           :items="teams"
           :pagesCount="1"
           :pagination="pagination"
@@ -152,6 +153,7 @@ const changePage = (_page: number) => {
 .teams-page {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &_filter {
     display: flex;
@@ -161,6 +163,7 @@ const changePage = (_page: number) => {
       margin-left: auto;
     }
   }
+
   &_block {
     height: 100%;
   }

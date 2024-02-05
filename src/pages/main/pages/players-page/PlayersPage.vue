@@ -133,7 +133,7 @@ const changePage = (_page: number) => {
         </Button>
       </div>
       <div class="players-page_block f">
-        <Stopper v-if="!players?.length">
+        <Stopper v-if="!players?.length && !isLoading">
           <template #image>
             <img
               :src="PlayerEmpty"

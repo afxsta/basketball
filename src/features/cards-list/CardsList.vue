@@ -7,7 +7,7 @@ import { GeneralModel, PaginationModel } from '@/entities'
  * * Параметры компонента
  */
 const props = withDefaults(defineProps<ICardsListProps<GeneralModel>>(), {
-  pagination: new PaginationModel(),
+  pagination: () => new PaginationModel(),
 })
 /**
  * * События компонента
@@ -60,7 +60,7 @@ const itemOnClick = (_id: number) => emit('open', _id)
       </div>
     </Loader>
     <Paginator
-      v-if="props.pagination?.Total > 1 && !isLoading"
+      v-if="props.pagination?.Total > 1 && !isLoading && items?.length"
       class="cards-list-wrapper_paginator"
       :current="props.pagination?.Page"
       :total="props.pagination?.Total"
