@@ -196,6 +196,13 @@ export const usePlayerStore = defineStore('player-store', () => {
    * * Приведение к модели игрока из запроса
    */
   const mapPlayer = (response: any) => {
+    let _image = ''
+    if (response.avatarUrl) {
+      _image = response.avatarUrl.includes(apiUrl.value)
+        ? response
+        : apiUrl.value + response.avatarUrl
+    }
+
     return new PlayerModel({
       Id: response.id,
       Name: response.name,
@@ -205,7 +212,7 @@ export const usePlayerStore = defineStore('player-store', () => {
       Birthday: new Date(response.birthday),
       Height: response.height,
       Weight: response.weight,
-      Image: response.avatarUrl ? apiUrl.value + response.avatarUrl : '',
+      Image: _image,
     })
   }
 

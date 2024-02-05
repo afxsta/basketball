@@ -139,10 +139,17 @@ export const useTeamStore = defineStore('team-store', () => {
    * * Получение модели команды из ответа
    */
   const mapTeam = (response: any) => {
+    let _image = ''
+    if (response.avatarUrl) {
+      _image = response.avatarUrl.includes(apiUrl.value)
+        ? response
+        : apiUrl.value + response.avatarUrl
+    }
+
     return new TeamModel({
       Id: response.id,
       Name: response.name,
-      Image: response.imageUrl ? apiUrl.value + response.imageUrl : '',
+      Image: _image,
       Conference: response.conference,
       Division: response.division,
       FoundationYear: response.foundationYear,
