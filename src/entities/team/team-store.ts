@@ -31,7 +31,7 @@ export const useTeamStore = defineStore('team-store', () => {
   /**
    * * Данные для пагинации команд
    */
-  const pagination = ref(new PaginationModel())
+  const pagination = ref()
 
   /**
    * * Отправка запроса для получения списка команд

@@ -10,7 +10,14 @@ import IconCloseSelect from '@/shared/assets/images/icons/icon-close-select.svg'
 
 const props = withDefaults(defineProps<ISelectProps>(), {})
 const emit = defineEmits<{
+  /**
+   * * Отправка выбранного значения
+   */
   (e: 'update:modelValue', values: number[]): void
+  /**
+   * * При прокрутке списка в самый конец
+   */
+  (e: 'scroll-bottom'): void
 }>()
 
 /**
@@ -103,6 +110,14 @@ const toggleItem = (_id: number) => {
  * * Удалить все элементы
  */
 const removeAll = () => (value.value = [] as number[])
+/**
+ * * При скролле списка
+ */
+const listOnScroll = (e: Event) => {
+  const target = e.target as HTMLDivElement
+  const _bottom = target.scrollHeight - target.clientHeight - target.scrollTop
+  if (!_bottom) emit('scroll-bottom')
+}
 </script>
 <template>
   <div
@@ -155,6 +170,7 @@ const removeAll = () => (value.value = [] as number[])
     <div
       v-if="opened"
       class="select-wrapper_list"
+      @scroll="listOnScroll"
     >
       <div
         v-for="option in options"
