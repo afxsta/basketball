@@ -193,7 +193,7 @@ export const usePlayerStore = defineStore('player-store', () => {
       Number: response.number,
       Position: response.position,
       Team: response.team,
-      Birthday: response.birthday,
+      Birthday: new Date(response.birthday),
       Height: response.height,
       Weight: response.weight,
       Image: response.avatarUrl ? apiUrl.value + response.avatarUrl : '',

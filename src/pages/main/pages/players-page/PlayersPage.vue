@@ -85,7 +85,7 @@ const updatePlayers = async (withReset?: boolean) => {
 /**
  * * Открытие страницы с созданием команды
  */
-const openPlayerCreate = () => router.push({ name: 'player-create' })
+const openPlayerCreate = () => router.push({ name: 'player-control' })
 /**
  * * Открыть предпросмотр команды
  */

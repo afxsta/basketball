@@ -1,11 +1,5 @@
 <script lang="ts" setup>
-import {
-  FilterModel,
-  PaginationModel,
-  PlayerModel,
-  usePlayerStore,
-  useTeamStore,
-} from '@/entities'
+import { PlayerModel, usePlayerStore } from '@/entities'
 import {
   Input,
   Select,
@@ -24,21 +18,34 @@ import { storeToRefs } from 'pinia'
  */
 const router = useRouter()
 /**
- * * Данные об игроке
- */
-const user = ref(new PlayerModel())
-/**
  * * Стор для управления игроками
  */
 const playerStore = usePlayerStore()
 const { optionsPosition } = storeToRefs(playerStore)
-const { addPlayer } = playerStore
+const { addPlayer, getPlayer, getPositions } = playerStore
+
+/**
+ * * Данные об игроке
+ */
+const player = ref(new PlayerModel())
+
+/**
+ * * Id редактируемого игрока
+ */
+const playerId = computed(() => Number(router.currentRoute.value?.params?.id))
 
 /**
  * * После рендера компонента
  */
 onMounted(async () => {
-  await playerStore.getPositions()
+  await getPositions()
+
+  if (playerId.value) {
+    const response = await getPlayer(playerId.value)
+    if (response.IsSuccess) {
+      player.value = response.Value
+    }
+  }
 })
 
 /**
@@ -49,7 +56,7 @@ const cancelEdit = () => router.push({ name: 'players' })
  * * Отправка запроса на сохранение игрока
  */
 const savePlayer = async () => {
-  await addPlayer(user.value)
+  await addPlayer(player.value)
 }
 /**
  * * Выбор позиции игрока
@@ -57,29 +64,29 @@ const savePlayer = async () => {
 const userPosition = computed({
   get: () => {
     const _id = optionsPosition.value.find(
-      (p) => p.Text == user.value.Position
+      (p) => p.Text == player.value.Position
     )?.Id
     return typeof _id == 'number' ? [_id] : []
   },
   set: (_indexes) => {
-    user.value.Position = optionsPosition.value?.[_indexes[0]]?.Text || ''
+    player.value.Position = optionsPosition.value?.[_indexes[0]]?.Text || ''
   },
 })
 /**
  * * Выбор команды игрока
  */
 const userTeam = computed({
-  get: () => (user.value.Team ? [user.value.Team] : []),
-  set: (team) => (user.value.Team = team[0]),
+  get: () => (player.value.Team ? [player.value.Team] : []),
+  set: (team) => (player.value.Team = team[0]),
 })
 </script>
 <template>
   <div class="player-edit-page">
     <Loader />
-    <ImageLoader v-model="user.Image" />
+    <ImageLoader v-model="player.Image" />
     <div class="player-edit-page_form">
       <Input
-        v-model="user.Name"
+        v-model="player.Name"
         label="Name"
       />
       <Select
@@ -93,23 +100,23 @@ const userTeam = computed({
       />
       <div class="player-edit-page_form_row">
         <Input
-          v-model="user.Height"
+          v-model="player.Height"
           type="number"
           label="Height (cm)"
         />
         <Input
-          v-model="user.Weight"
+          v-model="player.Weight"
           type="number"
           label="Weight (kg)"
         />
       </div>
       <div class="player-edit-page_form_row">
         <DatePicker
-          v-model="user.Birthday"
+          v-model="player.Birthday"
           label="Birthday"
         />
         <Input
-          v-model="user.Number"
+          v-model="player.Number"
           type="number"
           label="Number"
         />

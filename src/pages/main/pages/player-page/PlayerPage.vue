@@ -22,7 +22,7 @@ const { getPlayer, deletePlayer } = playerStore
 const player = ref(new PlayerModel())
 
 /**
- * * Id команды
+ * * Id игрока
  */
 const playerId = computed(() => Number(router.currentRoute.value?.params?.id))
 
@@ -45,7 +45,9 @@ const loadPlayer = async () => {
 /**
  * * Запрос на редактирование команды
  */
-const editPlayer = (_id: number) => {}
+const editPlayer = (_id: number) => {
+  router.push({ name: 'player-control', params: { id: player.value.Id } })
+}
 /**
  * * Отправка запроса на удаление пользователя
  */
@@ -60,7 +62,7 @@ const sendDeleteRequest = async () => {
       <PageHeader
         :paths="['Players', player.Name]"
         @delete="sendDeleteRequest"
-        @edit="editPlayer(player.Id)"
+        @edit="editPlayer"
       />
       <div
         v-if="player"

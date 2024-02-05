@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { TeamModel, useTeamStore } from '@/entities'
-import { Input, Select, Button, DatePicker, ImageLoader } from '@/shared'
+import { Input, Button, ImageLoader } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 /**
  * * Маршруты
@@ -17,12 +16,24 @@ const team = ref(new TeamModel())
  * * Стор для управления игроками
  */
 const teamStore = useTeamStore()
-const { addTeam } = teamStore
+const { addTeam, getTeam } = teamStore
+
+/**
+ * * Id редактируемой команды
+ */
+const teamId = computed(() => Number(router.currentRoute.value?.params?.id))
 
 /**
  * * После рендера компонента
  */
-onMounted(() => {})
+onMounted(async () => {
+  if (teamId.value) {
+    const response = await getTeam(teamId.value)
+    if (response.IsSuccess) {
+      team.value = response.Value
+    }
+  }
+})
 
 /**
  * * Отмена редактирования игрока

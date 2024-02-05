@@ -53,13 +53,13 @@ const routes: Array<RouteRecordRaw> = [
             component: TeamPage,
           },
           {
-            path: 'player-create',
-            name: 'player-create',
+            path: 'player-control/:id?',
+            name: 'player-control',
             component: PlayerEditPage,
           },
           {
-            path: 'team-create',
-            name: 'team-create',
+            path: 'team-control/:id?',
+            name: 'team-control',
             component: TeamEditPage,
           },
         ],

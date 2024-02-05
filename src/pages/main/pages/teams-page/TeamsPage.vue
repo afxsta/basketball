@@ -80,7 +80,7 @@ const updateTeams = async (withReset?: boolean) => {
 /**
  * * Открытие страницы с созданием команды
  */
-const openTeamCreate = () => router.push({ name: 'team-create' })
+const openTeamCreate = () => router.push({ name: 'team-control' })
 /**
  * * Открыть предпросмотр команды
  */

@@ -45,7 +45,9 @@ const loadTeam = async () => {
 /**
  * * Запрос на редактирование команды
  */
-const editTeam = () => {}
+const editTeam = () => {
+  router.push({ name: 'team-control', params: { id: team.value.Id } })
+}
 /**
  * * Отправка запроса на удаление команды
  */

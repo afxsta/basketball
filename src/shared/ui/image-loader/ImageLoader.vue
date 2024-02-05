@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { PropType, computed, onMounted, ref } from 'vue'
 import IconAddImage from '@/shared/assets/images/icons/icon-add-image.svg'
+import { watch } from 'vue'
 
 /**
  * * Параметры компонента
@@ -26,12 +27,21 @@ const $fileInput = ref<HTMLInputElement>()
 const imageUrl = ref('')
 
 /**
+ * * Отслеживание изменений параметра modelValue
+ */
+watch(() => props.modelValue, onUpdateModelValue)
+
+/**
  * * После рендера компонента
  */
-onMounted(() => {
-  if (props.modelValue) setImageUrl(props.modelValue)
-})
+onMounted(() => onUpdateModelValue())
 
+/**
+ * * При изменении параметра modelValue
+ */
+function onUpdateModelValue() {
+  if (props.modelValue) setImageUrl(props.modelValue)
+}
 /**
  * * Открыть выбор файла, при клике по компоненту
  */
