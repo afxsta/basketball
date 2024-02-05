@@ -17,4 +17,8 @@ export interface ISelectProps /* @vue-ignore */ {
    * * Заголовок
    */
   label?: string
+  /**
+   * * Текст ошибки
+   */
+  error?: string
 }

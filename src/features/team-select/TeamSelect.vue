@@ -66,6 +66,7 @@ const getTeamsOptions = async (firstLoad?: boolean) => {
   <Select
     v-model="value"
     :label="label"
+    :error="error"
     :options="teamsOptions"
     :is-multi="isMulti"
     @scroll-bottom="getTeamsOptions"

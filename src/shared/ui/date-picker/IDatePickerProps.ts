@@ -7,4 +7,8 @@ export interface IDatePickerProps {
    * * Заголовок
    */
   label?: string
+  /**
+   * * Текст ошибки
+   */
+  error?: string
 }

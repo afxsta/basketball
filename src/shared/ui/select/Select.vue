@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-import {
-  SelectOptionModel,
-  ISelectProps,
-  SelectedItem,
-} from '@/shared/ui/select'
+import { ISelectProps, SelectedItem, ErrorMessage } from '@/shared'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import IconExpand from '@/shared/assets/images/icons/icon-expand.svg'
 import IconCloseSelect from '@/shared/assets/images/icons/icon-close-select.svg'
@@ -44,6 +40,13 @@ const value = computed({
     emit('update:modelValue', _values || [])
   },
 })
+/**
+ * * Классы current элемента
+ */
+const currentBlockClasses = computed(() => [
+  'select-wrapper_current',
+  { error: !!props.error },
+])
 
 /**
  * * После рендера компонента
@@ -129,44 +132,49 @@ const listOnScroll = (e: Event) => {
       v-text="label"
       class="select-wrapper_label"
     />
-    <div
-      class="select-wrapper_current"
-      @click="toggleSelect(null)"
-    >
+    <ErrorMessage>
       <div
-        v-if="isMulti"
-        class="select-wrapper_current_multi"
+        :class="currentBlockClasses"
+        @click="toggleSelect(null)"
       >
-        <SelectedItem
-          v-for="option in selectedOptions"
-          :key="option?.Id"
-          :option="option"
-          @delete="toggleItem"
-        />
-      </div>
-      <span
-        v-else
-        v-text="selectedOptions?.[0]?.Text"
-      />
-      <div class="select-wrapper_current_toggler">
         <div
-          v-if="modelValue?.length"
-          class="select-wrapper_current_toggler_close"
-          @click.stop
+          v-if="isMulti"
+          class="select-wrapper_current_multi"
         >
-          <img
-            alt="icon-close"
-            :src="IconCloseSelect"
-            @click="removeAll"
+          <SelectedItem
+            v-for="option in selectedOptions"
+            :key="option?.Id"
+            :option="option"
+            @delete="toggleItem"
           />
         </div>
-        <img
-          :src="IconExpand"
-          :class="{ rotate: opened }"
-          alt="icon-expand"
+        <span
+          v-else
+          v-text="selectedOptions?.[0]?.Text"
         />
+        <div class="select-wrapper_current_toggler">
+          <div
+            v-if="modelValue?.length"
+            class="select-wrapper_current_toggler_close"
+            @click.stop
+          >
+            <img
+              alt="icon-close"
+              :src="IconCloseSelect"
+              @click="removeAll"
+            />
+          </div>
+          <img
+            :src="IconExpand"
+            :class="{ rotate: opened }"
+            alt="icon-expand"
+          />
+        </div>
       </div>
-    </div>
+      <template #error>
+        {{ error }}
+      </template>
+    </ErrorMessage>
     <div
       v-if="opened"
       class="select-wrapper_list"
@@ -209,6 +217,10 @@ const listOnScroll = (e: Event) => {
     transition: $transition-1;
     overflow: hidden;
     cursor: pointer;
+
+    &.error {
+      border-color: $lightest-red;
+    }
 
     &_toggler {
       position: absolute;

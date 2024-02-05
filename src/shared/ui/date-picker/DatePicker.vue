@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import datepicker from 'vue3-datepicker'
-import { IDatePickerProps } from '@/shared'
+import { IDatePickerProps, ErrorMessage } from '@/shared'
 import { computed } from 'vue'
 
 /**
@@ -11,6 +11,14 @@ const props = defineProps<IDatePickerProps>()
  * * События компонента
  */
 const emit = defineEmits(['update:modelValue'])
+
+/**
+ * * Классы компонента
+ */
+const componentClasses = computed(() => [
+  'date-picker_component',
+  { error: !!props.error },
+])
 
 /**
  * * Поле для выбора даты
@@ -34,10 +42,15 @@ const dateValue = computed({
       v-text="label"
       class="date-picker_label"
     />
-    <datepicker
-      v-model="dateValue"
-      class="date-picker_component"
-    />
+    <ErrorMessage>
+      <datepicker
+        v-model="dateValue"
+        :class="componentClasses"
+      />
+      <template #error>
+        {{ error }}
+      </template>
+    </ErrorMessage>
   </div>
 </template>
 <style lang="scss">
@@ -61,6 +74,10 @@ const dateValue = computed({
     padding: 0 12px;
     width: 100%;
 
+    &.error {
+      border: 1px solid $lightest-red;
+    }
+
     &:hover {
       background-color: $lightest-grey;
     }
@@ -71,8 +88,10 @@ const dateValue = computed({
     }
   }
   .v3dp__datepicker {
-    --elem-hover-bg-color: $red;
-    transition: $transition-1;
+    button:not(:disabled):hover span {
+      background-color: $red;
+      transition: $transition-1;
+    }
   }
 }
 </style>

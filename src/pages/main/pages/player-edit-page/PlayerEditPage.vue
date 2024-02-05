@@ -7,6 +7,8 @@ import {
   DatePicker,
   ImageLoader,
   Loader,
+  ValidationModel,
+  useFormValidation,
 } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
 import { TeamSelect } from '@/features'
@@ -28,6 +30,64 @@ const { updatePlayer, getPlayer, getPositions } = playerStore
  * * Данные об игроке
  */
 const player = ref(new PlayerModel())
+/**
+ * * Использование валидации
+ */
+const {
+  validation,
+  checkAsBoolean,
+  checkPositiveNumber,
+  checkArrayLength,
+  startValidate,
+} = useFormValidation()
+
+/**
+ * * Настройки валидации
+ */
+const validationOptions = computed(() => [
+  new ValidationModel({
+    Key: 'Name',
+    Error: 'Field available',
+    Value: player.value.Name,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Position',
+    Error: 'Field available',
+    Value: player.value.Position,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Team',
+    Error: 'Field available',
+    Value: player.value.Team,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Height',
+    Error: 'Field available',
+    Value: player.value.Height,
+    Condition: checkPositiveNumber,
+  }),
+  new ValidationModel({
+    Key: 'Weight',
+    Error: 'Field available',
+    Value: player.value.Weight,
+    Condition: checkPositiveNumber,
+  }),
+  new ValidationModel({
+    Key: 'Number',
+    Error: 'Field available',
+    Value: player.value.Number,
+    Condition: checkPositiveNumber,
+  }),
+  new ValidationModel({
+    Key: 'Birthday',
+    Error: 'Field available',
+    Value: player.value.Birthday,
+    Condition: checkAsBoolean,
+  }),
+])
 
 /**
  * * Id редактируемого игрока
@@ -62,9 +122,11 @@ const cancelEdit = () => {
  * * Отправка запроса на сохранение игрока
  */
 const savePlayer = async () => {
-  const response = await updatePlayer(player.value)
-  if (response.IsSuccess) {
-    router.push({ name: 'player', params: { id: response.Value?.Id } })
+  if (startValidate(validationOptions.value)) {
+    const response = await updatePlayer(player.value)
+    if (response.IsSuccess) {
+      router.push({ name: 'player', params: { id: response.Value?.Id } })
+    }
   }
 }
 /**
@@ -97,37 +159,44 @@ const userTeam = computed({
       <Input
         v-model="player.Name"
         label="Name"
+        :error="validation.Name"
       />
       <Select
         :options="optionsPosition"
         label="Position"
+        :error="validation.Position"
         v-model="userPosition"
       />
       <TeamSelect
         v-model="userTeam"
         label="Team"
+        :error="validation.Team"
       />
       <div class="player-edit-page_form_row">
         <Input
           v-model="player.Height"
           type="number"
           label="Height (cm)"
+          :error="validation.Height"
         />
         <Input
           v-model="player.Weight"
           type="number"
           label="Weight (kg)"
+          :error="validation.Weight"
         />
       </div>
       <div class="player-edit-page_form_row">
         <DatePicker
           v-model="player.Birthday"
           label="Birthday"
+          :error="validation.Birthday"
         />
         <Input
           v-model="player.Number"
           type="number"
           label="Number"
+          :error="validation.Number"
         />
       </div>
       <div class="player-edit-page_form_row">

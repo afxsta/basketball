@@ -52,14 +52,14 @@ const onEdit = () => emit('edit')
     </div>
     <div class="page-header_controls">
       <img
-        :src="IconDelete"
-        alt="delete"
-        @click="onDelete"
-      />
-      <img
         :src="IconEdit"
         alt="edit"
         @click="onEdit"
+      />
+      <img
+        :src="IconDelete"
+        alt="delete"
+        @click="onDelete"
       />
     </div>
   </div>

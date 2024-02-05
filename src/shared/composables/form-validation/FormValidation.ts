@@ -37,6 +37,10 @@ export function useFormValidation() {
    */
   const checkPositiveNumber = (_value: number) => _value > 0
   /**
+   * * Проверка длины массива
+   */
+  const checkArrayLength = (_array: any[]) => _array?.length
+  /**
    * * Проверить наличие ошибок
    */
   const startValidate = (_options: ValidationModel[]) => {
@@ -54,5 +58,6 @@ export function useFormValidation() {
     checkAsBoolean,
     checkPositiveNumber,
     startValidate,
+    checkArrayLength,
   }
 }
