@@ -70,6 +70,7 @@ const backgroundImage = computed(() =>
     width: 42%;
     max-width: 606px;
     padding: 24px;
+    background-color: $white;
     &_title {
       font-size: 36px;
       color: $blue;

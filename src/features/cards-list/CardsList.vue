@@ -60,7 +60,7 @@ const itemOnClick = (_id: number) => emit('open', _id)
       </div>
     </Loader>
     <Paginator
-      v-if="props.pagination?.Total > 1"
+      v-if="props.pagination?.Total > 1 && !isLoading"
       class="cards-list-wrapper_paginator"
       :current="props.pagination?.Page"
       :total="props.pagination?.Total"

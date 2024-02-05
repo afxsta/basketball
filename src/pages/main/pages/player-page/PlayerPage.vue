@@ -46,13 +46,20 @@ const loadPlayer = async () => {
  * * Запрос на редактирование команды
  */
 const editPlayer = (_id: number) => {}
+/**
+ * * Отправка запроса на удаление пользователя
+ */
+const sendDeleteRequest = async () => {
+  const response = await deletePlayer(player.value.Id)
+  if (response.IsSuccess) router.push({ name: 'players' })
+}
 </script>
 <template>
   <div class="player-page">
     <div class="player-page-wrapper">
       <PageHeader
         :paths="['Players', player.Name]"
-        @delete="deletePlayer(player.Id)"
+        @delete="sendDeleteRequest"
         @edit="editPlayer(player.Id)"
       />
       <div

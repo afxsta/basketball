@@ -46,13 +46,20 @@ const loadTeam = async () => {
  * * Запрос на редактирование команды
  */
 const editTeam = () => {}
+/**
+ * * Отправка запроса на удаление команды
+ */
+const sendDeleteRequest = async () => {
+  const response = await deleteTeam(team.value.Id)
+  if (response.IsSuccess) router.push({ name: 'teams' })
+}
 </script>
 <template>
   <div class="team-page">
     <div class="team-page-wrapper">
       <PageHeader
         :paths="['Teams', team.Name]"
-        @delete="deleteTeam(team.Id)"
+        @delete="sendDeleteRequest"
         @edit="editTeam"
       />
       <div
