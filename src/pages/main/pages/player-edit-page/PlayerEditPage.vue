@@ -22,7 +22,7 @@ const router = useRouter()
  */
 const playerStore = usePlayerStore()
 const { optionsPosition } = storeToRefs(playerStore)
-const { addPlayer, getPlayer, getPositions } = playerStore
+const { updatePlayer, getPlayer, getPositions } = playerStore
 
 /**
  * * Данные об игроке
@@ -56,7 +56,7 @@ const cancelEdit = () => router.push({ name: 'players' })
  * * Отправка запроса на сохранение игрока
  */
 const savePlayer = async () => {
-  await addPlayer(player.value)
+  await updatePlayer(player.value)
 }
 /**
  * * Выбор позиции игрока
