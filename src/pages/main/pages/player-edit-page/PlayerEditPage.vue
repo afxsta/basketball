@@ -32,6 +32,7 @@ const user = ref(new PlayerModel())
  */
 const playerStore = usePlayerStore()
 const { optionsPosition } = storeToRefs(playerStore)
+const { addPlayer } = playerStore
 /**
  * * Стор для управления командами
  */
@@ -86,7 +87,9 @@ const cancelEdit = () => router.push({ name: 'players' })
 /**
  * * Отправка запроса на сохранение игрока
  */
-const savePlayer = () => {}
+const savePlayer = async () => {
+  await addPlayer(user.value)
+}
 /**
  * * Выбор позиции игрока
  */

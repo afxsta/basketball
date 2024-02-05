@@ -85,26 +85,26 @@ export const usePlayerStore = defineStore('player-store', () => {
    * @param player Данные об игроке
    * @returns Новый игрок
    */
-  const add = async (player: PlayerModel) =>
+  const addPlayer = async (player: PlayerModel) =>
     new Promise<ResponseModel<PlayerModel[]>>(async (resolve) => {
       if (player.Image instanceof File) {
         const mediaResponse = await saveImage(player.Image)
         if (mediaResponse.IsSuccess) {
           player.Image = mediaResponse.Value
+        } else {
+          return resolve(null)
         }
       }
 
       const request = {
-        params: {
-          name: player.Name,
-          number: player.Number,
-          position: player.Position,
-          team: player.Team,
-          birthday: player.Birthday,
-          height: player.Height,
-          weight: player.Weight,
-          avatarUrl: player.Image,
-        },
+        name: player.Name,
+        number: player.Number,
+        position: player.Position,
+        team: player.Team,
+        birthday: player.Birthday,
+        height: player.Height,
+        weight: player.Weight,
+        avatarUrl: player.Image,
       }
 
       await api.value
@@ -186,7 +186,7 @@ export const usePlayerStore = defineStore('player-store', () => {
      * @param player Данные об игроке
      * @returns Новый игрок
      */
-    add,
+    addPlayer,
     /**
      * * Запрос на получение позиций игроков
      * @returns Позиции игроков
