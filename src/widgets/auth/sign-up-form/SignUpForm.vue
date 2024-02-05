@@ -1,6 +1,12 @@
 <script lang="ts" setup>
-import { Input, Button, Checkbox } from '@/shared'
-import { ref } from 'vue'
+import {
+  Input,
+  Button,
+  Checkbox,
+  useFormValidation,
+  ValidationModel,
+} from '@/shared'
+import { computed, ref } from 'vue'
 import { AuthModel, useAuthStore } from '@/entities'
 
 /**
@@ -28,19 +34,65 @@ const passwordRepeat = ref('')
  * * Принято ли соглашение
  */
 const agreementAccepted = ref(false)
+/**
+ * * Использование валидации
+ */
+const { validation, checkAsBoolean, startValidate } = useFormValidation()
+
+const checkPasswordsValidation = (_password: string) => {
+  return checkAsBoolean(_password) && password.value == passwordRepeat.value
+}
+
+/**
+ * * Настройки валидации
+ */
+const validationOptions = computed(() => [
+  new ValidationModel({
+    Key: 'Name',
+    Error: 'Field available',
+    Value: name.value,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Login',
+    Error: 'Field available',
+    Value: login.value,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Password',
+    Error: 'Comparison error',
+    Value: password.value,
+    Condition: checkPasswordsValidation,
+  }),
+  new ValidationModel({
+    Key: 'PasswordRepeat',
+    Error: 'Comparison error',
+    Value: password.value,
+    Condition: checkPasswordsValidation,
+  }),
+  new ValidationModel({
+    Key: 'Agreement',
+    Error: 'You need to accept the agreement',
+    Value: agreementAccepted.value,
+    Condition: checkAsBoolean,
+  }),
+])
 
 /**
  * * Отправка запроса на вход в аккаунт
  */
 const trySignUp = async () => {
-  const response = await signUp(
-    new AuthModel({
-      Name: name.value,
-      Login: login.value,
-      Password: password.value,
-    })
-  )
-  console.log(response)
+  if (startValidate(validationOptions.value)) {
+    const response = await signUp(
+      new AuthModel({
+        Name: name.value,
+        Login: login.value,
+        Password: password.value,
+      })
+    )
+    console.log(response)
+  }
 }
 </script>
 <template>
@@ -48,22 +100,31 @@ const trySignUp = async () => {
     <Input
       v-model="name"
       label="Name"
+      :error="validation.Name"
     />
     <Input
       v-model="login"
       label="Login"
+      :error="validation.Login"
     />
     <Input
       v-model="password"
       label="Password"
       type="password"
+      :error="validation.Password"
     />
     <Input
       v-model="passwordRepeat"
       label="Enter your password again"
       type="password"
+      :error="validation.PasswordRepeat"
     />
-    <Checkbox v-model="agreementAccepted"> I accept the agreement </Checkbox>
+    <Checkbox
+      v-model="agreementAccepted"
+      :error="validation.Agreement"
+    >
+      I accept the agreement
+    </Checkbox>
     <Button @click="trySignUp"> Sign Up </Button>
   </div>
 </template>
