@@ -7,9 +7,9 @@ import {
 } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
-import { Input, Button, Loader, Select } from '@/shared'
+import { Input, Button, Loader } from '@/shared'
 import { useLoading } from '@/shared/composables/loading/use-loading'
-import { CardsList } from '@/features'
+import { CardsList, TeamSelect } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 import { useRouter } from 'vue-router'
 import { Stopper } from '@/shared'
@@ -42,6 +42,10 @@ const players = ref<PlayerModel[]>()
  * * Первая загрузка
  */
 const isFirstLoading = ref(false)
+/**
+ * * Выбранные Id команд
+ */
+const teamIds = ref<number[]>([])
 
 /**
  * * Данные для запроса
@@ -51,6 +55,7 @@ const filter = computed(
     new FilterModel({
       Name: search.value,
       Pagination: pagination.value,
+      TeamIds: teamIds.value,
     })
 )
 
@@ -67,7 +72,6 @@ onMounted(async () => {
  */
 const updatePlayers = async (withReset?: boolean) => {
   if (withReset) {
-    isFirstLoading.value = true
     pagination.value = new PaginationModel()
   }
 
@@ -110,7 +114,12 @@ const changePage = (_page: number) => {
           width="364px"
           @update:model-value="updatePlayers(true)"
         />
-        <Select :style="{ 'max-width': '364px' }" />
+        <TeamSelect
+          v-model="teamIds"
+          is-multi
+          :style="{ 'max-width': '364px' }"
+          @update:model-value="updatePlayers(true)"
+        />
         <Button
           class="players-page_filter_add"
           width="104px"

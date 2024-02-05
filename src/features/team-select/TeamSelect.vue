@@ -67,6 +67,7 @@ const getTeamsOptions = async (firstLoad?: boolean) => {
     v-model="value"
     :label="label"
     :options="teamsOptions"
+    :is-multi="isMulti"
     @scroll-bottom="getTeamsOptions"
   />
 </template>

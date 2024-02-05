@@ -21,7 +21,6 @@ body {
 
   &_content {
     height: 100%;
-    max-width: 1440px;
   }
 }
 </style>

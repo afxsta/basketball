@@ -75,7 +75,6 @@ const itemOnClick = (_id: number) => emit('open', _id)
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 1140px;
     gap: 24px;
 
     &_item {

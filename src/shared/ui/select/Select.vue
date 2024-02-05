@@ -221,7 +221,7 @@ const listOnScroll = (e: Event) => {
       height: 24px;
       width: 40px;
       background-color: $white;
-      border-left: 0.5px solid $lightest-grey;
+      border-left: 1px solid $lightest-grey;
       z-index: 1;
 
       img {
