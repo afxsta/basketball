@@ -39,7 +39,7 @@ const loadPlayer = async () => {
   if (response.IsSuccess) {
     player.value = response.Value
   } else {
-    router.push({ name: 'main' })
+    router.push({ name: 'players' })
   }
 }
 /**

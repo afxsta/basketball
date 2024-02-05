@@ -160,7 +160,14 @@ export const usePlayerStore = defineStore('player-store', () => {
       await api.value
         .get(`${playerApiPath}Get`, { params: { id } })
         .then((response) => {
-          resolve(new ResponseModel({ Value: mapPlayer(response.data) }))
+          const result = new ResponseModel<PlayerModel>()
+          if (!response.data) {
+            result.IsSuccess = false
+            return resolve(result)
+          } else {
+            result.Value = mapPlayer(response.data)
+          }
+          resolve(result)
         })
         .catch((error) => {
           console.log(error)

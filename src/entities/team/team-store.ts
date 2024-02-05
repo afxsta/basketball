@@ -120,7 +120,14 @@ export const useTeamStore = defineStore('team-store', () => {
       await api.value
         .get(`${teamApiPath}Get`, { params: { id } })
         .then((response) => {
-          resolve(new ResponseModel({ Value: mapTeam(response.data) }))
+          const result = new ResponseModel<TeamModel>()
+          if (!response.data) {
+            result.IsSuccess = false
+            return resolve(result)
+          } else {
+            result.Value = mapTeam(response.data)
+          }
+          resolve(result)
         })
         .catch((error) => {
           console.log(error)
