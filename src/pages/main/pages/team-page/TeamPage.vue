@@ -3,6 +3,7 @@ import { TeamModel, useTeamStore } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted } from 'vue'
 import { ref } from 'vue'
+import { PageHeader } from '@/features'
 import { useRouter } from 'vue-router'
 
 /**
@@ -49,48 +50,63 @@ const loadTeam = async () => {
     router.push({ name: 'main' })
   }
 }
+/**
+ * * Запрос на удаление команды
+ */
+const deleteTeam = () => {}
+/**
+ * * Запрос на редактирование команды
+ */
+const editTeam = () => {}
 </script>
 <template>
   <div class="team-page">
-    <div
-      v-if="team"
-      class="team-page_info-block"
-    >
-      <div class="team-page_info-block_image">
-        <img
-          v-if="team.Image"
-          :src="team.Image.toString()"
-          alt="team-image"
-        />
-      </div>
-      <div class="team-page_info-block_data">
-        <div
-          v-text="team.Name"
-          class="team-page_info-block_data_title"
-        />
-        <div class="team-page_info-block_data_description">
-          <div class="team-page_info-block_data_description_item">
-            <div class="team-page_info-block_data_description_item_title">
-              Year of foundation
+    <div class="team-page-wrapper">
+      <PageHeader
+        :paths="['Teams', team.Name]"
+        @delete="deleteTeam"
+        @edit="editTeam"
+      />
+      <div
+        v-if="team"
+        class="team-page_info-block"
+      >
+        <div class="team-page_info-block_image">
+          <img
+            v-if="team.Image"
+            :src="team.Image.toString()"
+            alt="team-image"
+          />
+        </div>
+        <div class="team-page_info-block_data">
+          <div
+            v-text="team.Name"
+            class="team-page_info-block_data_title"
+          />
+          <div class="team-page_info-block_data_description">
+            <div class="team-page_info-block_data_description_item">
+              <div class="team-page_info-block_data_description_item_title">
+                Year of foundation
+              </div>
+              <div class="team-page_info-block_data_description_item_text">
+                {{ team.FoundationYear }}
+              </div>
             </div>
-            <div class="team-page_info-block_data_description_item_text">
-              {{ team.FoundationYear }}
+            <div class="team-page_info-block_data_description_item">
+              <div class="team-page_info-block_data_description_item_title">
+                Division
+              </div>
+              <div class="team-page_info-block_data_description_item_text">
+                {{ team.Division }}
+              </div>
             </div>
-          </div>
-          <div class="team-page_info-block_data_description_item">
-            <div class="team-page_info-block_data_description_item_title">
-              Division
-            </div>
-            <div class="team-page_info-block_data_description_item_text">
-              {{ team.Division }}
-            </div>
-          </div>
-          <div class="team-page_info-block_data_description_item">
-            <div class="team-page_info-block_data_description_item_title">
-              Conference
-            </div>
-            <div class="team-page_info-block_data_description_item_text">
-              {{ team.Conference }}
+            <div class="team-page_info-block_data_description_item">
+              <div class="team-page_info-block_data_description_item_title">
+                Conference
+              </div>
+              <div class="team-page_info-block_data_description_item_text">
+                {{ team.Conference }}
+              </div>
             </div>
           </div>
         </div>
@@ -104,12 +120,18 @@ const loadTeam = async () => {
   flex-direction: column;
   margin-bottom: 24px;
 
+  .team-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
   &_info-block {
     display: flex;
     background: linear-gradient(276.45deg, #707070 0%, #393939 100.28%);
     width: 100%;
     min-height: 404px;
-    border-radius: 10px;
     &_image {
       display: flex;
       justify-content: center;
