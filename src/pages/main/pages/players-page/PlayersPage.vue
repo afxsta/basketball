@@ -12,6 +12,8 @@ import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 import { useRouter } from 'vue-router'
+import { Stopper } from '@/shared'
+import PlayerEmpty from '@/shared/assets/images/player-empty.svg'
 
 /**
  * * Маршруты
@@ -120,8 +122,18 @@ const changePage = (_page: number) => {
           />
         </Button>
       </div>
-      <div class="f">
+      <div class="players-page_block f">
+        <Stopper v-if="!players?.length">
+          <template #image>
+            <img
+              :src="PlayerEmpty"
+              alt="empty"
+            />
+          </template>
+          <template #text> Add new players to continue </template>
+        </Stopper>
         <CardsList
+          v-else
           :items="players"
           :pagesCount="1"
           :pagination="pagination"
@@ -142,6 +154,7 @@ const changePage = (_page: number) => {
 .players-page {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &_filter {
     display: flex;
@@ -150,6 +163,10 @@ const changePage = (_page: number) => {
     &_add {
       margin-left: auto;
     }
+  }
+
+  &_block {
+    height: 100%;
   }
 }
 </style>

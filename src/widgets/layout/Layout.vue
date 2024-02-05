@@ -16,10 +16,11 @@ body {
 }
 .layout {
   position: relative;
-  min-height: calc(100vh - 132px);
+  height: calc(100vh - 132px);
   margin: 112px 80px 20px 220px;
 
   &_content {
+    height: 100%;
     max-width: 1440px;
   }
 }
