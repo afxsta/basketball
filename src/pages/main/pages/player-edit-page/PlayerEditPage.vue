@@ -51,7 +51,13 @@ onMounted(async () => {
 /**
  * * Отмена редактирования игрока
  */
-const cancelEdit = () => router.push({ name: 'players' })
+const cancelEdit = () => {
+  if (playerId.value) {
+    router.push({ name: 'player', params: { id: playerId.value } })
+  } else {
+    router.push({ name: 'players' })
+  }
+}
 /**
  * * Отправка запроса на сохранение игрока
  */
