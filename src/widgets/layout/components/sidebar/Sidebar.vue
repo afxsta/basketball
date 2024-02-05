@@ -201,6 +201,8 @@ defineExpose({
     padding: 0 0 20px;
     width: 200px;
     align-items: start;
+    top: 62px;
+    height: calc(100% - 62px);
 
     &:not(.opened) {
       left: -200px;

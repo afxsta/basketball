@@ -77,6 +77,14 @@ const toggleSidebar = () => emit('toggleSidebar')
 
   @media (max-width: $small) {
     justify-content: center;
+    height: 62px;
+
+    &_logo {
+      img {
+        height: 34px;
+        width: 137px;
+      }
+    }
 
     .header_user {
       display: none;

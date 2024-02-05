@@ -35,5 +35,9 @@ body {
   &_content {
     height: 100%;
   }
+
+  @media(max-width: $small){
+    margin: 78px 12px 12px;
+  }
 }
 </style>
