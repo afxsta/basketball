@@ -10,7 +10,7 @@ const props = defineProps({
   <RouterLink
     :class="{ disabled: isDisabled }"
     class="ui-link"
-    :to="href"
+    :to="{ name: href }"
   >
     <slot />
   </RouterLink>

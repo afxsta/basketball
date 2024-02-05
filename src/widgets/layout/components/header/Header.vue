@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import Logo from '@/shared/assets/images/logo.svg'
 import { UserInfo } from '@/widgets/layout'
-import { Link } from '@/shared'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/entities'
 
@@ -12,16 +11,16 @@ const { user } = storeToRefs(useAuthStore())
 </script>
 <template>
   <div class="header">
-    <Link
+    <RouterLink
       class="header_logo"
-      href="players"
+      :to="{ name: 'players' }"
     >
       <img
         :src="Logo"
         alt="logo"
         draggable="false"
       />
-    </Link>
+    </RouterLink>
     <UserInfo :info="user" />
   </div>
 </template>

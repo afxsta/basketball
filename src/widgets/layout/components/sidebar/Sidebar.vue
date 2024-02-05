@@ -58,47 +58,47 @@ const getItemColor = (_id: number) => {
  */
 const setCurrentHover = (_id: number) => (currentHover.value = _id)
 /**
- * * Сменить роут
+ * * Получить имя роута
  */
-const goToRoute = (_id: number) => {
-  let name = ''
+const getRouteName = (_id: number) => {
   switch (_id) {
     case 1:
-      name = 'teams'
-      break
+      return { name: 'teams' }
     case 2:
-      name = 'players'
-      break
+      return { name: 'players' }
   }
-  router.push({ name })
 }
 </script>
 <template>
   <div class="sidebar">
-    <div
+    <RouterLink
       v-for="item in items"
       :key="item?.Id"
-      class="sidebar_item"
-      @mouseenter="setCurrentHover(item?.Id)"
-      @mouseleave="setCurrentHover(undefined)"
-      @click="goToRoute(item?.Id)"
+      :to="getRouteName(item?.Id)"
+      class="sidebar_link"
     >
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 16 16"
+      <div
+        class="sidebar_item"
+        @mouseenter="setCurrentHover(item?.Id)"
+        @mouseleave="setCurrentHover(undefined)"
       >
-        <path
-          :d="getSvgDraw(item?.Id)"
-          :fill="getItemColor(item?.Id)"
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 16 16"
+        >
+          <path
+            :d="getSvgDraw(item?.Id)"
+            :fill="getItemColor(item?.Id)"
+          />
+        </svg>
+        <span
+          v-text="item?.Name"
+          class="sidebar_item_name"
+          :style="{ color: getItemColor(item?.Id) }"
         />
-      </svg>
-      <span
-        v-text="item?.Name"
-        class="sidebar_item_name"
-        :style="{ color: getItemColor(item?.Id) }"
-      />
-    </div>
+      </div>
+    </RouterLink>
     <div
       class="sidebar_sign-out"
       @click="leaveAccount"
@@ -124,6 +124,10 @@ const goToRoute = (_id: number) => {
   width: 140px;
   height: calc(100% - 80px);
   background-color: $white;
+
+  &_link {
+    text-decoration: none;
+  }
 
   &_item {
     display: flex;
