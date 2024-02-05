@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import { ItemCard } from '@/shared'
+import { ItemCard, Loader } from '@/shared'
 import { ICardsListProps, Paginator } from '@/features'
-import { GeneralModel } from '@/entities'
-import { ref } from 'vue'
+import { GeneralModel, PaginationModel } from '@/entities'
 
 /**
  * * Параметры компонента
  */
-const props = defineProps<ICardsListProps<GeneralModel>>()
+const props = withDefaults(defineProps<ICardsListProps<GeneralModel>>(), {
+  pagination: new PaginationModel(),
+})
 /**
  * * События компонента
  */
@@ -16,60 +17,74 @@ const emit = defineEmits<{
    * * Событие для предпросмотра сущности
    */
   (e: 'open', id: number): void
+  /**
+   * * Событие смены страницы
+   */
+  (e: 'page', number: number): void
 }>()
-
-const current = ref(15)
 
 /**
  * * Смена страницы
  */
-const setPage = (_page: number) => (current.value = _page)
+const setPage = (_page: number) => emit('page', _page)
 /**
  * * При клике по карточке
  */
 const itemOnClick = (_id: number) => emit('open', _id)
 </script>
 <template>
-  <div class="cards-list">
-    <ItemCard
-      v-for="item in items"
-      class="cards-list_item"
-      :key="item?.Id"
-      @click="itemOnClick(item?.Id)"
-    >
-      <template #image>
-        <img
-          v-if="item.Image"
-          :src="item.Image?.toString()"
-          alt="image"
-        />
-      </template>
-      <template #title> {{ item.Name }} </template>
-      <template #subtitle>
-        <slot
-          name="subtitle"
-          :item="item"
-        />
-      </template>
-    </ItemCard>
+  <div class="cards-list-wrapper f fd-col">
+    <Loader :isLoading="isLoading">
+      <div class="cards-list">
+        <ItemCard
+          v-for="item in items"
+          class="cards-list_item"
+          :key="item?.Id"
+          @click="itemOnClick(item?.Id)"
+        >
+          <template #image>
+            <img
+              v-if="item.Image"
+              :src="item.Image?.toString()"
+              alt="image"
+            />
+          </template>
+          <template #title> {{ item.Name }} </template>
+          <template #subtitle>
+            <slot
+              name="subtitle"
+              :item="item"
+            />
+          </template>
+        </ItemCard>
+      </div>
+    </Loader>
     <Paginator
-      :current="current"
-      :total="27"
+      class="cards-list-wrapper_paginator"
+      :current="props.pagination?.Page"
+      :total="props.pagination?.Total"
       @change="setPage"
     />
   </div>
 </template>
 <style lang="scss" scoped>
-.cards-list {
-  display: flex;
-  flex-wrap: wrap;
+.cards-list-wrapper {
   width: 100%;
-  max-width: 1140px;
-  gap: 24px;
+  .cards-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1140px;
+    gap: 24px;
 
-  &_item {
-    width: calc(100% / 3 - 16px);
-    cursor: pointer;
+    &_item {
+      width: calc(100% / 3 - 16px);
+      cursor: pointer;
+    }
+  }
+  &_paginator {
+    margin-top: 32px;
+    align-self: flex-start;
   }
 }
 </style>

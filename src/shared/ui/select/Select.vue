@@ -243,6 +243,7 @@ const removeAll = () => (value.value = [] as number[])
   &_list {
     position: absolute;
     width: 100%;
+    max-height: 220px;
     left: 0;
     top: calc(100% + 2px);
     display: flex;
@@ -250,7 +251,7 @@ const removeAll = () => (value.value = [] as number[])
     border-radius: 4px;
     border: 0.5px solid $lightest-grey;
     background-color: $white;
-    overflow: hidden;
+    overflow-y: scroll;
     z-index: 10;
 
     &_item {
@@ -258,7 +259,7 @@ const removeAll = () => (value.value = [] as number[])
       align-items: center;
       padding: 0 $indent-2;
       color: $light-grey;
-      height: 40px;
+      min-height: 40px;
       border-bottom: 0.5px solid $lightest-grey;
       transition: $transition-1;
       user-select: none;

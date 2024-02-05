@@ -33,8 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 280px;
-    height: 100%;
+    height: 280px;
     width: 100%;
     background: linear-gradient(121.57deg, $grey 1.62%, $dark-grey1 81.02%);
 

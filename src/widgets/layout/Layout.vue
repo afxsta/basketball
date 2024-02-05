@@ -10,15 +10,17 @@ import { Header, Sidebar } from '@/widgets/layout'
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
+body {
+  background-color: $lightest-grey1;
+}
 .layout {
   position: relative;
-  background-color: $lightest-grey1;
-  min-height: 100vh;
+  min-height: calc(100vh - 132px);
+  margin: 112px 80px 20px 220px;
 
   &_content {
     max-width: 1440px;
-    padding: 112px 80px 20px 220px;
   }
 }
 </style>

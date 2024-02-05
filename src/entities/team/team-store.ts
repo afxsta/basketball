@@ -5,8 +5,10 @@ import {
   ResponseModel,
   useApiStore,
   useMediaStore,
+  PaginationModel,
 } from '@/entities'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { SelectOptionModel } from '@/shared'
 
 /**
  * * Стор для управления командами
@@ -22,14 +24,14 @@ export const useTeamStore = defineStore('team-store', () => {
   const { saveImage } = useMediaStore()
 
   /**
-   * * Список команд
-   */
-  const teams = ref<TeamModel[]>([])
-
-  /**
    * * Путь к API команд
    */
   const teamApiPath = '/api/Team/'
+
+  /**
+   * * Данные для пагинации команд
+   */
+  const pagination = ref(new PaginationModel())
 
   /**
    * * Отправка запроса для получения списка команд
@@ -53,9 +55,16 @@ export const useTeamStore = defineStore('team-store', () => {
       await api.value
         .get(`${teamApiPath}GetTeams`, request)
         .then((response) => {
-          console.log(response?.data?.data)
-          teams.value = response?.data?.data?.map((x: any) => mapTeam(x)) || []
-          resolve(new ResponseModel({ Value: [] }))
+          pagination.value = new PaginationModel({
+            Count: response?.data?.count,
+            Page: response?.data?.page,
+            PageSize: response?.data?.size,
+          })
+          resolve(
+            new ResponseModel({
+              Value: response?.data?.data?.map((x: any) => mapTeam(x)) || [],
+            })
+          )
         })
         .catch((error) => {
           console.log(error)
@@ -151,8 +160,8 @@ export const useTeamStore = defineStore('team-store', () => {
      */
     getTeam,
     /**
-     * * Список команд
+     * * Данные для пагинации команд
      */
-    teams,
+    pagination,
   }
 })

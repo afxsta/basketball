@@ -6,8 +6,9 @@ import {
   useTeamStore,
 } from '@/entities'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
-import { Input, Select, Button } from '@/shared'
+import { computed, onMounted, ref } from 'vue'
+import { Input, Button, Loader } from '@/shared'
+import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 import { useRouter } from 'vue-router'
@@ -20,28 +21,60 @@ const router = useRouter()
  * * Стор для управления командами
  */
 const teamStore = useTeamStore()
-const { teams } = storeToRefs(teamStore)
+const { pagination } = storeToRefs(teamStore)
 const { getTeams } = teamStore
 
+/**
+ * * Управление загрузкой
+ */
+const { isLoading, startLoading, stopLoading } = useLoading()
 /**
  * * Поисковой запрос
  */
 const search = ref('')
+/**
+ * * Список команд
+ */
+const teams = ref<TeamModel[]>()
+/**
+ * * Первая загрузка
+ */
+const isFirstLoading = ref(false)
+
+/**
+ * * Данные для запроса
+ */
+const filter = computed(
+  () =>
+    new FilterModel({
+      Name: search.value,
+      Pagination: pagination.value,
+    })
+)
 
 /**
  * * После рендера компонента
  */
-onMounted(() => updateTeams())
+onMounted(async () => {
+  updateTeams()
+  isFirstLoading.value = false
+})
 
-const updateTeams = () => {
-  getTeams(
-    new FilterModel({
-      Pagination: new PaginationModel({
-        Page: 1,
-        PageSize: 6,
-      }),
-    })
-  )
+/**
+ * * Обновить список команд
+ */
+const updateTeams = async (withReset?: boolean) => {
+  if (withReset) {
+    isFirstLoading.value = true
+    pagination.value = new PaginationModel()
+  }
+
+  startLoading()
+  const response = await getTeams(filter.value)
+  if (response.IsSuccess) {
+    teams.value = response.Value
+  }
+  stopLoading()
 }
 /**
  * * Открытие страницы с созданием команды
@@ -56,41 +89,55 @@ const openTeam = (_id: number) => {
     params: { id: _id },
   })
 }
+/**
+ * * Смена страницы
+ */
+const changePage = (_page: number) => {
+  pagination.value.Page = _page
+  updateTeams()
+}
 </script>
 <template>
-  <div class="teams-page">
-    <div class="teams-page_filter">
-      <Input
-        v-model="search"
-        placeholder="Search ..."
-        is-search
-        width="364px"
-        @update:model-value="updateTeams"
-      />
-      <Button
-        class="teams-page_filter_add"
-        width="104px"
-        @click="openTeamCreate"
-      >
-        Add
-        <img
-          :src="IconAdd"
-          alt="add"
+  <Loader :is-loading="isLoading && isFirstLoading">
+    <div class="teams-page">
+      <div class="teams-page_filter">
+        <Input
+          v-model="search"
+          placeholder="Search ..."
+          is-search
+          width="364px"
+          @update:model-value="updateTeams(true)"
         />
-      </Button>
+        <Button
+          class="teams-page_filter_add"
+          width="104px"
+          @click="openTeamCreate"
+        >
+          Add
+          <img
+            :src="IconAdd"
+            alt="add"
+          />
+        </Button>
+      </div>
+      <div class="f">
+        <CardsList
+          :items="teams"
+          :pagesCount="1"
+          :pagination="pagination"
+          :is-loading="isLoading"
+          @open="openTeam"
+          @page="changePage"
+        >
+          <!-- pagination -->
+          <template #subtitle="slotProps">
+            Year of foundation:
+            {{ (slotProps.item as TeamModel)?.FoundationYear }}
+          </template>
+        </CardsList>
+      </div>
     </div>
-    <div class="f">
-      <CardsList
-        :items="teams"
-        @open="openTeam"
-      >
-        <template #subtitle="slotProps">
-          Year of foundation:
-          {{ (slotProps.item as TeamModel)?.FoundationYear }}
-        </template>
-      </CardsList>
-    </div>
-  </div>
+  </Loader>
 </template>
 <style lang="scss">
 .teams-page {

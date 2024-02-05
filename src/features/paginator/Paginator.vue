@@ -28,6 +28,10 @@ const isDotsAfter = computed(() => props.total - props.current > 3)
  * * Отображаемые страницы
  */
 const visiblePages = computed(() => {
+  if (props.total < 5) {
+    return Array.from({ length: props.total - 2 }, (_, i) => i + 2)
+  }
+
   const isFinish = props.current + 3 >= props.total
   const isEdge = props.current <= 4
 
@@ -85,6 +89,7 @@ const getPageItemClass = (_page: number) => [
       ...
     </div>
     <div
+      v-if="total > 1"
       :class="getPageItemClass(total)"
       @click="changePage(total)"
     >

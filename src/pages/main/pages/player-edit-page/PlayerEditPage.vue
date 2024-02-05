@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { PlayerModel, usePlayerStore } from '@/entities'
-import { Input, Select, Button, DatePicker, ImageLoader } from '@/shared'
+import { PlayerModel, usePlayerStore, useTeamStore } from '@/entities'
+import { Input, Select, Button, DatePicker, ImageLoader, Loader } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -18,6 +18,8 @@ const user = ref(new PlayerModel())
  */
 const playerStore = usePlayerStore()
 const { optionsPosition } = storeToRefs(playerStore)
+const teamStore = useTeamStore()
+const { teamsOptions } = storeToRefs(teamStore)
 
 /**
  * * После рендера компонента
@@ -52,6 +54,7 @@ const userPosition = computed({
 </script>
 <template>
   <div class="player-edit-page">
+    <Loader />
     <ImageLoader v-model="user.Image" />
     <div class="player-edit-page_form">
       <Input
@@ -63,7 +66,10 @@ const userPosition = computed({
         label="Position"
         v-model="userPosition"
       />
-      <Select label="Team" />
+      <Select
+        label="Team"
+        :options="teamsOptions"
+      />
       <div class="player-edit-page_form_row">
         <Input
           v-model="user.Height"

@@ -6,11 +6,11 @@ export interface ICardsListProps<T> {
    */
   items?: T[]
   /**
-   * * Максимальное кол-во страниц
-   */
-  pagesCount?: number
-  /**
    * * Данные о текущей странице
    */
   pagination?: PaginationModel
+  /**
+   * * Идет загрузка сущностей
+   */
+  isLoading?: boolean
 }

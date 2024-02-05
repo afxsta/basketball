@@ -71,20 +71,7 @@ export const usePlayerStore = defineStore('player-store', () => {
         .get(`${playerApiPath}GetPlayers`, request)
         .then((response) => {
           players.value =
-            response?.data?.data?.map(
-              (x: any) =>
-                new PlayerModel({
-                  Id: x.id,
-                  Name: x.name,
-                  Number: x.number,
-                  Position: x.position,
-                  Team: x.team,
-                  Birthday: x.birthday,
-                  Height: x.height,
-                  Weight: x.weight,
-                  Image: x.avatarUrl ? apiUrl.value + x.avatarUrl : '',
-                })
-            ) || []
+            response?.data?.data?.map((x: any) => mapPlayer(x)) || []
           resolve(new ResponseModel({ Value: [] }))
         })
         .catch((error) => {
@@ -152,6 +139,41 @@ export const usePlayerStore = defineStore('player-store', () => {
         })
     })
 
+  /**
+   * * Запрос на получение ученика
+   * @param id Id ученика
+   * @returns Данные об ученике
+   */
+  const getPlayer = async (id: number) =>
+    new Promise<ResponseModel<PlayerModel>>(async (resolve) => {
+      await api.value
+        .get(`${playerApiPath}Get`, { params: { id } })
+        .then((response) => {
+          resolve(new ResponseModel({ Value: mapPlayer(response.data) }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
+  /**
+   * * Приведение к модели игрока из запроса
+   */
+  const mapPlayer = (response: any) => {
+    return new PlayerModel({
+      Id: response.id,
+      Name: response.name,
+      Number: response.number,
+      Position: response.position,
+      Team: response.team,
+      Birthday: response.birthday,
+      Height: response.height,
+      Weight: response.weight,
+      Image: response.avatarUrl ? apiUrl.value + response.avatarUrl : '',
+    })
+  }
+
   return {
     /**
      * * Отправка запроса для получения списка игроков
@@ -170,6 +192,12 @@ export const usePlayerStore = defineStore('player-store', () => {
      * @returns Позиции игроков
      */
     getPositions,
+    /**
+     * * Запрос на получение ученика
+     * @param id Id ученика
+     * @returns Данные об ученике
+     */
+    getPlayer,
     /**
      * * Список игроков
      */
