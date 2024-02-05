@@ -20,6 +20,15 @@ const emit = defineEmits<{
    */
   (e: 'edit'): void
 }>()
+
+/**
+ * * Отправка события для удаления сущности
+ */
+const onDelete = () => emit('delete')
+/**
+ * * Отправка события для редактирования сущности
+ */
+const onEdit = () => emit('edit')
 </script>
 <template>
   <div class="page-header">
@@ -45,10 +54,12 @@ const emit = defineEmits<{
       <img
         :src="IconDelete"
         alt="delete"
+        @click="onDelete"
       />
       <img
         :src="IconEdit"
         alt="edit"
+        @click="onEdit"
       />
     </div>
   </div>

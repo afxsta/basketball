@@ -14,8 +14,7 @@ const router = useRouter()
  * * Стор для управления командами
  */
 const teamStore = useTeamStore()
-const { teams } = storeToRefs(teamStore)
-const { getTeam } = teamStore
+const { getTeam, deleteTeam } = teamStore
 
 /**
  * * Данные о просматриваемой команде
@@ -30,14 +29,7 @@ const teamId = computed(() => Number(router.currentRoute.value?.params?.id))
 /**
  * * После рендера компонента
  */
-onMounted(async () => {
-  const _team = teams.value?.find((t) => t?.Id == teamId.value)
-  if (_team) {
-    team.value = _team
-  } else {
-    await loadTeam()
-  }
-})
+onMounted(async () => await loadTeam())
 
 /**
  * * Запрос на получение команды
@@ -51,10 +43,6 @@ const loadTeam = async () => {
   }
 }
 /**
- * * Запрос на удаление команды
- */
-const deleteTeam = () => {}
-/**
  * * Запрос на редактирование команды
  */
 const editTeam = () => {}
@@ -64,7 +52,7 @@ const editTeam = () => {}
     <div class="team-page-wrapper">
       <PageHeader
         :paths="['Teams', team.Name]"
-        @delete="deleteTeam"
+        @delete="deleteTeam(team.Id)"
         @edit="editTeam"
       />
       <div

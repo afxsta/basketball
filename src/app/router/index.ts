@@ -38,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
             component: PlayersPage,
           },
           {
-            path: 'player',
+            path: 'player/:id',
             name: 'player',
             component: PlayerPage,
           },

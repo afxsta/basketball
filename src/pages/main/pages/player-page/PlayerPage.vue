@@ -14,8 +14,7 @@ const router = useRouter()
  * * Стор для управления командами
  */
 const playerStore = usePlayerStore()
-const { players } = storeToRefs(playerStore)
-const { getPlayer } = playerStore
+const { getPlayer, deletePlayer } = playerStore
 
 /**
  * * Данные о просматриваемой команде
@@ -30,14 +29,7 @@ const playerId = computed(() => Number(router.currentRoute.value?.params?.id))
 /**
  * * После рендера компонента
  */
-onMounted(async () => {
-  const _player = players.value?.find((t) => t?.Id == playerId.value)
-  if (_player) {
-    player.value = _player
-  } else {
-    await loadPlayer()
-  }
-})
+onMounted(async () => await loadPlayer())
 
 /**
  * * Запрос на получение команды
@@ -51,21 +43,17 @@ const loadPlayer = async () => {
   }
 }
 /**
- * * Запрос на удаление команды
- */
-const deletePlayer = () => {}
-/**
  * * Запрос на редактирование команды
  */
-const editPlayer = () => {}
+const editPlayer = (_id: number) => {}
 </script>
 <template>
   <div class="player-page">
     <div class="player-page-wrapper">
       <PageHeader
         :paths="['Players', player.Name]"
-        @delete="deletePlayer"
-        @edit="editPlayer"
+        @delete="deletePlayer(player.Id)"
+        @edit="editPlayer(player.Id)"
       />
       <div
         v-if="player"

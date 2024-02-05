@@ -31,7 +31,7 @@ export const useTeamStore = defineStore('team-store', () => {
   /**
    * * Данные для пагинации команд
    */
-  const pagination = ref()
+  const pagination = ref(new PaginationModel())
 
   /**
    * * Отправка запроса для получения списка команд
@@ -140,6 +140,23 @@ export const useTeamStore = defineStore('team-store', () => {
     })
   }
 
+  /**
+   * * Запрос на удаление игрока
+   * @param id Id удаляемого игрока
+   */
+  const deleteTeam = async (id: number) =>
+    new Promise<ResponseModel<boolean>>(async (resolve) => {
+      await api.value
+        .delete(`${teamApiPath}Delete`, { params: { id } })
+        .then(() => {
+          resolve(new ResponseModel({ Value: true }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
   return {
     /**
      * * Отправка запроса для получения списка команд
@@ -159,6 +176,11 @@ export const useTeamStore = defineStore('team-store', () => {
      * @returns Данные о команде
      */
     getTeam,
+    /**
+     * * Запрос на удаление игрока
+     * @param id Id удаляемого игрока
+     */
+    deleteTeam,
     /**
      * * Данные для пагинации команд
      */

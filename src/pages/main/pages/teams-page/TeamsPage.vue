@@ -12,6 +12,7 @@ import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
 import { useRouter } from 'vue-router'
+import TeamEmpty from '@/shared/assets/images/team-empty.svg'
 
 /**
  * * Маршруты
@@ -120,7 +121,16 @@ const changePage = (_page: number) => {
           />
         </Button>
       </div>
-      <div class="f">
+      <div class="teams-page_block f">
+        <Stopper v-if="!teams?.length">
+          <template #image>
+            <img
+              :src="TeamEmpty"
+              alt="empty"
+            />
+          </template>
+          <template #text> Add new teams to continue </template>
+        </Stopper>
         <CardsList
           :items="teams"
           :pagesCount="1"
@@ -129,7 +139,6 @@ const changePage = (_page: number) => {
           @open="openTeam"
           @page="changePage"
         >
-          <!-- pagination -->
           <template #subtitle="slotProps">
             Year of foundation:
             {{ (slotProps.item as TeamModel)?.FoundationYear }}
@@ -151,6 +160,9 @@ const changePage = (_page: number) => {
     &_add {
       margin-left: auto;
     }
+  }
+  &_block {
+    height: 100%;
   }
 }
 </style>

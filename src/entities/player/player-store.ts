@@ -34,7 +34,7 @@ export const usePlayerStore = defineStore('player-store', () => {
   /**
    * * Данные для пагинации игроков
    */
-  const pagination = ref<PaginationModel>()
+  const pagination = ref(new PaginationModel())
 
   /**
    * * Список позиций для select компонента
@@ -167,6 +167,23 @@ export const usePlayerStore = defineStore('player-store', () => {
     })
 
   /**
+   * * Запрос на удаление игрока
+   * @param id Id удаляемого игрока
+   */
+  const deletePlayer = async (id: number) =>
+    new Promise<ResponseModel<boolean>>(async (resolve) => {
+      await api.value
+        .delete(`${playerApiPath}Delete`, { params: { id } })
+        .then(() => {
+          resolve(new ResponseModel({ Value: true }))
+        })
+        .catch((error) => {
+          console.log(error)
+          resolve(new ResponseModel({ IsSuccess: false }))
+        })
+    })
+
+  /**
    * * Приведение к модели игрока из запроса
    */
   const mapPlayer = (response: any) => {
@@ -207,6 +224,11 @@ export const usePlayerStore = defineStore('player-store', () => {
      * @returns Данные об ученике
      */
     getPlayer,
+    /**
+     * * Запрос на удаление игрока
+     * @param id Id удаляемого игрока
+     */
+    deletePlayer,
     /**
      * * Позиции игроков
      */
