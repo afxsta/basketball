@@ -5,6 +5,7 @@ import {
   ResponseModel,
   useApiStore,
   useMediaStore,
+  PaginationModel,
 } from '@/entities'
 import { computed, ref } from 'vue'
 import { SelectOptionModel } from '@/shared'
@@ -27,13 +28,13 @@ export const usePlayerStore = defineStore('player-store', () => {
   const playerApiPath = '/api/Player/'
 
   /**
-   * * Список игроков
-   */
-  const players = ref<PlayerModel[]>([])
-  /**
    * * Позиции игроков
    */
   const positions = ref<string[]>([])
+  /**
+   * * Данные для пагинации игроков
+   */
+  const pagination = ref<PaginationModel>()
 
   /**
    * * Список позиций для select компонента
@@ -70,9 +71,17 @@ export const usePlayerStore = defineStore('player-store', () => {
       await api.value
         .get(`${playerApiPath}GetPlayers`, request)
         .then((response) => {
-          players.value =
-            response?.data?.data?.map((x: any) => mapPlayer(x)) || []
-          resolve(new ResponseModel({ Value: [] }))
+          pagination.value = new PaginationModel({
+            Count: response?.data?.count,
+            Page: response?.data?.page,
+            PageSize: response?.data?.size,
+          })
+
+          resolve(
+            new ResponseModel({
+              Value: response?.data?.data?.map((x: any) => mapPlayer(x)) || [],
+            })
+          )
         })
         .catch((error) => {
           console.log(error)
@@ -199,10 +208,6 @@ export const usePlayerStore = defineStore('player-store', () => {
      */
     getPlayer,
     /**
-     * * Список игроков
-     */
-    players,
-    /**
      * * Позиции игроков
      */
     positions,
@@ -210,5 +215,9 @@ export const usePlayerStore = defineStore('player-store', () => {
      * * Список позиций для select компонента
      */
     optionsPosition,
+    /**
+     * * Данные для пагинации игроков
+     */
+    pagination,
   }
 })

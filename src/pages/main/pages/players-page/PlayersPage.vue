@@ -1,85 +1,148 @@
 <script lang="ts" setup>
 import {
-  PaginationModel,
   FilterModel,
-  usePlayerStore,
+  PaginationModel,
   PlayerModel,
+  usePlayerStore,
 } from '@/entities'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
-import { ItemCard, Input, Select, Button } from '@/shared'
+import { computed, onMounted, ref } from 'vue'
+import { Input, Button, Loader } from '@/shared'
+import { useLoading } from '@/shared/composables/loading/use-loading'
+import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
-import router from '@/app/router'
+import { useRouter } from 'vue-router'
 
+/**
+ * * Маршруты
+ */
+const router = useRouter()
+/**
+ * * Стор для управления командами
+ */
 const playerStore = usePlayerStore()
-const { players } = storeToRefs(playerStore)
+const { pagination } = storeToRefs(playerStore)
 const { getPlayers } = playerStore
 
+/**
+ * * Управление загрузкой
+ */
+const { isLoading, startLoading, stopLoading } = useLoading()
 /**
  * * Поисковой запрос
  */
 const search = ref('')
+/**
+ * * Список команд
+ */
+const players = ref<PlayerModel[]>()
+/**
+ * * Первая загрузка
+ */
+const isFirstLoading = ref(false)
+
+/**
+ * * Данные для запроса
+ */
+const filter = computed(
+  () =>
+    new FilterModel({
+      Name: search.value,
+      Pagination: pagination.value,
+    })
+)
 
 /**
  * * После рендера компонента
  */
-onMounted(() => updatePlayers())
+onMounted(async () => {
+  updatePlayers()
+  isFirstLoading.value = false
+})
 
 /**
- * * Обновить список игроков
+ * * Обновить список команд
  */
-const updatePlayers = () => {
-  getPlayers(
-    new FilterModel({
-      Pagination: new PaginationModel({
-        Page: 1,
-        PageSize: 6,
-      }),
-    })
-  )
+const updatePlayers = async (withReset?: boolean) => {
+  if (withReset) {
+    isFirstLoading.value = true
+    pagination.value = new PaginationModel()
+  }
+
+  startLoading()
+  const response = await getPlayers(filter.value)
+  if (response.IsSuccess) {
+    players.value = response.Value
+  }
+  stopLoading()
 }
 /**
- * * Открытие страницы с созданием пользователя
+ * * Открытие страницы с созданием команды
  */
 const openPlayerCreate = () => router.push({ name: 'player-create' })
+/**
+ * * Открыть предпросмотр команды
+ */
+const openPlayer = (_id: number) => {
+  router.push({
+    name: 'player',
+    params: { id: _id },
+  })
+}
+/**
+ * * Смена страницы
+ */
+const changePage = (_page: number) => {
+  pagination.value.Page = _page
+  updatePlayers()
+}
 </script>
 <template>
-  <div class="players-page">
-    <div class="players-page_filter">
-      <Input
-        v-model="search"
-        placeholder="Search ..."
-        is-search
-        width="364px"
-        @update:model-value="updatePlayers"
-      />
-      <Select @update:model-value="updatePlayers" />
-      <Button
-        class="players-page_filter_add"
-        width="104px"
-        @click="openPlayerCreate"
-      >
-        Add
-        <img
-          :src="IconAdd"
-          alt="add"
+  <Loader :is-loading="isLoading && isFirstLoading">
+    <div class="players-page">
+      <div class="players-page_filter">
+        <Input
+          v-model="search"
+          placeholder="Search ..."
+          is-search
+          width="364px"
+          @update:model-value="updatePlayers(true)"
         />
-      </Button>
+        <Button
+          class="players-page_filter_add"
+          width="104px"
+          @click="openPlayerCreate"
+        >
+          Add
+          <img
+            :src="IconAdd"
+            alt="add"
+          />
+        </Button>
+      </div>
+      <div class="f">
+        <CardsList
+          :items="players"
+          :pagesCount="1"
+          :pagination="pagination"
+          :is-loading="isLoading"
+          @open="openPlayer"
+          @page="changePage"
+        >
+          <template #subtitle="slotProps">
+            {{ (slotProps.item as PlayerModel)?.Name }}
+            #{{ (slotProps.item as PlayerModel)?.Number }}
+          </template>
+        </CardsList>
+      </div>
     </div>
-    <div class="f">
-      <CardsList :items="players">
-        <template #subtitle="slotProps">
-          {{ (slotProps.item as PlayerModel)?.Name }}
-          {{ (slotProps.item as PlayerModel)?.Number }}
-        </template>
-      </CardsList>
-    </div>
-  </div>
+  </Loader>
 </template>
 <style lang="scss">
 .players-page {
   display: flex;
   flex-direction: column;
+
   &_filter {
     display: flex;
     gap: 24px;
