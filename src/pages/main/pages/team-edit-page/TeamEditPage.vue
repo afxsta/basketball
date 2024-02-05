@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { TeamModel, useTeamStore } from '@/entities'
-import { Input, Button, ImageLoader } from '@/shared'
+import {
+  Input,
+  Button,
+  ImageLoader,
+  useFormValidation,
+  ValidationModel,
+} from '@/shared'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -17,6 +23,42 @@ const team = ref(new TeamModel())
  */
 const teamStore = useTeamStore()
 const { updateTeam, getTeam } = teamStore
+
+/**
+ * * Использование валидации
+ */
+const { validation, checkAsBoolean, checkPositiveNumber, startValidate } =
+  useFormValidation()
+
+/**
+ * * Настройки валидации
+ */
+const validationOptions = computed(() => [
+  new ValidationModel({
+    Key: 'Name',
+    Error: 'Field available',
+    Value: team.value.Name,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Division',
+    Error: 'Field available',
+    Value: team.value.Division,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'Conference',
+    Error: 'Field available',
+    Value: team.value.Conference,
+    Condition: checkAsBoolean,
+  }),
+  new ValidationModel({
+    Key: 'FoundationYear',
+    Error: 'Wrong value',
+    Value: team.value.FoundationYear,
+    Condition: checkPositiveNumber,
+  }),
+])
 
 /**
  * * Id редактируемой команды
@@ -49,9 +91,11 @@ const cancelEdit = () => {
  * * Отправка запроса на сохранение игрока
  */
 const saveTeam = async () => {
-  const response = await updateTeam(team.value)
-  if (response.IsSuccess) {
-    router.push({ name: 'team', params: { id: response.Value?.Id } })
+  if (startValidate(validationOptions.value)) {
+    const response = await updateTeam(team.value)
+    if (response.IsSuccess) {
+      router.push({ name: 'team', params: { id: response.Value?.Id } })
+    }
   }
 }
 </script>
@@ -61,18 +105,22 @@ const saveTeam = async () => {
     <div class="team-edit-page_form">
       <Input
         v-model="team.Name"
+        :error="validation.Name"
         label="Name"
       />
       <Input
         v-model="team.Division"
+        :error="validation.Division"
         label="Division"
       />
       <Input
         v-model="team.Conference"
+        :error="validation.Conference"
         label="Conference"
       />
       <Input
         v-model="team.FoundationYear"
+        :error="validation.FoundationYear"
         label="Year of foundation"
         type="number"
       />
