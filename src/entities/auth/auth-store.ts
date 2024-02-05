@@ -85,16 +85,6 @@ export const useAuthStore = defineStore('auth-store', {
           })
       })
 
-    try {
-      const state = localStorage['auth-store']
-      if (!state) return
-
-      const _user = JSON.parse(state)?.user
-      if (_user) user.value = new UserModel(_user)
-    } catch (e) {
-      console.error(e)
-    }
-
     /**
      * * Выйти из аккаунта
      */

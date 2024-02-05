@@ -74,9 +74,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const { user } = storeToRefs(useAuthStore())
+  let user
+
+  const state = localStorage['auth-store']
+  if (state) user = JSON.parse(state)?.user
+
   const isSignPage = to.name?.toString()?.includes('sign')
-  if (!user.value) {
+  if (!user) {
     if (!isSignPage) next({ name: 'sign-in' })
   } else {
     if (isSignPage || !to.name) next({ name: 'main' })
