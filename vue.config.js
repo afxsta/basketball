@@ -10,7 +10,10 @@ module.exports = defineConfig({
   css: {
     loaderOptions: {
       sass: {
-        additionalData: '@import "@/shared/assets/styles/index.scss";',
+        additionalData: `
+          @import "@/shared/assets/styles/normalize.scss";
+          @import "@/shared/assets/styles/index.scss";
+        `,
       },
     },
   },
