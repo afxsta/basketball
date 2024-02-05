@@ -114,7 +114,7 @@ export const usePlayerStore = defineStore('player-store', () => {
         birthday: player.Birthday,
         height: player.Height,
         weight: player.Weight,
-        avatarUrl: player.Image,
+        avatarUrl: player?.Image?.replaceAll(apiUrl.value, ''),
       }
 
       const query = player.Id

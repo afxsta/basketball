@@ -7,8 +7,7 @@ import {
   useMediaStore,
   PaginationModel,
 } from '@/entities'
-import { computed, ref } from 'vue'
-import { SelectOptionModel } from '@/shared'
+import { ref } from 'vue'
 
 /**
  * * Стор для управления командами
@@ -77,7 +76,7 @@ export const useTeamStore = defineStore('team-store', () => {
    * @param team Данные о команде
    * @returns Новая команда
    */
-  const addTeam = async (team: TeamModel) =>
+  const updateTeam = async (team: TeamModel) =>
     new Promise<ResponseModel<TeamModel>>(async (resolve, reject) => {
       if (team.Image instanceof File) {
         const mediaResponse = await saveImage(team.Image)
@@ -89,17 +88,20 @@ export const useTeamStore = defineStore('team-store', () => {
       }
 
       const request = {
+        id: team?.Id,
         name: team?.Name,
         foundationYear: Number(team?.FoundationYear),
         division: team?.Division,
         conference: team?.Conference,
-        imageUrl: team?.Image,
+        imageUrl: team?.Image?.replaceAll(apiUrl.value, ''),
       }
 
-      await api.value
-        .post(`${teamApiPath}Add`, request)
-        .then((response) => {
-          console.log(response?.data?.data)
+      const query = team?.Id
+        ? api.value.put(`${teamApiPath}Update`, request)
+        : api.value.post(`${teamApiPath}Add`, request)
+
+      await query
+        .then(() => {
           resolve(new ResponseModel({ Value: team }))
         })
         .catch((error) => {
@@ -165,11 +167,11 @@ export const useTeamStore = defineStore('team-store', () => {
      */
     getTeams,
     /**
-     * * Запрос на создание команды
+     * * Запрос на создание/редактирование команды
      * @param team Данные о команде
      * @returns Новая команда
      */
-    addTeam,
+    updateTeam,
     /**
      * * Запрос для получения команды
      * @param id Id команды

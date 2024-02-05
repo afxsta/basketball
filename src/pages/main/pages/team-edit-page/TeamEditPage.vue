@@ -16,7 +16,7 @@ const team = ref(new TeamModel())
  * * Стор для управления игроками
  */
 const teamStore = useTeamStore()
-const { addTeam, getTeam } = teamStore
+const { updateTeam, getTeam } = teamStore
 
 /**
  * * Id редактируемой команды
@@ -43,7 +43,7 @@ const cancelEdit = () => router.push({ name: 'players' })
  * * Отправка запроса на сохранение игрока
  */
 const saveTeam = async () => {
-  const response = await addTeam(team.value)
+  const response = await updateTeam(team.value)
   console.log(response)
 }
 </script>
