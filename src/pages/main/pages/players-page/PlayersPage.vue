@@ -165,12 +165,13 @@ const changePage = (_page: number) => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-width: 1140px;
 
   &_filter {
     display: flex;
     gap: 24px;
     margin-bottom: 32px;
-    &_add {
+    button.players-page_filter_add {
       margin-left: auto;
     }
   }

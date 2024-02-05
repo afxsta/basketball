@@ -72,14 +72,22 @@ const itemOnClick = (_id: number) => emit('open', _id)
 .cards-list-wrapper {
   width: 100%;
   .cards-list {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(170px, min(364px, 100%)));
     gap: 24px;
+    justify-content: flex-start;
+
+    @media (max-width: $small) {
+      grid-template-columns: repeat(2, minmax(170px, min(364px, 100%)));
+      gap: 12px;
+    }
 
     &_item {
-      width: calc(100% / 3 - 16px);
-      cursor: pointer;
+      width: 100%;
+      min-width: 170px;
+      max-width: 364px;
+      min-height: 170px;
+      max-height: 380px;
     }
   }
   &_paginator {
