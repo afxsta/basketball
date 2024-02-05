@@ -95,7 +95,7 @@ export const usePlayerStore = defineStore('player-store', () => {
    * @returns Новый игрок
    */
   const updatePlayer = async (player: PlayerModel) =>
-    new Promise<ResponseModel<PlayerModel[]>>(async (resolve) => {
+    new Promise<ResponseModel<PlayerModel>>(async (resolve) => {
       if (player.Image instanceof File) {
         const mediaResponse = await saveImage(player.Image)
         if (mediaResponse.IsSuccess) {
@@ -123,7 +123,7 @@ export const usePlayerStore = defineStore('player-store', () => {
 
       await query
         .then((response) => {
-          resolve(new ResponseModel({ Value: [] }))
+          resolve(new ResponseModel({ Value: mapPlayer(response.data) }))
         })
         .catch((error) => {
           console.log(error)

@@ -44,7 +44,9 @@ const cancelEdit = () => router.push({ name: 'players' })
  */
 const saveTeam = async () => {
   const response = await updateTeam(team.value)
-  console.log(response)
+  if (response.IsSuccess) {
+    router.push({ name: 'team', params: { id: response.Value?.Id } })
+  }
 }
 </script>
 <template>

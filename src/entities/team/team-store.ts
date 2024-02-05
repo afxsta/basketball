@@ -101,8 +101,8 @@ export const useTeamStore = defineStore('team-store', () => {
         : api.value.post(`${teamApiPath}Add`, request)
 
       await query
-        .then(() => {
-          resolve(new ResponseModel({ Value: team }))
+        .then((response) => {
+          resolve(new ResponseModel({ Value: mapTeam(response.data) }))
         })
         .catch((error) => {
           console.log(error)

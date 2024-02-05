@@ -56,7 +56,10 @@ const cancelEdit = () => router.push({ name: 'players' })
  * * Отправка запроса на сохранение игрока
  */
 const savePlayer = async () => {
-  await updatePlayer(player.value)
+  const response = await updatePlayer(player.value)
+  if (response.IsSuccess) {
+    router.push({ name: 'player', params: { id: response.Value?.Id } })
+  }
 }
 /**
  * * Выбор позиции игрока
