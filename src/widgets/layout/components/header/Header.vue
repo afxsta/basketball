@@ -3,11 +3,22 @@ import Logo from '@/shared/assets/images/logo.svg'
 import { UserInfo } from '@/widgets/layout'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/entities'
+import IconBurger from '@/shared/assets/images/icons/icon-burger.svg'
 
 /**
  * * Стор текущего пользователя
  */
 const { user } = storeToRefs(useAuthStore())
+
+/**
+ * * События компонента
+ */
+const emit = defineEmits(['toggleSidebar'])
+
+/**
+ * * Отправка события для открытия сайбара
+ */
+const toggleSidebar = () => emit('toggleSidebar')
 </script>
 <template>
   <div class="header">
@@ -21,7 +32,16 @@ const { user } = storeToRefs(useAuthStore())
         draggable="false"
       />
     </RouterLink>
-    <UserInfo :info="user" />
+    <UserInfo
+      class="header_user"
+      :info="user"
+    />
+    <img
+      class="header_burger"
+      :src="IconBurger"
+      alt="burger"
+      @click="toggleSidebar"
+    />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -37,11 +57,33 @@ const { user } = storeToRefs(useAuthStore())
   padding: 0 50px;
   box-shadow: 0px 1px 10px 0px #d1d1d180;
   background-color: $white;
-  z-index: 100;
+  z-index: 101;
 
   &_logo {
     img {
       user-select: none;
+    }
+  }
+
+  &_burger {
+    display: none;
+
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  @media (max-width: $small) {
+    justify-content: center;
+
+    .header_user {
+      display: none;
+    }
+
+    &_burger {
+      display: block;
     }
   }
 }

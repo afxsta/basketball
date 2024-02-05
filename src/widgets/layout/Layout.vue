@@ -1,10 +1,23 @@
 <script lang="ts" setup>
 import { Header, Sidebar } from '@/widgets/layout'
+import { ref } from 'vue'
+
+/**
+ * * Компонент сайдбара
+ */
+const $sidebar = ref<InstanceType<typeof Sidebar>>()
+
+/**
+ * * Открытие сайдбара
+ */
+const toggleSidebar = () => {
+  $sidebar.value?.toggle()
+}
 </script>
 <template>
   <div class="layout">
-    <Header />
-    <Sidebar />
+    <Header @toggleSidebar="toggleSidebar" />
+    <Sidebar ref="$sidebar" />
     <div class="layout_content">
       <slot />
     </div>

@@ -6,7 +6,8 @@ import IconPersonGroup from '@/shared/assets/images/icons/person_rounded.svg'
 import IconExit from '@/shared/assets/images/icons/icon-exit.svg'
 import { useAuthStore } from '@/entities'
 import { useRouter } from 'vue-router'
-
+import { UserInfo } from '@/widgets'
+import { storeToRefs } from 'pinia'
 /**
  * * Маршруты
  */
@@ -14,7 +15,18 @@ const router = useRouter()
 /**
  * * Стор для управления текущим аккаунтом
  */
-const { leaveAccount } = useAuthStore()
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
+const { leaveAccount } = authStore
+
+/**
+ * * Сайдбар открыт
+ */
+const opened = ref(false)
+/**
+ * * Id текущего hover элемента
+ */
+const currentHover = ref()
 
 /**
  * * Элементы сайдбара
@@ -23,11 +35,10 @@ const items = computed(() => [
   new GeneralModel({ Id: 1, Name: 'Teams', Image: IconPersonGroup }),
   new GeneralModel({ Id: 2, Name: 'Players', Image: IconPerson }),
 ])
-
 /**
- * * Id текущего hover элемента
+ * * Классы компонента
  */
-const currentHover = ref()
+const componentClasses = computed(() => ['sidebar', { opened: opened.value }])
 
 /**
  * * Получение svg рисунка
@@ -68,9 +79,23 @@ const getRouteName = (_id: number) => {
       return { name: 'players' }
   }
 }
+/**
+ * * Открыть сайдбар
+ */
+const toggle = () => (opened.value = !opened.value)
+
+/**
+ * * Код для использования по ref
+ */
+defineExpose({
+  toggle,
+})
 </script>
 <template>
-  <div class="sidebar">
+  <div :class="componentClasses">
+    <div class="sidebar_user">
+      <UserInfo :info="user" />
+    </div>
     <RouterLink
       v-for="item in items"
       :key="item?.Id"
@@ -110,8 +135,13 @@ const getRouteName = (_id: number) => {
       <span>Sign out</span>
     </div>
   </div>
+  <div
+    class="sidebar_background"
+    :class="{ opened: opened }"
+    @click="toggle"
+  />
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 .sidebar {
   position: fixed;
   left: 0;
@@ -124,6 +154,12 @@ const getRouteName = (_id: number) => {
   width: 140px;
   height: calc(100% - 80px);
   background-color: $white;
+  transition: $transition-1;
+  z-index: 100;
+
+  &_user {
+    display: none;
+  }
 
   &_link {
     text-decoration: none;
@@ -159,6 +195,61 @@ const getRouteName = (_id: number) => {
     font-weight: 500;
     line-height: 18px;
     cursor: pointer;
+  }
+
+  @media (max-width: $small) {
+    padding: 0 0 20px;
+    width: 200px;
+    align-items: start;
+
+    &:not(.opened) {
+      left: -200px;
+    }
+
+    &_item,
+    &_sign-out {
+      flex-direction: row;
+      padding: 0 20px;
+    }
+
+    &_user {
+      display: flex;
+      justify-content: center;
+      border-bottom: 0.5px solid $light-grey;
+      width: 100%;
+      height: 80px;
+
+      .user-info {
+        flex-direction: row-reverse;
+        gap: 12px;
+        max-height: fit-content;
+
+        &_image {
+          width: 40px;
+          height: 40px;
+        }
+        &_name {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+.sidebar_background {
+  display: none;
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #414141;
+  opacity: 0.6;
+  z-index: 99;
+  transition: $transition-1;
+
+  &.opened {
+    display: block;
   }
 }
 </style>
