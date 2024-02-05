@@ -116,7 +116,7 @@ const removeAll = () => (value.value = [] as number[])
 const listOnScroll = (e: Event) => {
   const target = e.target as HTMLDivElement
   const _bottom = target.scrollHeight - target.clientHeight - target.scrollTop
-  if (!_bottom) emit('scroll-bottom')
+  if (_bottom <= 0) emit('scroll-bottom')
 }
 </script>
 <template>

@@ -7,7 +7,7 @@ import {
 } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
-import { Input, Button, Loader } from '@/shared'
+import { Input, Button, Loader, Select } from '@/shared'
 import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
 import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
@@ -110,6 +110,7 @@ const changePage = (_page: number) => {
           width="364px"
           @update:model-value="updatePlayers(true)"
         />
+        <Select :style="{ 'max-width': '364px' }" />
         <Button
           class="players-page_filter_add"
           width="104px"

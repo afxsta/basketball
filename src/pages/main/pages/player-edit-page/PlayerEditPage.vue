@@ -13,9 +13,9 @@ import {
   DatePicker,
   ImageLoader,
   Loader,
-  SelectOptionModel,
 } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
+import { TeamSelect } from '@/features'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -33,53 +33,14 @@ const user = ref(new PlayerModel())
 const playerStore = usePlayerStore()
 const { optionsPosition } = storeToRefs(playerStore)
 const { addPlayer } = playerStore
-/**
- * * Стор для управления командами
- */
-const teamStore = useTeamStore()
-const { pagination } = storeToRefs(teamStore)
-const { getTeams } = teamStore
-
-/**
- * * Список команд для выбора
- */
-const teamsOptions = ref<SelectOptionModel[]>([])
 
 /**
  * * После рендера компонента
  */
 onMounted(async () => {
   await playerStore.getPositions()
-  await getTeamsOptions()
 })
 
-/**
- * * Получить список комнадл
- */
-const getTeamsOptions = async () => {
-  if (pagination.value && pagination.value.Count <= teamsOptions.value.length)
-    return
-
-  const loadSize = 6
-
-  const request = new FilterModel({
-    Pagination: new PaginationModel({
-      Page: teamsOptions.value?.length / loadSize + 1,
-      PageSize: loadSize,
-    }),
-  })
-  const response = await getTeams(request)
-  if (response.IsSuccess) {
-    const _options = response.Value.map(
-      (t) =>
-        new SelectOptionModel({
-          Text: t.Name,
-          Id: t.Id,
-        })
-    )
-    teamsOptions.value.push(..._options)
-  }
-}
 /**
  * * Отмена редактирования игрока
  */
@@ -126,11 +87,9 @@ const userTeam = computed({
         label="Position"
         v-model="userPosition"
       />
-      <Select
+      <TeamSelect
         v-model="userTeam"
         label="Team"
-        :options="teamsOptions"
-        @scroll-bottom="getTeamsOptions"
       />
       <div class="player-edit-page_form_row">
         <Input
