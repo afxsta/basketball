@@ -191,6 +191,11 @@ const getPlayerRoute = (_id: number) => ({
       position: relative;
       max-width: fit-content;
       line-height: 1;
+      transition: $transition-1;
+
+      &:hover {
+        color: $red;
+      }
 
       &.current {
         &::before {
