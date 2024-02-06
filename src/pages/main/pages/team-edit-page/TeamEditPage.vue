@@ -150,7 +150,6 @@ const saveTeam = async () => {
   flex-direction: column;
   background-color: $white;
   border-radius: 10px;
-  overflow: hidden;
 }
 .team-edit-page {
   display: flex;

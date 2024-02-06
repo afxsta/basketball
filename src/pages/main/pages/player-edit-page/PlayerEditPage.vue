@@ -227,7 +227,6 @@ const userTeam = computed({
   flex-direction: column;
   background-color: $white;
   border-radius: 10px;
-  overflow: hidden;
 }
 .player-edit-page {
   display: flex;

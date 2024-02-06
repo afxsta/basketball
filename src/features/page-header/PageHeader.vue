@@ -76,6 +76,8 @@ const onEdit = () => emit('edit')
   background-color: $white;
   height: 70px;
   padding: 0 32px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 
   &_path {
     display: flex;
