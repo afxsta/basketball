@@ -5,6 +5,7 @@ import { SignInForm, SignUpForm } from '@/widgets'
 import { Link } from '@/shared'
 import SignInImage from '@/shared/assets/images/sign_in_image.svg'
 import SignUpImage from '@/shared/assets/images/sign_up_image.svg'
+import { Notification } from '@/features'
 
 /**
  * * Маршруты
@@ -56,6 +57,7 @@ const backgroundImage = computed(() =>
       />
     </div>
   </div>
+  <Notification />
 </template>
 <style lang="scss" scoped>
 .auth-page {

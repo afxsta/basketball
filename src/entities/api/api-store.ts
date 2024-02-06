@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { ErrorEnum, UserModel } from '@/entities'
+import {
+  ErrorEnum,
+  UserModel,
+  useAuthStore,
+  useNotificationStore,
+} from '@/entities'
 
 /**
  * * Стор для отправки API запросов
@@ -11,6 +16,14 @@ export const useApiStore = defineStore('api-store', () => {
    * * Ссылка на API
    */
   const apiUrl = ref('http://dev.trainee.dex-it.ru')
+  /**
+   * * Стор уведомлений
+   */
+  const { sendNotification } = useNotificationStore()
+  /**
+   * * Стор текущего пользователя
+   */
+  const { leaveAccount } = useAuthStore()
 
   /**
    * * Настроенное поле для отправки API запросов
@@ -47,17 +60,16 @@ export const useApiStore = defineStore('api-store', () => {
     apiInstance.interceptors.response.use(
       (response) => response,
       (e) => {
-        // if (!e.response?.status) {
-        //   localStorage.removeItem('user')
-        //   location.href = '/'
-        //   return
-        // }
+        const errorCode = e?.response?.status
 
-        let errorMessage =
-          ErrorEnum[e.response?.status] ??
-          e.response?.data?.title ??
-          e.response?.data ??
-          e.message
+        console.log(errorCode)
+        if (!errorCode) {
+          leaveAccount()
+          return
+        }
+
+        const errorMessage = getMessageError(errorCode)
+        sendNotification(errorMessage)
 
         return Promise.reject(errorMessage)
       }
@@ -65,6 +77,21 @@ export const useApiStore = defineStore('api-store', () => {
 
     return apiInstance
   })
+
+  /**
+   * * Получение текста ошибки
+   * @param _error Id ошибки
+   */
+  const getMessageError = (_error: number) => {
+    switch (_error) {
+      case ErrorEnum.BadRequest:
+        return 'Bad request sent'
+      case ErrorEnum.Unauthorized:
+        return 'Authorization Error'
+      case ErrorEnum.Conflict:
+        return 'Conflict when creating an entity'
+    }
+  }
 
   return {
     /**

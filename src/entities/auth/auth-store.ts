@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth-store', {
             resolve(new ResponseModel({ Value: user.value }))
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
             resolve(new ResponseModel({ IsSuccess: false }))
           })
       })
@@ -80,7 +80,7 @@ export const useAuthStore = defineStore('auth-store', {
             resolve(new ResponseModel({ Value: user.value }))
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
             resolve(new ResponseModel({ IsSuccess: false }))
           })
       })

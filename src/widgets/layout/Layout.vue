@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Header, Sidebar } from '@/widgets/layout'
-import { Notification } from '@/features'
 import { ref } from 'vue'
 
 /**
@@ -23,7 +22,6 @@ const toggleSidebar = () => {
       <slot />
     </div>
   </div>
-  <Notification />
 </template>
 <style lang="scss">
 body {

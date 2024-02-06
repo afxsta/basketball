@@ -66,7 +66,7 @@ export const useTeamStore = defineStore('team-store', () => {
           )
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -105,7 +105,7 @@ export const useTeamStore = defineStore('team-store', () => {
           resolve(new ResponseModel({ Value: mapTeam(response.data) }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -130,7 +130,7 @@ export const useTeamStore = defineStore('team-store', () => {
           resolve(result)
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -168,7 +168,7 @@ export const useTeamStore = defineStore('team-store', () => {
           resolve(new ResponseModel({ Value: true }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })

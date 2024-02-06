@@ -84,7 +84,7 @@ export const usePlayerStore = defineStore('player-store', () => {
           )
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -126,7 +126,7 @@ export const usePlayerStore = defineStore('player-store', () => {
           resolve(new ResponseModel({ Value: mapPlayer(response.data) }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -145,7 +145,7 @@ export const usePlayerStore = defineStore('player-store', () => {
           resolve(new ResponseModel({ Value: positions.value }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -170,7 +170,7 @@ export const usePlayerStore = defineStore('player-store', () => {
           resolve(result)
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -187,7 +187,7 @@ export const usePlayerStore = defineStore('player-store', () => {
           resolve(new ResponseModel({ Value: true }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })

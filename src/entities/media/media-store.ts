@@ -33,7 +33,7 @@ export const useMediaStore = defineStore('media-store', () => {
           resolve(new ResponseModel({ Value: response.data }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
@@ -52,7 +52,7 @@ export const useMediaStore = defineStore('media-store', () => {
           resolve(new ResponseModel({ Value: response.data }))
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           resolve(new ResponseModel({ IsSuccess: false }))
         })
     })
