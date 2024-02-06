@@ -32,6 +32,12 @@ export class PaginationModel {
   get EndIndex() {
     return this.StartIndex + this.PageSize
   }
+  /**
+   * * Параметры для запроса
+   */
+  get Query() {
+    return { page: this.Page, size: this.PageSize }
+  }
 
   constructor(obj?: Partial<PaginationModel>) {
     if (obj) Object.assign(this, obj)

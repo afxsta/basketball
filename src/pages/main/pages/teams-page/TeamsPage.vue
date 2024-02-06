@@ -6,7 +6,7 @@ import {
   useTeamStore,
 } from '@/entities'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { Input, Button, Loader, Stopper } from '@/shared'
 import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
@@ -57,6 +57,7 @@ const filter = computed(
  * * После рендера компонента
  */
 onMounted(async () => {
+  getPathQuery()
   updateTeams()
   isFirstLoading.value = false
 })
@@ -70,7 +71,36 @@ async function updateTeams() {
   if (response.IsSuccess) {
     teams.value = response.Value
   }
+
+  if (!teams.value?.length && pagination.value.Page > 1) {
+    pagination.value.Page = 1
+    updateTeams()
+    return
+  }
+
+  setPathQuery()
+
   stopLoading()
+}
+/** Установка параметров в путь */
+const setPathQuery = () => {
+  const _query: any = pagination.value.Query
+  if (search.value) _query.search = search.value
+  router.push({
+    name: router.currentRoute.value.name,
+    query: _query,
+  })
+}
+/**
+ * * Получение
+ */
+const getPathQuery = () => {
+  const _query = router.currentRoute.value.query
+  if (_query) {
+    if (_query.page) pagination.value.Page = Number(_query.page) || 1
+    if (_query.size) pagination.value.PageSize = Number(_query.size) || 1
+    if (_query.search) search.value = _query.search?.toString()
+  }
 }
 /**
  * * Открытие страницы с созданием команды

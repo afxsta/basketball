@@ -63,6 +63,7 @@ const filter = computed(
  * * После рендера компонента
  */
 onMounted(async () => {
+  getPathQuery()
   updatePlayers()
   isFirstLoading.value = false
 })
@@ -76,7 +77,36 @@ async function updatePlayers() {
   if (response.IsSuccess) {
     players.value = response.Value
   }
+
+  if (!players.value?.length && pagination.value.Page > 1) {
+    pagination.value.Page = 1
+    updatePlayers()
+    return
+  }
+
+  setPathQuery()
+
   stopLoading()
+}
+/** Установка параметров в путь */
+const setPathQuery = () => {
+  const _query: any = pagination.value.Query
+  if (search.value) _query.search = search.value
+  router.push({
+    name: router.currentRoute.value.name,
+    query: _query,
+  })
+}
+/**
+ * * Получение
+ */
+const getPathQuery = () => {
+  const _query = router.currentRoute.value.query
+  if (_query) {
+    if (_query.page) pagination.value.Page = Number(_query.page) || 1
+    if (_query.size) pagination.value.PageSize = Number(_query.size) || 1
+    if (_query.search) search.value = _query.search?.toString()
+  }
 }
 /**
  * * Открытие страницы с созданием команды
