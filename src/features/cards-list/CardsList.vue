@@ -90,6 +90,10 @@ const itemOnClick = (_id: number) => emit('open', _id)
     @media (max-width: 868px) {
       grid-template-columns: repeat(2, minmax(170px, min(364px, 100%)));
       gap: 12px;
+
+      .cards-list_item {
+        max-height: 200px;
+      }
     }
 
     &_item {
@@ -98,6 +102,10 @@ const itemOnClick = (_id: number) => emit('open', _id)
       max-width: 364px;
       min-height: 170px;
       max-height: 380px;
+
+      @media (max-width: 1168px) {
+        max-height: 300px;
+      }
     }
   }
   &_paginator {

@@ -27,6 +27,7 @@
   min-width: 170px;
   min-height: 200px;
   border-radius: 4px;
+  cursor: pointer;
   overflow: hidden;
 
   &_image {
@@ -56,6 +57,10 @@
     }
     &_subtitle {
       color: $light-grey;
+    }
+
+    @media (max-width: $small) {
+      min-height: 94px;
     }
   }
 }

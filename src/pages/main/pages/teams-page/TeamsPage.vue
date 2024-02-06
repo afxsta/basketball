@@ -98,7 +98,13 @@ const getPathQuery = () => {
   const _query = router.currentRoute.value.query
   if (_query) {
     if (_query.page) pagination.value.Page = Number(_query.page) || 1
-    if (_query.size) pagination.value.PageSize = Number(_query.size) || 1
+    if (_query.size) {
+      const _size = Number(_query.size) || 6
+      if (![6, 12, 24].includes(_size)) pagination.value.PageSize = 6
+      else {
+        pagination.value.PageSize = _size
+      }
+    }
     if (_query.search) search.value = _query.search?.toString()
   }
 }
