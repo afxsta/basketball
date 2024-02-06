@@ -22,11 +22,19 @@ const reversedSort = ref(false)
  * * Отсортированный состав команды
  */
 const sortedRoster = computed(() =>
-  props.roster?.sort((a: any, b: any) =>
-    reversedSort.value
-      ? a[selectedSortKey.value] - b[selectedSortKey.value]
-      : b[selectedSortKey.value] - a[selectedSortKey.value]
-  )
+  props.roster?.sort((a: any, b: any) => {
+    if (selectedSortKey.value == 'Name') {
+      let textA = a[selectedSortKey.value].toLocaleUpperCase()
+      let textB = b[selectedSortKey.value].toLocaleUpperCase()
+      if (textA < textB) return reversedSort.value ? -1 : 1
+      if (textA > textB) return reversedSort.value ? 1 : -1
+      return 0
+    } else {
+      return reversedSort.value
+        ? a[selectedSortKey.value] - b[selectedSortKey.value]
+        : b[selectedSortKey.value] - a[selectedSortKey.value]
+    }
+  })
 )
 
 /**
