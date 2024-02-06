@@ -96,7 +96,10 @@ const saveTeam = async () => {
 </script>
 <template>
   <div class="team-edit-page">
-    <ImageLoader v-model="team.Image" />
+    <ImageLoader
+      v-model="team.Image"
+      class="team-edit-page_image"
+    />
     <div class="team-edit-page_form">
       <Input
         v-model="team.Name"
@@ -152,6 +155,20 @@ const saveTeam = async () => {
       align-items: center;
       width: 100%;
       gap: 24px;
+    }
+  }
+
+  @media (max-width: 1140px) {
+    padding: 48px 24px;
+  }
+
+  @media (max-width: 868px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+
+    .team-edit-page_image {
+      width: 185px;
     }
   }
 }

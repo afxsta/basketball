@@ -37,7 +37,7 @@ body {
   }
 
   @media (max-width: $small) {
-    margin: 78px 12px 12px;
+    margin: 78px 0 12px;
   }
 }
 </style>

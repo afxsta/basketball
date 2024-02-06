@@ -152,8 +152,10 @@ const userTeam = computed({
 </script>
 <template>
   <div class="player-edit-page">
-    <Loader />
-    <ImageLoader v-model="player.Image" />
+    <ImageLoader
+      v-model="player.Image"
+      class="player-edit-page_image"
+    />
     <div class="player-edit-page_form">
       <Input
         v-model="player.Name"
@@ -231,6 +233,20 @@ const userTeam = computed({
       align-items: center;
       width: 100%;
       gap: 24px;
+    }
+  }
+
+  @media (max-width: 1140px) {
+    padding: 48px 24px;
+  }
+
+  @media (max-width: 868px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+
+    .player-edit-page_image {
+      width: 185px;
     }
   }
 }

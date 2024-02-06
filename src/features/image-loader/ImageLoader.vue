@@ -127,6 +127,7 @@ const validateImage = (file: File) => {
   width: 100%;
   max-width: 336px;
   max-height: 260px;
+  min-height: 144px;
   border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
