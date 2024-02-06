@@ -144,7 +144,6 @@ const changePage = (_page: number) => {
         <CardsList
           v-else
           :items="players"
-          :pagesCount="1"
           :pagination="pagination"
           :is-loading="isLoading"
           @open="openPlayer"
