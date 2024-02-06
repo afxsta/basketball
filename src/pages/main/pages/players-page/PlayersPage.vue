@@ -92,6 +92,7 @@ async function updatePlayers() {
 const setPathQuery = () => {
   const _query: any = pagination.value.Query
   if (search.value) _query.search = search.value
+  if (teamIds.value?.length) _query.teamIds = teamIds.value.join()
   router.push({
     name: router.currentRoute.value.name,
     query: _query,
@@ -106,6 +107,13 @@ const getPathQuery = () => {
     if (_query.page) pagination.value.Page = Number(_query.page) || 1
     if (_query.size) pagination.value.PageSize = Number(_query.size) || 1
     if (_query.search) search.value = _query.search?.toString()
+    if (_query.teamIds)
+      teamIds.value =
+        _query.teamIds
+          ?.toString()
+          ?.split(',')
+          ?.map((x) => Number(x))
+          ?.filter((x) => !!x) || []
   }
 }
 /**
