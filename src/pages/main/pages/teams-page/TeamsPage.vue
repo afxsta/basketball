@@ -6,7 +6,7 @@ import {
   useTeamStore,
 } from '@/entities'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { Input, Button, Loader, Stopper } from '@/shared'
 import { useLoading } from '@/shared/composables/loading/use-loading'
 import { CardsList } from '@/features'
@@ -64,12 +64,7 @@ onMounted(async () => {
 /**
  * * Обновить список команд
  */
-const updateTeams = async (withReset?: boolean) => {
-  if (withReset) {
-    isFirstLoading.value = true
-    pagination.value = new PaginationModel()
-  }
-
+async function updateTeams() {
   startLoading()
   const response = await getTeams(filter.value)
   if (response.IsSuccess) {
@@ -90,13 +85,6 @@ const openTeam = (_id: number) => {
     params: { id: _id },
   })
 }
-/**
- * * Смена страницы
- */
-const changePage = (_page: number) => {
-  pagination.value.Page = _page
-  updateTeams()
-}
 </script>
 <template>
   <Loader :is-loading="isLoading && isFirstLoading">
@@ -107,7 +95,7 @@ const changePage = (_page: number) => {
           placeholder="Search ..."
           is-search
           class="teams-page_filter_field"
-          @update:model-value="updateTeams(true)"
+          @update:model-value="updateTeams"
         />
         <Button
           class="teams-page_filter_add"
@@ -136,7 +124,7 @@ const changePage = (_page: number) => {
           :pagination="pagination"
           :is-loading="isLoading"
           @open="openTeam"
-          @page="changePage"
+          @update="updateTeams"
         >
           <template #subtitle="slotProps">
             Year of foundation:

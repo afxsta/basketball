@@ -18,15 +18,22 @@ const emit = defineEmits<{
    */
   (e: 'open', id: number): void
   /**
-   * * Событие смены страницы
+   * * События для обновления списка
    */
-  (e: 'page', number: number): void
+  (e: 'update'): void
 }>()
 
 /**
+ * * Отправка update события
+ */
+const sendUpdate = () => emit('update')
+/**
  * * Смена страницы
  */
-const setPage = (_page: number) => emit('page', _page)
+const setPage = (_page: number) => {
+  if (props.pagination) props.pagination.Page = _page
+  sendUpdate()
+}
 /**
  * * При клике по карточке
  */
@@ -60,10 +67,12 @@ const itemOnClick = (_id: number) => emit('open', _id)
       </div>
     </Loader>
     <Paginator
-      v-if="props.pagination?.Total > 1 && !isLoading && items?.length"
+      v-if="props.pagination?.Count > 6 && !isLoading && items?.length"
       class="cards-list-wrapper_paginator"
       :current="props.pagination?.Page"
       :total="props.pagination?.Total"
+      v-model:size="props.pagination.PageSize"
+      @update:size="sendUpdate"
       @change="setPage"
     />
   </div>

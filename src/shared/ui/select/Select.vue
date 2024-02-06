@@ -46,7 +46,7 @@ const value = computed({
 const currentBlockClasses = computed(() => [
   'select-wrapper_current',
   { error: !!props.error },
-  { multi: props.isMulti },
+  { multi: props.isMulti || props.isWhite },
 ])
 
 /**
@@ -265,7 +265,10 @@ const listOnScroll = (e: Event) => {
     &.multi {
       background-color: $white;
       border-color: $lightest-grey;
-      border-left: 1px solid $lightest-grey;
+
+      .select-wrapper_current_toggler {
+        border-left: 1px solid $lightest-grey;
+      }
 
       .select-wrapper_current_toggler,
       .select-wrapper_current_toggler_close {

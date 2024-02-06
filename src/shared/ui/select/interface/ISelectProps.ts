@@ -21,4 +21,8 @@ export interface ISelectProps /* @vue-ignore */ {
    * * Текст ошибки
    */
   error?: string
+  /**
+   * * Белая тема
+   */
+  isWhite?: boolean
 }
