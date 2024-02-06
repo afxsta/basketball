@@ -121,6 +121,7 @@ const getPageItemClass = (_page: number) => [
     <Select
       class="paginator-wrapper_select"
       is-white
+      above
       :options="sizeOptions"
       v-model="selectSize"
     />

@@ -25,4 +25,8 @@ export interface ISelectProps /* @vue-ignore */ {
    * * Белая тема
    */
   isWhite?: boolean
+  /**
+   * * Открывать список сверху
+   */
+  above?: boolean
 }

@@ -179,6 +179,7 @@ const listOnScroll = (e: Event) => {
     <div
       v-if="opened"
       class="select-wrapper_list"
+      :class="{ above: above }"
       @scroll="listOnScroll"
     >
       <div
@@ -295,6 +296,11 @@ const listOnScroll = (e: Event) => {
     background-color: $white;
     overflow-y: scroll;
     z-index: 10;
+
+    &.above {
+      top: unset;
+      bottom: calc(100% + 2px);
+    }
 
     &_item {
       display: flex;
