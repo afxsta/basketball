@@ -71,13 +71,14 @@ const itemOnClick = (_id: number) => emit('open', _id)
 <style lang="scss" scoped>
 .cards-list-wrapper {
   width: 100%;
+
   .cards-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(170px, min(364px, 100%)));
     gap: 24px;
     justify-content: flex-start;
 
-    @media (max-width: $small) {
+    @media (max-width: 868px) {
       grid-template-columns: repeat(2, minmax(170px, min(364px, 100%)));
       gap: 12px;
     }

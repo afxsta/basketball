@@ -29,14 +29,14 @@ body {
 }
 .layout {
   position: relative;
-  height: calc(100vh - 132px);
-  margin: 112px 80px 20px 220px;
+  min-height: calc(100vh - 132px);
+  margin: 112px 80px 32px 220px;
 
   &_content {
     height: 100%;
   }
 
-  @media(max-width: $small){
+  @media (max-width: $small) {
     margin: 78px 12px 12px;
   }
 }

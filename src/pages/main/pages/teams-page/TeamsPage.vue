@@ -106,12 +106,11 @@ const changePage = (_page: number) => {
           v-model="search"
           placeholder="Search ..."
           is-search
-          width="364px"
+          class="teams-page_filter_field"
           @update:model-value="updateTeams(true)"
         />
         <Button
           class="teams-page_filter_add"
-          width="104px"
           @click="openTeamCreate"
         >
           Add
@@ -163,6 +162,23 @@ const changePage = (_page: number) => {
 
     button.teams-page_filter_add {
       margin-left: auto;
+      max-width: 104px;
+    }
+
+    &_field {
+      max-width: 364px;
+    }
+
+    @media (max-width: $small) {
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 16px;
+
+      &_field,
+      &_add {
+        width: 100%;
+        max-width: 100% !important;
+      }
     }
   }
 
