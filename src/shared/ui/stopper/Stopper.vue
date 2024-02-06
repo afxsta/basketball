@@ -2,7 +2,9 @@
 <template>
   <div class="stopper">
     <slot name="image" />
-    <div class="stopper_title">Empty here</div>
+    <div class="stopper_title">
+      <slot name="title"> Empty here </slot>
+    </div>
     <div class="stopper_text">
       <slot name="text" />
     </div>
@@ -36,6 +38,16 @@
     font-size: 24px;
     line-height: 32px;
     margin-top: 24px;
+  }
+
+  @media (max-width: $small) {
+    &_title {
+      font-size: 17px;
+    }
+    &_text {
+      font-size: 15px;
+      margin-top: 16px;
+    }
   }
 }
 </style>

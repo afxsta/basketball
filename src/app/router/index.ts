@@ -8,9 +8,8 @@ import {
   PlayersPage,
   PlayerEditPage,
   TeamEditPage,
+  NotFoundPage,
 } from '@/pages'
-import { useAuthStore } from '@/entities'
-import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -65,6 +64,10 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
     ],
+  },
+  {
+    path: '/:catchAll(.*)',
+    component: NotFoundPage,
   },
 ]
 
