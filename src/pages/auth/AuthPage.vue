@@ -68,14 +68,16 @@ const backgroundImage = computed(() =>
     justify-content: center;
     align-items: center;
     width: 42%;
-    max-width: 606px;
+    min-width: 375px;
     padding: 24px;
     background-color: $white;
+
     &_title {
       font-size: 36px;
       color: $blue;
       margin-bottom: 32px;
     }
+
     &_question {
       margin-top: 24px;
       color: $grey;
@@ -91,6 +93,16 @@ const backgroundImage = computed(() =>
     img {
       max-width: 100%;
       height: auto;
+    }
+  }
+
+  @media (max-width: $small) {
+    &_form {
+      width: 100%;
+      min-width: 200px;
+    }
+    &_background {
+      display: none;
     }
   }
 }
