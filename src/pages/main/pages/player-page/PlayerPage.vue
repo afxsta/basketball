@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { PlayerModel, usePlayerStore } from '@/entities'
+import { PlayerModel, usePlayerStore, useTeamStore } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted } from 'vue'
 import { ref } from 'vue'
@@ -11,15 +11,23 @@ import { useRouter } from 'vue-router'
  */
 const router = useRouter()
 /**
- * * Стор для управления командами
+ * * Стор для управления игроками
  */
 const playerStore = usePlayerStore()
 const { getPlayer, deletePlayer } = playerStore
+/**
+ * * Стор для управления командами
+ */
+const { getTeam } = useTeamStore()
 
 /**
  * * Данные о просматриваемой команде
  */
 const player = ref(new PlayerModel())
+/**
+ * * Название команды
+ */
+const teamName = ref('')
 
 /**
  * * Id игрока
@@ -38,6 +46,7 @@ const loadPlayer = async () => {
   const response = await getPlayer(playerId.value)
   if (response.IsSuccess) {
     player.value = response.Value
+    await getTeamName(player.value.Team)
   } else {
     router.push({ name: 'players' })
   }
@@ -54,6 +63,13 @@ const editPlayer = (_id: number) => {
 const sendDeleteRequest = async () => {
   const response = await deletePlayer(player.value.Id)
   if (response.IsSuccess) router.push({ name: 'players' })
+}
+/**
+ * * Отправка запроса на получение имени команды
+ */
+const getTeamName = async (teamId: number) => {
+  const response = await getTeam(teamId)
+  if (response.IsSuccess) teamName.value = response.Value?.Name
 }
 </script>
 <template>
@@ -94,7 +110,7 @@ const sendDeleteRequest = async () => {
                 Team
               </div>
               <div class="player-page_info-block_data_description_item_text">
-                {{ player.Team }}
+                {{ teamName }}
               </div>
             </div>
             <div class="player-page_info-block_data_description_item">
