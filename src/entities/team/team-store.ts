@@ -140,10 +140,10 @@ export const useTeamStore = defineStore('team-store', () => {
    */
   const mapTeam = (response: any) => {
     let _image = ''
-    if (response.avatarUrl) {
-      _image = response.avatarUrl.includes(apiUrl.value)
-        ? response
-        : apiUrl.value + response.avatarUrl
+    if (response.imageUrl) {
+      _image = response.imageUrl.includes(apiUrl.value)
+        ? response.imageUrl
+        : apiUrl.value + response.imageUrl
     }
 
     return new TeamModel({

@@ -199,7 +199,7 @@ export const usePlayerStore = defineStore('player-store', () => {
     let _image = ''
     if (response.avatarUrl) {
       _image = response.avatarUrl.includes(apiUrl.value)
-        ? response
+        ? response.avatarUrl
         : apiUrl.value + response.avatarUrl
     }
 

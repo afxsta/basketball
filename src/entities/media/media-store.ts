@@ -29,7 +29,6 @@ export const useMediaStore = defineStore('media-store', () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((response) => {
-          console.log(response)
           resolve(new ResponseModel({ Value: response.data }))
         })
         .catch((error) => {
