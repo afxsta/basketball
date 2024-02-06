@@ -145,6 +145,9 @@ const getPlayerRoute = (_id: number) => ({
   background-color: $white;
   overflow: hidden;
   color: $grey;
+  * {
+    word-break: break-word;
+  }
 
   &_title {
     display: flex;
@@ -162,7 +165,7 @@ const getPlayerRoute = (_id: number) => ({
     align-items: center;
     width: 100%;
     gap: 84px;
-    padding: 0 22px;
+    padding: 6px 22px;
     min-height: 56px;
     border-bottom: 0.5px solid $light-grey;
 
@@ -205,6 +208,7 @@ const getPlayerRoute = (_id: number) => ({
 
     &_block {
       display: flex;
+      align-items: center;
       gap: 16px;
       margin-left: -54px;
       text-decoration: none;
