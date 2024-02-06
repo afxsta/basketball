@@ -233,5 +233,15 @@ const getPlayerRoute = (_id: number) => ({
       }
     }
   }
+
+  @media (max-width: 1068px) {
+    .team-roster_item {
+      grid-template-columns: 36px 1fr;
+
+      & > div:nth-child(n + 3) {
+        display: none;
+      }
+    }
+  }
 }
 </style>

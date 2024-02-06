@@ -210,5 +210,40 @@ const getTeamPlayers = async () => {
       }
     }
   }
+
+  @media (max-width: 1068px) {
+    .player-page_info-block {
+      flex-direction: column;
+      align-items: center;
+      &_image {
+        max-height: 122px;
+        max-width: 122px;
+        padding: 48px 0 0;
+      }
+      &_data {
+        flex-direction: column;
+        text-align: center;
+        padding: 48px 0;
+        &_title {
+          font-size: 17px;
+        }
+        &_description {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          text-align: center;
+          gap: 32px;
+          &_item {
+            &_title {
+              font-size: 17px;
+            }
+            &_text {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>
