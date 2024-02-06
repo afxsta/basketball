@@ -18,7 +18,7 @@
 .item-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -58,8 +58,19 @@
     &_subtitle {
       color: $light-grey;
     }
-
-    @media (max-width: $small) {
+  }
+  @media (max-width: 1168px) {
+    &_image {
+      max-height: 200px;
+    }
+  }
+  @media (max-width: 868px) {
+    &_image {
+      max-height: 106px;
+    }
+  }
+  @media (max-width: $small) {
+    &_info {
       min-height: 94px;
     }
   }

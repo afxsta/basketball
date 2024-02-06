@@ -208,5 +208,9 @@ const openTeam = (_id: number) => {
   &_block {
     height: 100%;
   }
+
+  @media (max-width: $small) {
+    padding: 0 12px !important;
+  }
 }
 </style>
