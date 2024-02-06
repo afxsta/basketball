@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { IUserInfoProps } from '@/widgets/layout'
-import IconProfile from '@/shared/assets/images/icons/profile.svg'
-import { computed } from 'vue'
+import { Avatar } from '@/shared'
 import { GeneralModel } from '@/entities'
 
 /**
@@ -9,12 +8,8 @@ import { GeneralModel } from '@/entities'
  */
 const props = withDefaults(defineProps<IUserInfoProps>(), {
   info: () => new GeneralModel(),
+  size: '30px',
 })
-
-/**
- * * Изображения для аватарки
- */
-const avatarImage = computed(() => props.info?.Image || IconProfile)
 </script>
 <template>
   <div class="user-info">
@@ -22,10 +17,9 @@ const avatarImage = computed(() => props.info?.Image || IconProfile)
       v-text="info?.Name"
       class="user-info_name"
     />
-    <img
-      class="user-info_image"
-      alt="avatar"
-      :src="avatarImage"
+    <Avatar
+      :image="props.info?.Image?.toString()"
+      :size="size"
     />
   </div>
 </template>
@@ -40,14 +34,6 @@ const avatarImage = computed(() => props.info?.Image || IconProfile)
   &_name {
     color: $dark-grey;
     transition: $transition-1;
-  }
-
-  &_image {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    min-height: 30px;
-    border-radius: 50%;
   }
 
   &:hover {

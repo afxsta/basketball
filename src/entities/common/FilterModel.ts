@@ -15,7 +15,7 @@ export class FilterModel {
   /**
    * * Пагинация
    */
-  Pagination: PaginationModel
+  Pagination?: PaginationModel
 
   constructor(obj?: Partial<FilterModel>) {
     if (obj) Object.assign(this, obj)

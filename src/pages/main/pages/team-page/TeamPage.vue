@@ -1,9 +1,14 @@
 <script lang="ts" setup>
-import { TeamModel, useTeamStore } from '@/entities'
-import { storeToRefs } from 'pinia'
+import {
+  FilterModel,
+  PlayerModel,
+  TeamModel,
+  usePlayerStore,
+  useTeamStore,
+} from '@/entities'
 import { computed, onMounted } from 'vue'
 import { ref } from 'vue'
-import { PageHeader } from '@/features'
+import { PageHeader, TeamRoster } from '@/features'
 import { useRouter } from 'vue-router'
 
 /**
@@ -15,11 +20,19 @@ const router = useRouter()
  */
 const teamStore = useTeamStore()
 const { getTeam, deleteTeam } = teamStore
+/**
+ * * Стор для управления игроками
+ */
+const { getPlayers } = usePlayerStore()
 
 /**
  * * Данные о просматриваемой команде
  */
 const team = ref(new TeamModel())
+/**
+ * * Состав команды
+ */
+const roster = ref<PlayerModel[]>([])
 
 /**
  * * Id команды
@@ -41,6 +54,7 @@ const loadTeam = async () => {
   } else {
     router.push({ name: 'teams' })
   }
+  await getTeamPlayers()
 }
 /**
  * * Запрос на редактирование команды
@@ -54,6 +68,21 @@ const editTeam = () => {
 const sendDeleteRequest = async () => {
   const response = await deleteTeam(team.value.Id)
   if (response.IsSuccess) router.push({ name: 'teams' })
+}
+/**
+ * * Запрос на получение игроков команды
+ */
+const getTeamPlayers = async () => {
+  const response = await getPlayers(
+    new FilterModel({
+      TeamIds: [teamId.value],
+    })
+  )
+
+  if (response.IsSuccess) {
+    roster.value = response.Value
+  }
+  console.log(roster.value)
 }
 </script>
 <template>
@@ -110,6 +139,10 @@ const sendDeleteRequest = async () => {
       </div>
     </div>
   </div>
+  <TeamRoster
+    v-if="roster?.length"
+    :roster="roster"
+  />
 </template>
 <style lang="scss">
 .team-page {
@@ -153,8 +186,8 @@ const sendDeleteRequest = async () => {
         margin-bottom: 40px;
       }
       &_description {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         row-gap: 54px;
         column-gap: 84px;
         &_item {

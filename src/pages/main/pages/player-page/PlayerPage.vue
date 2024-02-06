@@ -77,7 +77,8 @@ const sendDeleteRequest = async () => {
         </div>
         <div class="player-page_info-block_data">
           <div class="player-page_info-block_data_title">
-            {{ player.Name }} #{{ player.Number }}
+            {{ player.Name }}
+            <span class="c-red"> #{{ player.Number }} </span>
           </div>
           <div class="player-page_info-block_data_description">
             <div class="player-page_info-block_data_description_item">
@@ -166,10 +167,13 @@ const sendDeleteRequest = async () => {
         font-weight: 800;
         color: $white;
         margin-bottom: 40px;
+        .c-red {
+          font-size: inherit;
+        }
       }
       &_description {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         row-gap: 54px;
         column-gap: 84px;
         &_item {

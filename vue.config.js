@@ -13,6 +13,7 @@ module.exports = defineConfig({
         additionalData: `
           @import "@/shared/assets/styles/normalize.scss";
           @import "@/shared/assets/styles/index.scss";
+          @import "@/shared/assets/styles/default.scss";
         `,
       },
     },

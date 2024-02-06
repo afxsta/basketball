@@ -94,7 +94,10 @@ defineExpose({
 <template>
   <div :class="componentClasses">
     <div class="sidebar_user">
-      <UserInfo :info="user" />
+      <UserInfo
+        :info="user"
+        size="40px"
+      />
     </div>
     <RouterLink
       v-for="item in items"
@@ -226,10 +229,6 @@ defineExpose({
         gap: 12px;
         max-height: fit-content;
 
-        &_image {
-          width: 40px;
-          height: 40px;
-        }
         &_name {
           font-size: 15px;
         }
