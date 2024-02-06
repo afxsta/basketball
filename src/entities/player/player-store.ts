@@ -101,7 +101,7 @@ export const usePlayerStore = defineStore('player-store', () => {
         if (mediaResponse.IsSuccess) {
           player.Image = mediaResponse.Value
         } else {
-          return resolve(null)
+          return resolve(new ResponseModel({ IsSuccess: false }))
         }
       }
 

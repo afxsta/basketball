@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {
   ErrorEnum,
+  ResponseModel,
   UserModel,
   useAuthStore,
   useNotificationStore,
@@ -62,8 +63,7 @@ export const useApiStore = defineStore('api-store', () => {
       (e) => {
         const errorCode = e?.response?.status
 
-        console.log(errorCode)
-        if (!errorCode) {
+        if (!errorCode && !e?.config?.url?.includes('Image')) {
           leaveAccount()
           return
         }
@@ -71,7 +71,9 @@ export const useApiStore = defineStore('api-store', () => {
         const errorMessage = getMessageError(errorCode)
         sendNotification(errorMessage)
 
-        return Promise.reject(errorMessage)
+        return Promise.reject(
+          new ResponseModel({ IsSuccess: false, ErrorCode: errorCode })
+        )
       }
     )
 
@@ -90,6 +92,10 @@ export const useApiStore = defineStore('api-store', () => {
         return 'Authorization Error'
       case ErrorEnum.Conflict:
         return 'Conflict when creating an entity'
+      case ErrorEnum.EntityTooLarge:
+        return 'The entity being loaded is too large'
+      default:
+        return 'Unknown error'
     }
   }
 

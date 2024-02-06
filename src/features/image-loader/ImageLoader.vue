@@ -1,7 +1,13 @@
 <script lang="ts" setup>
-import { PropType, computed, onMounted, ref } from 'vue'
+import { PropType, onMounted, ref } from 'vue'
 import IconAddImage from '@/shared/assets/images/icons/icon-add-image.svg'
 import { watch } from 'vue'
+import { useNotificationStore } from '@/entities'
+
+/**
+ * * Стор уведомлений
+ */
+const { sendNotification } = useNotificationStore()
 
 /**
  * * Параметры компонента
@@ -51,8 +57,10 @@ const onClick = () => $fileInput.value?.click()
  */
 const onChangeFile = (e: any) => {
   const _file = e?.target?.files?.[0] || ''
-  setImageUrl(_file)
-  emit('update:modelValue', _file)
+  if (validateImage(_file)) {
+    setImageUrl(_file)
+    emit('update:modelValue', _file)
+  }
 }
 /**
  * * Установка ссылки на изображение
@@ -66,6 +74,26 @@ const setImageUrl = (_image: File | string) => {
       (imageUrl.value = event.target.result?.toString())
     reader.readAsDataURL(_image)
   }
+}
+/**
+ * * Функция для валидации изображения
+ * @param file Файл изображения
+ */
+const validateImage = (file: File) => {
+  if (!file) return false
+
+  if (!file.type.startsWith('image/')) {
+    sendNotification('The selected file is not an image')
+    return false
+  }
+
+  const maxSizeInBytes = 100 * 1024 * 1024
+  if (file.size > maxSizeInBytes) {
+    sendNotification('File size exceeds 100 megabytes')
+    return false
+  }
+
+  return true
 }
 </script>
 <template>

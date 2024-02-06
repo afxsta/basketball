@@ -5,13 +5,12 @@ import {
   Select,
   Button,
   DatePicker,
-  ImageLoader,
   Loader,
   ValidationModel,
   useFormValidation,
 } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
-import { TeamSelect } from '@/features'
+import { TeamSelect, ImageLoader } from '@/features'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 

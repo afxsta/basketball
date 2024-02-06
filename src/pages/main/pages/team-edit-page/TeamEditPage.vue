@@ -1,12 +1,7 @@
 <script lang="ts" setup>
 import { TeamModel, useTeamStore } from '@/entities'
-import {
-  Input,
-  Button,
-  ImageLoader,
-  useFormValidation,
-  ValidationModel,
-} from '@/shared'
+import { Input, Button, useFormValidation, ValidationModel } from '@/shared'
+import { ImageLoader } from '@/features'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -88,7 +83,7 @@ const cancelEdit = () => {
   }
 }
 /**
- * * Отправка запроса на сохранение игрока
+ * * Отправка запроса на сохранение команды
  */
 const saveTeam = async () => {
   if (startValidate(validationOptions.value)) {

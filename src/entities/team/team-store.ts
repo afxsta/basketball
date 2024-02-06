@@ -83,7 +83,7 @@ export const useTeamStore = defineStore('team-store', () => {
         if (mediaResponse.IsSuccess) {
           team.Image = mediaResponse.Value
         } else {
-          return resolve(null)
+          return resolve(new ResponseModel({ IsSuccess: false }))
         }
       }
 
