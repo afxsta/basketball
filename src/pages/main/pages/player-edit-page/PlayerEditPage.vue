@@ -5,12 +5,11 @@ import {
   Select,
   Button,
   DatePicker,
-  Loader,
   ValidationModel,
   useFormValidation,
 } from '@/shared'
 import { computed, onMounted, ref } from 'vue'
-import { TeamSelect, ImageLoader } from '@/features'
+import { TeamSelect, ImageLoader, PageHeader } from '@/features'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -92,6 +91,13 @@ const validationOptions = computed(() => [
  * * Id редактируемого игрока
  */
 const playerId = computed(() => Number(router.currentRoute.value?.params?.id))
+/**
+ * * Пути в заголовке
+ */
+const headerPaths = computed(() => [
+  'Player',
+  player.value?.Id ? `Edit ${player.value.Name}` : 'Add new player',
+])
 
 /**
  * * После рендера компонента
@@ -151,73 +157,81 @@ const userTeam = computed({
 })
 </script>
 <template>
-  <div class="player-edit-page">
-    <ImageLoader
-      v-model="player.Image"
-      class="player-edit-page_image"
-    />
-    <div class="player-edit-page_form">
-      <Input
-        v-model="player.Name"
-        label="Name"
-        :error="validation.Name"
+  <div class="player-edit-page-wrapper">
+    <PageHeader :paths="headerPaths" />
+    <div class="player-edit-page">
+      <ImageLoader
+        v-model="player.Image"
+        class="player-edit-page_image"
       />
-      <Select
-        :options="optionsPosition"
-        label="Position"
-        :error="validation.Position"
-        v-model="userPosition"
-      />
-      <TeamSelect
-        v-model="userTeam"
-        label="Team"
-        :error="validation.Team"
-      />
-      <div class="player-edit-page_form_row">
+      <div class="player-edit-page_form">
         <Input
-          v-model="player.Height"
-          type="number"
-          label="Height (cm)"
-          :error="validation.Height"
+          v-model="player.Name"
+          label="Name"
+          :error="validation.Name"
         />
-        <Input
-          v-model="player.Weight"
-          type="number"
-          label="Weight (kg)"
-          :error="validation.Weight"
+        <Select
+          :options="optionsPosition"
+          label="Position"
+          :error="validation.Position"
+          v-model="userPosition"
         />
-      </div>
-      <div class="player-edit-page_form_row">
-        <DatePicker
-          v-model="player.Birthday"
-          label="Birthday"
-          :error="validation.Birthday"
+        <TeamSelect
+          v-model="userTeam"
+          label="Team"
+          :error="validation.Team"
         />
-        <Input
-          v-model="player.Number"
-          type="number"
-          label="Number"
-          :error="validation.Number"
-        />
-      </div>
-      <div class="player-edit-page_form_row">
-        <Button
-          secondary
-          @click="cancelEdit"
-        >
-          Cancel
-        </Button>
-        <Button @click="savePlayer"> Save </Button>
+        <div class="player-edit-page_form_row">
+          <Input
+            v-model="player.Height"
+            type="number"
+            label="Height (cm)"
+            :error="validation.Height"
+          />
+          <Input
+            v-model="player.Weight"
+            type="number"
+            label="Weight (kg)"
+            :error="validation.Weight"
+          />
+        </div>
+        <div class="player-edit-page_form_row">
+          <DatePicker
+            v-model="player.Birthday"
+            label="Birthday"
+            :error="validation.Birthday"
+          />
+          <Input
+            v-model="player.Number"
+            type="number"
+            label="Number"
+            :error="validation.Number"
+          />
+        </div>
+        <div class="player-edit-page_form_row">
+          <Button
+            secondary
+            @click="cancelEdit"
+          >
+            Cancel
+          </Button>
+          <Button @click="savePlayer"> Save </Button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+.player-edit-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  border-radius: 10px;
+  overflow: hidden;
+}
 .player-edit-page {
   display: flex;
   gap: 136px;
-  background-color: $white;
-  border-radius: 10px;
   padding: 48px 74px;
   &_form {
     display: flex;

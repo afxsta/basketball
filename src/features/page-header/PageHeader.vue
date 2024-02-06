@@ -50,7 +50,10 @@ const onEdit = () => emit('edit')
         />
       </div>
     </div>
-    <div class="page-header_controls">
+    <div
+      v-if="showControls"
+      class="page-header_controls"
+    >
       <img
         :src="IconEdit"
         alt="edit"
@@ -94,6 +97,10 @@ const onEdit = () => emit('edit')
     display: flex;
     gap: 16px;
     cursor: pointer;
+  }
+
+  @media (max-width: $small) {
+    height: 48px !important;
   }
 }
 </style>

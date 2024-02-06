@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TeamModel, useTeamStore } from '@/entities'
 import { Input, Button, useFormValidation, ValidationModel } from '@/shared'
-import { ImageLoader } from '@/features'
+import { ImageLoader, PageHeader } from '@/features'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -59,6 +59,13 @@ const validationOptions = computed(() => [
  * * Id редактируемой команды
  */
 const teamId = computed(() => Number(router.currentRoute.value?.params?.id))
+/**
+ * * Пути в заголовке
+ */
+const headerPaths = computed(() => [
+  'Team',
+  team.value?.Id ? `Edit ${team.value.Name}` : 'Add new team',
+])
 
 /**
  * * После рендера компонента
@@ -95,51 +102,59 @@ const saveTeam = async () => {
 }
 </script>
 <template>
-  <div class="team-edit-page">
-    <ImageLoader
-      v-model="team.Image"
-      class="team-edit-page_image"
-    />
-    <div class="team-edit-page_form">
-      <Input
-        v-model="team.Name"
-        :error="validation.Name"
-        label="Name"
+  <div class="team-edit-page-wrapper">
+    <PageHeader :paths="headerPaths" />
+    <div class="team-edit-page">
+      <ImageLoader
+        v-model="team.Image"
+        class="team-edit-page_image"
       />
-      <Input
-        v-model="team.Division"
-        :error="validation.Division"
-        label="Division"
-      />
-      <Input
-        v-model="team.Conference"
-        :error="validation.Conference"
-        label="Conference"
-      />
-      <Input
-        v-model="team.FoundationYear"
-        :error="validation.FoundationYear"
-        label="Year of foundation"
-        type="number"
-      />
-      <div class="team-edit-page_form_row">
-        <Button
-          secondary
-          @click="cancelEdit"
-        >
-          Cancel
-        </Button>
-        <Button @click="saveTeam"> Save </Button>
+      <div class="team-edit-page_form">
+        <Input
+          v-model="team.Name"
+          :error="validation.Name"
+          label="Name"
+        />
+        <Input
+          v-model="team.Division"
+          :error="validation.Division"
+          label="Division"
+        />
+        <Input
+          v-model="team.Conference"
+          :error="validation.Conference"
+          label="Conference"
+        />
+        <Input
+          v-model="team.FoundationYear"
+          :error="validation.FoundationYear"
+          label="Year of foundation"
+          type="number"
+        />
+        <div class="team-edit-page_form_row">
+          <Button
+            secondary
+            @click="cancelEdit"
+          >
+            Cancel
+          </Button>
+          <Button @click="saveTeam"> Save </Button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+.team-edit-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  border-radius: 10px;
+  overflow: hidden;
+}
 .team-edit-page {
   display: flex;
   gap: 136px;
-  background-color: $white;
-  border-radius: 10px;
   padding: 48px 74px;
   &_form {
     display: flex;

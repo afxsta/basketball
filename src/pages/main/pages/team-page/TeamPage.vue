@@ -89,6 +89,7 @@ const getTeamPlayers = async () => {
   <div class="team-page">
     <div class="team-page-wrapper">
       <PageHeader
+        show-controls
         :paths="['Teams', team.Name]"
         @delete="sendDeleteRequest"
         @edit="editTeam"
