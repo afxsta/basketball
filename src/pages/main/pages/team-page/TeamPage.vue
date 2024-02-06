@@ -212,7 +212,7 @@ const getTeamPlayers = async () => {
   }
 
   @media (max-width: 1068px) {
-    .player-page_info-block {
+    .team-page_info-block {
       flex-direction: column;
       align-items: center;
       &_image {
