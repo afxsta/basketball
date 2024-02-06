@@ -46,6 +46,7 @@ const value = computed({
 const currentBlockClasses = computed(() => [
   'select-wrapper_current',
   { error: !!props.error },
+  { multi: props.isMulti },
 ])
 
 /**
@@ -154,7 +155,7 @@ const listOnScroll = (e: Event) => {
         />
         <div class="select-wrapper_current_toggler">
           <div
-            v-if="modelValue?.length"
+            v-if="modelValue?.length && isMulti"
             class="select-wrapper_current_toggler_close"
             @click.stop
           >
@@ -210,8 +211,8 @@ const listOnScroll = (e: Event) => {
     font-size: 14px;
     line-height: 24px;
     color: $dark-grey;
-    background-color: $white;
-    border: 0.5px solid $lightest-grey;
+    background-color: $lightest-grey1;
+    border: 0.5px solid transparent;
     border-radius: 4px;
     padding: 0 40px 0 $indent-2;
     transition: $transition-1;
@@ -232,8 +233,7 @@ const listOnScroll = (e: Event) => {
       transform: translateY(-50%);
       height: 24px;
       width: 40px;
-      background-color: $white;
-      border-left: 1px solid $lightest-grey;
+      background-color: $lightest-grey1;
       z-index: 1;
 
       img {
@@ -254,11 +254,22 @@ const listOnScroll = (e: Event) => {
         height: 100%;
         right: calc(100% + 1px);
         top: 0;
-        background-color: $white;
+        background-color: $lightest-grey1;
 
         img {
           cursor: pointer;
         }
+      }
+    }
+
+    &.multi {
+      background-color: $white;
+      border-color: $lightest-grey;
+      border-left: 1px solid $lightest-grey;
+
+      .select-wrapper_current_toggler,
+      .select-wrapper_current_toggler_close {
+        background-color: $white;
       }
     }
 

@@ -161,6 +161,9 @@ const inputClasses = computed(() => ({
       position: absolute;
       right: 12px;
       top: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transform: translateY(-50%);
     }
   }
