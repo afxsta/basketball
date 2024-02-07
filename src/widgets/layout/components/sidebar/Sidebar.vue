@@ -104,6 +104,7 @@ defineExpose({
       :key="item?.Id"
       :to="getRouteName(item?.Id)"
       class="sidebar_link"
+      @click="toggle"
     >
       <div
         class="sidebar_item"
@@ -219,10 +220,11 @@ defineExpose({
 
     &_user {
       display: flex;
-      justify-content: center;
+      padding-left: 20px;
       border-bottom: 0.5px solid $light-grey;
       width: 100%;
       height: 80px;
+      word-break: break-word;
 
       .user-info {
         flex-direction: row-reverse;
