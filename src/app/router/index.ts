@@ -26,9 +26,9 @@ const routes: Array<RouteRecordRaw> = [
         component: AuthPage,
       },
       {
-        path: 'main',
+        path: '',
         name: 'main',
-        redirect: '/main/players',
+        redirect: '/players',
         component: MainPage,
         children: [
           {
