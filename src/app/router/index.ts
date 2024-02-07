@@ -10,6 +10,8 @@ import {
   TeamEditPage,
   NotFoundPage,
 } from '@/pages'
+import { useAuthStore } from '@/entities'
+import { storeToRefs } from 'pinia'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -77,13 +79,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let user
-
-  const state = localStorage['auth-store']
-  if (state) user = JSON.parse(state)?.user
+  const { user } = storeToRefs(useAuthStore())
 
   const isSignPage = to.name?.toString()?.includes('sign')
-  if (!user) {
+  if (!user.value) {
     if (!isSignPage) next({ name: 'sign-in' })
   } else {
     if (isSignPage || !to.name) next({ name: 'main' })
