@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { ISelectedItemProps, SelectOptionModel } from '@/shared/ui/select'
+import { ISelectedItemProps } from '@/shared/ui/select'
 import IconClose from '@/shared/assets/images/icons/icon-close.svg'
+import { ref } from 'vue'
 
 const props = defineProps<ISelectedItemProps>()
 const emit = defineEmits<{
@@ -11,17 +12,32 @@ const emit = defineEmits<{
 }>()
 
 /**
+ * * DOM элемент компонента
+ */
+const $el = ref<HTMLDivElement>()
+
+/**
  * * Отправка события для удаления элемента списка
  */
 const deleteItem = () => emit('delete', props.option?.Id)
+
+/**
+ * * Код для использования по ref
+ */
+defineExpose({
+  $el,
+})
 </script>
 <template>
   <div
     class="selected-item"
+    ref="$el"
+    :class="{ 'text-only': hideDelete }"
     @click.stop
   >
     <span v-text="props.option?.Text" />
     <img
+      v-if="!hideDelete"
       :src="IconClose"
       alt="icon-close"
       @click="deleteItem"
@@ -41,6 +57,10 @@ const deleteItem = () => emit('delete', props.option?.Id)
   border-radius: 4px;
   user-select: none;
   cursor: default;
+
+  &.text-only {
+    padding: 0 4px;
+  }
 
   img {
     position: absolute;

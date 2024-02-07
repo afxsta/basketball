@@ -1,8 +1,15 @@
 <script lang="ts" setup>
-import { ISelectProps, SelectedItem, ErrorMessage } from '@/shared'
+import {
+  ISelectProps,
+  SelectedItem,
+  ErrorMessage,
+  SelectOptionModel,
+} from '@/shared'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import IconExpand from '@/shared/assets/images/icons/icon-expand.svg'
 import IconCloseSelect from '@/shared/assets/images/icons/icon-close-select.svg'
+import { watch } from 'vue'
+import { nextTick } from 'vue'
 
 const props = withDefaults(defineProps<ISelectProps>(), {})
 const emit = defineEmits<{
@@ -24,7 +31,31 @@ const opened = ref(false)
  * * DOM элемент компонента
  */
 const $select = ref<HTMLDivElement>()
+/**
+ * * Список компонентов представляющих мультиселект
+ */
+const $selectedItem = ref<InstanceType<typeof SelectedItem>[]>([])
+/**
+ * * Максимально количество отображаемых мультиселект блоков
+ */
+const maxItems = ref<number>()
+/**
+ * * DOM элемент тогглера
+ */
+const $toggler = ref<HTMLDivElement>()
+/**
+ * * Опция для отображения заглушки
+ */
+const plugOption = ref(
+  new SelectOptionModel({ Id: new Date().getTime(), Text: '...' })
+)
 
+/**
+ * * Видна заглушка multi режима
+ */
+const visibleMultiPlug = computed(
+  () => selectedOptions.value?.length > maxItems.value
+)
 /**
  * * Выбранные элементы
  */
@@ -50,10 +81,16 @@ const currentBlockClasses = computed(() => [
 ])
 
 /**
+ * * Отслеживание изменений выбранных элементов
+ */
+watch(selectedOptions, onUpdateSelectedOptions, { deep: true })
+
+/**
  * * После рендера компонента
  */
 onMounted(() => {
   document.documentElement.addEventListener('click', documentOnClick)
+  onUpdateSelectedOptions()
 })
 /**
  * * Перед удалением компонента
@@ -62,6 +99,35 @@ onUnmounted(() => {
   document.documentElement.removeEventListener('click', documentOnClick)
 })
 
+/**
+ * * При обновлении выбранных опций
+ */
+async function onUpdateSelectedOptions() {
+  if (!props.isMulti) return
+
+  await nextTick()
+
+  const selectedLength = selectedOptions.value?.length
+  if (maxItems.value <= selectedLength) {
+    return
+  } else {
+    maxItems.value = undefined
+    await nextTick()
+  }
+
+  const rects = $selectedItem.value
+    ?.map((item) => item?.$el?.getBoundingClientRect())
+    ?.filter((item) => !!item)
+  const togglerRect = $toggler.value?.getBoundingClientRect()
+
+  if (togglerRect && rects?.length) {
+    const togglerLeft = togglerRect.left
+
+    const lastItem = rects.findIndex((rect) => rect.right + 80 >= togglerLeft)
+    maxItems.value = lastItem == -1 ? undefined : selectedLength - 1
+    return
+  }
+}
 /**
  * * Переключение видимости списка
  */
@@ -143,17 +209,27 @@ const listOnScroll = (e: Event) => {
           class="select-wrapper_current_multi"
         >
           <SelectedItem
-            v-for="option in selectedOptions"
+            v-for="(option, index) in selectedOptions"
+            v-show="index < maxItems || !maxItems"
             :key="option?.Id"
             :option="option"
+            ref="$selectedItem"
             @delete="toggleItem"
+          />
+          <SelectedItem
+            v-if="visibleMultiPlug"
+            hide-delete
+            :option="plugOption"
           />
         </div>
         <span
           v-else
           v-text="selectedOptions?.[0]?.Text"
         />
-        <div class="select-wrapper_current_toggler">
+        <div
+          class="select-wrapper_current_toggler"
+          ref="$toggler"
+        >
           <div
             v-if="modelValue?.length && isMulti"
             class="select-wrapper_current_toggler_close"
