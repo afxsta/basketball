@@ -82,7 +82,6 @@ const getTeamPlayers = async () => {
   if (response.IsSuccess) {
     roster.value = response.Value
   }
-  console.log(roster.value)
 }
 </script>
 <template>

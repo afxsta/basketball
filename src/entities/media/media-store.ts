@@ -47,7 +47,6 @@ export const useMediaStore = defineStore('media-store', () => {
       await api.value
         .delete(`${mediaApiPath}DeleteImage`, { params: { fileName } })
         .then((response) => {
-          console.log(response)
           resolve(new ResponseModel({ Value: response.data }))
         })
         .catch((error) => {

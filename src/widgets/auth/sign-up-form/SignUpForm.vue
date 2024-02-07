@@ -91,7 +91,6 @@ const trySignUp = async () => {
         Password: password.value,
       })
     )
-    console.log(response)
   }
 }
 </script>

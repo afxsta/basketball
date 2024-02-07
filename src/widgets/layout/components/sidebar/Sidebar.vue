@@ -99,7 +99,6 @@ const getRouteName = (_id: number) => {
  * * Открыть сайдбар
  */
 const toggle = (_opened?: boolean) => {
-  console.log(typeof _opened)
   opened.value = typeof _opened == 'boolean' ? _opened : !opened.value
 }
 
