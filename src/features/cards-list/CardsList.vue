@@ -46,6 +46,7 @@ const itemOnClick = (_id: number) => emit('open', _id)
         <ItemCard
           v-for="item in items"
           class="cards-list_item"
+          :class="{ player: isPlayers }"
           :key="item?.Id"
           @click="itemOnClick(item?.Id)"
         >
@@ -56,7 +57,14 @@ const itemOnClick = (_id: number) => emit('open', _id)
               alt="image"
             />
           </template>
-          <template #title> {{ item.Name }} </template>
+          <template #title>
+            <slot
+              name="title"
+              :item="item"
+            >
+              {{ item.Name }}
+            </slot>
+          </template>
           <template #subtitle>
             <slot
               name="subtitle"
@@ -83,29 +91,13 @@ const itemOnClick = (_id: number) => emit('open', _id)
 
   .cards-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(170px, min(364px, 100%)));
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     justify-content: flex-start;
 
-    @media (max-width: 868px) {
-      grid-template-columns: repeat(2, minmax(170px, min(364px, 100%)));
+    @media (max-width: $tablet) {
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-
-      .cards-list_item {
-        max-height: 200px;
-      }
-    }
-
-    &_item {
-      width: 100%;
-      min-width: 170px;
-      max-width: 364px;
-      min-height: 170px;
-      max-height: 380px;
-
-      @media (max-width: 1168px) {
-        max-height: 300px;
-      }
     }
   }
   &_paginator {

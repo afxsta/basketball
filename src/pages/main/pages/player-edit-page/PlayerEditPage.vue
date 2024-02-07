@@ -249,7 +249,7 @@ const userTeam = computed({
     }
   }
 
-  @media (max-width: 1140px) {
+  @media (max-width: $tablet) {
     padding: 48px 24px;
   }
 

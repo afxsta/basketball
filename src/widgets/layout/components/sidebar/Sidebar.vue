@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { GeneralModel } from '@/entities'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import IconPerson from '@/shared/assets/images/icons/group_person_rounded.svg'
 import IconPersonGroup from '@/shared/assets/images/icons/person_rounded.svg'
 import IconExit from '@/shared/assets/images/icons/icon-exit.svg'
@@ -8,6 +8,7 @@ import { useAuthStore } from '@/entities'
 import { useRouter } from 'vue-router'
 import { UserInfo } from '@/widgets'
 import { storeToRefs } from 'pinia'
+import { onUnmounted } from 'vue'
 /**
  * * Маршруты
  */
@@ -40,6 +41,21 @@ const items = computed(() => [
  */
 const componentClasses = computed(() => ['sidebar', { opened: opened.value }])
 
+/**
+ * * После рендера компонента
+ */
+onMounted(() => window.addEventListener('resize', windowOnResize))
+/**
+ * * Перед удалением компонента
+ */
+onUnmounted(() => window.removeEventListener('resize', windowOnResize))
+
+/**
+ * * При изменении размеров окна
+ */
+function windowOnResize() {
+  toggle(false)
+}
 /**
  * * Получение svg рисунка
  */
@@ -82,7 +98,10 @@ const getRouteName = (_id: number) => {
 /**
  * * Открыть сайдбар
  */
-const toggle = () => (opened.value = !opened.value)
+const toggle = (_opened?: boolean) => {
+  console.log(typeof _opened)
+  opened.value = typeof _opened == 'boolean' ? _opened : !opened.value
+}
 
 /**
  * * Код для использования по ref
@@ -104,7 +123,7 @@ defineExpose({
       :key="item?.Id"
       :to="getRouteName(item?.Id)"
       class="sidebar_link"
-      @click="toggle"
+      @click="toggle(false)"
     >
       <div
         class="sidebar_item"
@@ -142,7 +161,7 @@ defineExpose({
   <div
     class="sidebar_background"
     :class="{ opened: opened }"
-    @click="toggle"
+    @click="toggle(!opened)"
   />
 </template>
 <style lang="scss">

@@ -3,7 +3,9 @@ import {
   FilterModel,
   PaginationModel,
   PlayerModel,
+  TeamModel,
   usePlayerStore,
+  useTeamStore,
 } from '@/entities'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -20,11 +22,15 @@ import PlayerEmpty from '@/shared/assets/images/player-empty.svg'
  */
 const router = useRouter()
 /**
- * * Стор для управления командами
+ * * Стор для управления игроками
  */
 const playerStore = usePlayerStore()
 const { pagination } = storeToRefs(playerStore)
 const { getPlayers } = playerStore
+/**
+ * * Стор для управления командами
+ */
+const { getTeam } = useTeamStore()
 
 /**
  * * Управление загрузкой
@@ -35,7 +41,7 @@ const { isLoading, startLoading, stopLoading } = useLoading()
  */
 const search = ref('')
 /**
- * * Список команд
+ * * Список игроков
  */
 const players = ref<PlayerModel[]>()
 /**
@@ -46,6 +52,10 @@ const isFirstLoading = ref(false)
  * * Выбранные Id команд
  */
 const teamIds = ref<number[]>([])
+/**
+ * * Команды текущих игроков
+ */
+const playersTeams = ref<TeamModel[]>([])
 
 /**
  * * Данные для запроса
@@ -76,6 +86,7 @@ async function updatePlayers() {
   const response = await getPlayers(filter.value)
   if (response.IsSuccess) {
     players.value = response.Value
+    await getPlayersTeams()
   }
 
   if (!players.value?.length && pagination.value.Page > 1) {
@@ -135,6 +146,23 @@ const openPlayer = (_id: number) => {
     params: { id: _id },
   })
 }
+/**
+ * * Получение команд выводимых игроков
+ */
+const getPlayersTeams = async () => {
+  playersTeams.value = []
+  const teamsIds = Array.from(new Set(players.value.map((x) => x.Team)))
+  teamsIds.forEach(async (id) => {
+    const response = await getTeam(id)
+    if (response.IsSuccess) playersTeams.value.push(response.Value)
+  })
+}
+/**
+ * * Получить имя команды
+ */
+const getTeamName = (_teamId: number) => {
+  return playersTeams.value?.find((t) => t.Id == _teamId)?.Name || ''
+}
 </script>
 <template>
   <Loader :is-loading="isLoading && isFirstLoading">
@@ -176,15 +204,21 @@ const openPlayer = (_id: number) => {
         </Stopper>
         <CardsList
           v-else
+          isPlayers
           :items="players"
           :pagination="pagination"
           :is-loading="isLoading"
           @open="openPlayer"
           @update="updatePlayers"
         >
-          <template #subtitle="slotProps">
+          <template #title="slotProps">
             {{ (slotProps.item as PlayerModel)?.Name }}
-            #{{ (slotProps.item as PlayerModel)?.Number }}
+            <span class="c-red">
+              #{{ (slotProps.item as PlayerModel)?.Number }}
+            </span>
+          </template>
+          <template #subtitle="slotProps">
+            {{ getTeamName((slotProps.item as PlayerModel).Team) }}
           </template>
         </CardsList>
       </div>
@@ -196,7 +230,6 @@ const openPlayer = (_id: number) => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 1140px;
 
   &_filter {
     display: flex;

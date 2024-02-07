@@ -13,4 +13,8 @@ export interface ICardsListProps<T> {
    * * Идет загрузка сущностей
    */
   isLoading?: boolean
+  /**
+   * * Отображается список игроков
+   */
+  isPlayers?: boolean
 }

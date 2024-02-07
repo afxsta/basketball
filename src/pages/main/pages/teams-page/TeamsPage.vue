@@ -176,7 +176,6 @@ const openTeam = (_id: number) => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 1140px;
 
   &_filter {
     display: flex;
