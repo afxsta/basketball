@@ -138,15 +138,6 @@ const getPathQuery = () => {
  */
 const openPlayerCreate = () => router.push({ name: 'player-control' })
 /**
- * * Открыть предпросмотр команды
- */
-const openPlayer = (_id: number) => {
-  router.push({
-    name: 'player',
-    params: { id: _id },
-  })
-}
-/**
  * * Получение команд выводимых игроков
  */
 const getPlayersTeams = async () => {
@@ -208,7 +199,6 @@ const getTeamName = (_teamId: number) => {
           :items="players"
           :pagination="pagination"
           :is-loading="isLoading"
-          @open="openPlayer"
           @update="updatePlayers"
         >
           <template #title="slotProps">
@@ -232,7 +222,8 @@ const getTeamName = (_teamId: number) => {
   height: 100%;
 
   &_filter {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1f);
     gap: 24px;
     margin-bottom: 32px;
 
@@ -246,6 +237,7 @@ const getTeamName = (_teamId: number) => {
     }
 
     @media (max-width: $small) {
+      display: flex;
       flex-direction: column;
       gap: 16px;
       margin-bottom: 16px;

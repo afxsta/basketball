@@ -4,15 +4,15 @@ import {
   PaginationModel,
   TeamModel,
   useTeamStore,
-} from '@/entities'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref } from 'vue'
-import { Input, Button, Loader, Stopper } from '@/shared'
-import { useLoading } from '@/shared/composables/loading/use-loading'
-import { CardsList } from '@/features'
-import IconAdd from '@/shared/assets/images/icons/icon-add.svg'
-import { useRouter } from 'vue-router'
-import TeamEmpty from '@/shared/assets/images/team-empty.svg'
+} from "@/entities"
+import { storeToRefs } from "pinia"
+import { computed, onMounted, ref } from "vue"
+import { Input, Button, Loader, Stopper } from "@/shared"
+import { useLoading } from "@/shared/composables/loading/use-loading"
+import { CardsList } from "@/features"
+import IconAdd from "@/shared/assets/images/icons/icon-add.svg"
+import { useRouter } from "vue-router"
+import TeamEmpty from "@/shared/assets/images/team-empty.svg"
 
 /**
  * * Маршруты
@@ -32,7 +32,7 @@ const { isLoading, startLoading, stopLoading } = useLoading()
 /**
  * * Поисковой запрос
  */
-const search = ref('')
+const search = ref("")
 /**
  * * Список команд
  */
@@ -111,16 +111,7 @@ const getPathQuery = () => {
 /**
  * * Открытие страницы с созданием команды
  */
-const openTeamCreate = () => router.push({ name: 'team-control' })
-/**
- * * Открыть предпросмотр команды
- */
-const openTeam = (_id: number) => {
-  router.push({
-    name: 'team',
-    params: { id: _id },
-  })
-}
+const openTeamCreate = () => router.push({ name: "team-control" })
 </script>
 <template>
   <Loader :is-loading="isLoading && isFirstLoading">
@@ -133,24 +124,16 @@ const openTeam = (_id: number) => {
           class="teams-page_filter_field"
           @update:model-value="updateTeams"
         />
-        <Button
-          class="teams-page_filter_add"
-          @click="openTeamCreate"
-        >
+        <div class="teams-page_filter_empty" />
+        <Button class="teams-page_filter_add" @click="openTeamCreate">
           Add
-          <img
-            :src="IconAdd"
-            alt="add"
-          />
+          <img :src="IconAdd" alt="add" />
         </Button>
       </div>
       <div class="teams-page_block f">
         <Stopper v-if="!teams?.length && !isLoading">
           <template #image>
-            <img
-              :src="TeamEmpty"
-              alt="empty"
-            />
+            <img :src="TeamEmpty" alt="empty" />
           </template>
           <template #text> Add new teams to continue </template>
         </Stopper>
@@ -159,7 +142,6 @@ const openTeam = (_id: number) => {
           :items="teams"
           :pagination="pagination"
           :is-loading="isLoading"
-          @open="openTeam"
           @update="updateTeams"
         >
           <template #subtitle="slotProps">
@@ -178,7 +160,8 @@ const openTeam = (_id: number) => {
   height: 100%;
 
   &_filter {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1f);
     gap: 24px;
     margin-bottom: 32px;
 
@@ -192,9 +175,14 @@ const openTeam = (_id: number) => {
     }
 
     @media (max-width: $small) {
+      display: flex;
       flex-direction: column;
       gap: 16px;
       margin-bottom: 16px;
+
+      &_empty {
+        display: none;
+      }
 
       &_field,
       &_add {

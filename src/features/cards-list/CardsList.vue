@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ItemCard, Loader } from '@/shared'
-import { ICardsListProps, Paginator } from '@/features'
-import { GeneralModel, PaginationModel } from '@/entities'
+import { ItemCard, Loader } from "@/shared"
+import { ICardsListProps, Paginator } from "@/features"
+import { GeneralModel, PaginationModel } from "@/entities"
 
 /**
  * * Параметры компонента
@@ -14,19 +14,15 @@ const props = withDefaults(defineProps<ICardsListProps<GeneralModel>>(), {
  */
 const emit = defineEmits<{
   /**
-   * * Событие для предпросмотра сущности
-   */
-  (e: 'open', id: number): void
-  /**
    * * События для обновления списка
    */
-  (e: 'update'): void
+  (e: "update"): void
 }>()
 
 /**
  * * Отправка update события
  */
-const sendUpdate = () => emit('update')
+const sendUpdate = () => emit("update")
 /**
  * * Смена страницы
  */
@@ -35,43 +31,40 @@ const setPage = (_page: number) => {
   sendUpdate()
 }
 /**
- * * При клике по карточке
+ * * Получение роута сущности
  */
-const itemOnClick = (_id: number) => emit('open', _id)
+const getToPath = (_id: number) => ({
+  name: props.isPlayers ? "player" : "team",
+  params: { id: _id },
+})
 </script>
 <template>
   <div class="cards-list-wrapper f fd-col">
     <Loader :isLoading="isLoading">
       <div class="cards-list">
-        <ItemCard
-          v-for="item in items"
-          class="cards-list_item"
-          :class="{ player: isPlayers }"
-          :key="item?.Id"
-          @click="itemOnClick(item?.Id)"
-        >
-          <template #image>
-            <img
-              v-if="item.Image"
-              :src="item.Image?.toString()"
-              alt="image"
-            />
-          </template>
-          <template #title>
-            <slot
-              name="title"
-              :item="item"
-            >
-              {{ item.Name }}
-            </slot>
-          </template>
-          <template #subtitle>
-            <slot
-              name="subtitle"
-              :item="item"
-            />
-          </template>
-        </ItemCard>
+        <RouterLink v-for="item in items" :to="getToPath(item.Id)">
+          <ItemCard
+            class="cards-list_item"
+            :class="{ player: isPlayers }"
+            :key="item?.Id"
+          >
+            <template #image>
+              <img
+                v-if="item.Image"
+                :src="item.Image?.toString()"
+                alt="image"
+              />
+            </template>
+            <template #title>
+              <slot name="title" :item="item">
+                {{ item.Name }}
+              </slot>
+            </template>
+            <template #subtitle>
+              <slot name="subtitle" :item="item" />
+            </template>
+          </ItemCard>
+        </RouterLink>
       </div>
     </Loader>
     <Paginator
