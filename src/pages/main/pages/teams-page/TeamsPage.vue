@@ -161,17 +161,12 @@ const openTeamCreate = () => router.push({ name: "team-control" })
 
   &_filter {
     display: grid;
-    grid-template-columns: repeat(3, 1f);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     margin-bottom: 32px;
 
     button.teams-page_filter_add {
-      margin-left: auto;
-      max-width: 104px;
-    }
-
-    &_field {
-      max-width: 364px;
+      max-width: 100%;
     }
 
     @media (max-width: $small) {
@@ -198,6 +193,15 @@ const openTeamCreate = () => router.push({ name: "team-control" })
 
   @media (max-width: $small) {
     padding: 0 12px !important;
+  }
+
+  @media (max-width: $tablet) {
+    .teams-page_filter {
+      grid-template-columns: repeat(2, 1fr);
+      .teams-page_filter_empty {
+        display: none;
+      }
+    }
   }
 }
 </style>

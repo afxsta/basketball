@@ -42,7 +42,7 @@ const getToPath = (_id: number) => ({
   <div class="cards-list-wrapper f fd-col">
     <Loader :isLoading="isLoading">
       <div class="cards-list">
-        <RouterLink v-for="item in items" :to="getToPath(item.Id)">
+        <RouterLink v-for="item in items" :to="getToPath(item.Id)" :style="{'text-decoration': 'none'}">
           <ItemCard
             class="cards-list_item"
             :class="{ player: isPlayers }"

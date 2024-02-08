@@ -223,17 +223,12 @@ const getTeamName = (_teamId: number) => {
 
   &_filter {
     display: grid;
-    grid-template-columns: repeat(3, 1f);
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 24px;
     margin-bottom: 32px;
 
     button.players-page_filter_add {
-      margin-left: auto;
-      max-width: 104px;
-    }
-
-    &_field {
-      max-width: 364px;
+      max-width: 100%;
     }
 
     @media (max-width: $small) {
@@ -241,12 +236,6 @@ const getTeamName = (_teamId: number) => {
       flex-direction: column;
       gap: 16px;
       margin-bottom: 16px;
-
-      &_field,
-      &_add {
-        width: 100%;
-        max-width: 100% !important;
-      }
     }
   }
 

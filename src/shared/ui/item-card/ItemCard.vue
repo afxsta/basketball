@@ -77,9 +77,11 @@
       .c-red {
         font-size: 18px;
       }
+      text-decoration: none;
     }
     &_subtitle {
       color: $light-grey;
+      text-decoration: none;
     }
   }
 
