@@ -166,7 +166,8 @@ const openTeamCreate = () => router.push({ name: "team-control" })
     margin-bottom: 32px;
 
     button.teams-page_filter_add {
-      max-width: 100%;
+      max-width: 104px;
+      margin-left: auto;
     }
 
     @media (max-width: $small) {
